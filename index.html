@@ -332,7 +332,26 @@
             .main-header h1 {
                 text-align: center;
                 line-height: 1.4;
+                font-size: 1.5rem;
             }
+            .layout { padding: 0.5rem; }
+            .content { padding: 1rem; }
+            .habit-table { min-width: 100%; }
+            .habit-table th, .habit-table td {
+                padding: 0.4rem 0.2rem;
+                font-size: 0.8rem;
+                white-space: normal; /* السماح بالتفاف النص */
+            }
+            .habit-table td:first-child {
+                min-width: 80px;
+                font-size: 0.85rem;
+                line-height: 1.2;
+            }
+            input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+            }
+            #user-profile { font-size: 0.85rem !important; }
         }
         @media (min-width: 768px) {
             .comparison-grid { grid-template-columns: 1fr 1fr; }
