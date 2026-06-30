@@ -367,6 +367,14 @@
 
     <header class="main-header">
         <h1>متابعة العادات الأسبوعيّة 🎯</h1>
+        <div id="user-profile" style="display: none; margin-top: 1rem; flex-direction: column; align-items: center; gap: 0.5rem; font-size: 0.95rem;">
+            <div style="display: flex; gap: 0.5rem; align-items: center; background: var(--surface-color); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <span id="display-name" style="font-weight: bold; color: var(--primary-color); cursor: pointer;" title="انقر لتسجيل أو تعديل اسمك">سجّل اسمك لأوّل مرّة ✏️</span>
+                <span style="color: var(--border-color);">|</span>
+                <span style="color: #888; font-size: 0.8rem;">ID:</span>
+                <span id="user-id" style="color: #666; font-family: monospace; font-size: 0.85rem; background: #f0f0f0; padding: 2px 6px; border-radius: 4px;" title="معرّف المزامنة السحابية الخاص بك"></span>
+            </div>
+        </div>
     </header>
 
     <div class="layout">
@@ -634,16 +642,43 @@
                 updateScore();
             }
 
+            // عناصر واجهة المستخدم
+            const userProfile = document.getElementById('user-profile');
+            const displayName = document.getElementById('display-name');
+            const userId = document.getElementById('user-id');
+
+            displayName.addEventListener('click', async () => {
+                if (!currentUser) return;
+                const newName = prompt("أدخل اسمك الكريم:", displayName.innerText.includes("سجّل اسمك") ? "" : displayName.innerText);
+                if (newName && newName.trim() !== "") {
+                    displayName.innerText = newName.trim();
+                    try {
+                        await setDoc(doc(db, "users", currentUser.uid), { name: newName.trim() }, { merge: true });
+                    } catch (e) {
+                        console.error("Error saving name:", e);
+                    }
+                }
+            });
+
             // الدخول المخفي المجهول (Anonymous)
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     currentUser = user;
+                    userProfile.style.display = 'flex';
+                    userId.innerText = "#" + user.uid.substring(0, 8);
+                    userId.title = "المعرّف الكامل: " + user.uid;
                     
                     try {
                         const docSnap = await getDoc(doc(db, "users", user.uid));
-                        if (docSnap.exists() && docSnap.data().habits) {
-                            savedStates = docSnap.data().habits;
-                            localStorage.setItem('habit-states', JSON.stringify(savedStates));
+                        if (docSnap.exists()) {
+                            const data = docSnap.data();
+                            if (data.habits) {
+                                savedStates = data.habits;
+                                localStorage.setItem('habit-states', JSON.stringify(savedStates));
+                            }
+                            if (data.name) {
+                                displayName.innerText = data.name;
+                            }
                         }
                     } catch (e) {
                         console.error("Error loading cloud data:", e);
