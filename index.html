@@ -328,6 +328,12 @@
 
 
         /* Media Queries للمقاسات المختلفة */
+        @media (max-width: 768px) {
+            .main-header h1 {
+                text-align: center;
+                line-height: 1.4;
+            }
+        }
         @media (min-width: 768px) {
             .comparison-grid { grid-template-columns: 1fr 1fr; }
             .layout { padding: 2rem; }
@@ -341,7 +347,7 @@
                 color: #000 !important;
                 font-size: 12pt !important;
             }
-            #reading-progress, .fab-container, .main-header .meta {
+            #reading-progress, .fab-container, .main-header .meta, #user-profile {
                 display: none !important;
             }
             main.content {
@@ -381,13 +387,6 @@
         <!-- المحتوى الرئيسي -->
         <main class="content">
             <article>
-                <h2 id="intro">📖 مقدمة الانطلاق</h2>
-                <p>إنَّ العادات اليوميّة وتتبّعها من أهم الركائز الأساسية نحو تحقيق النمو الشخصي المستدام والتطوّر المستمر.</p>
-                
-                <div class="callout callout-success">
-                    <strong>💡 تلميح:</strong> الالتزام بالخطوات الصغيرة يولد نتائج ضخمة بمرور الوقت، تذكر دائماً أن قليل دائم خير من كثير منقطع.
-                </div>
-
                 <h2 id="tracker">🗓️ جدول العادات الأسبوعي</h2>
                 <p>استخدم هذا الجدول التفاعلي لتتبع التزامك بالعادات المقررة خلال أيام الأسبوع. انقر على المربعات لتسجيل إنجازك اليومي.</p>
                 
@@ -396,13 +395,13 @@
                         <thead>
                             <tr>
                                 <th>العادة / اليوم</th>
-                                <th>السبت</th>
                                 <th>الأحد</th>
                                 <th>الإثنين</th>
                                 <th>الثلاثاء</th>
                                 <th>الأربعاء</th>
                                 <th>الخميس</th>
                                 <th>الجمعة</th>
+                                <th>السبت</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -542,15 +541,11 @@
                         <p>إهمال المتابعة قد يؤدي إلى تراكم المهام والشعور بالإحباط وتراجع الإنتاجية بشكل ملحوظ.</p>
                     </div>
                 </div>
-                <div class="verdict-box">
-                    الخلاصة: الاستمرارية في أداء <span class="badge">العادات الإيجابية</span> يصنع فارقاً نوعياً في جودة حياتك.
-                </div>
-
                 <h2 id="tips">💡 نصائح للالتزام</h2>
                 <blockquote>
                     "نجاحك المستقبلي يختبئ في روتينك اليومي، فلا تستهن بتأثير الخطوات البسيطة التراكمية."
                 </blockquote>
-                <p>ننصحك باستخدام <span class="tooltip" data-tooltip="تقنية تعتمد على فترات عمل بتركيز تليها فترات راحة قصيرة">تقنية بومودورو</span> لإنجاز المهام، والحرص على تسجيل تقدمك يومياً قبل النوم لتشجيع عقلك على الاستمرار.</p>
+                <p>ننصحك باستخدام تقنية بومودورو لإنجاز المهام، والحرص على تسجيل تقدمك يومياً قبل النوم لتشجيع عقلك على الاستمرار.</p>
             </article>
         </main>
 
