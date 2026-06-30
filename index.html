@@ -220,6 +220,15 @@
             transition: transform 0.2s;
         }
         input[type="checkbox"]:hover { transform: scale(1.1); }
+        
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .pop-anim {
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
 
         /* البطاقات والمقارنة */
         .comparison-grid {
@@ -591,9 +600,42 @@
 
             // استرجاع الحالات
             const savedStates = JSON.parse(localStorage.getItem('habit-states') || '[]');
+            // Web Audio API Pop Sound
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            function playPopSound(isChecked) {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sine';
+                if (isChecked) {
+                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
+                } else {
+                    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1);
+                }
+                
+                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            }
+
             checkboxes.forEach((cb, index) => {
                 if(savedStates[index]) cb.checked = true;
-                cb.addEventListener('change', updateScore);
+                cb.addEventListener('change', (e) => {
+                    updateScore();
+                    playPopSound(e.target.checked);
+                    
+                    cb.classList.remove('pop-anim');
+                    void cb.offsetWidth;
+                    cb.classList.add('pop-anim');
+                });
             });
             updateScore(); // التحديث الأولي
 
