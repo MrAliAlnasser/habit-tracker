@@ -367,6 +367,16 @@
 
     <header class="main-header">
         <h1>متابعة العادات الأسبوعيّة 🎯</h1>
+        <div id="auth-container" style="margin-top: 1rem; display: flex; justify-content: center; gap: 10px; align-items: center;">
+            <button id="login-btn" style="padding: 0.5rem 1rem; border-radius: 4px; border: none; background: #4285F4; color: white; cursor: pointer; font-family: inherit; font-weight: bold; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+                تسجيل الدخول بالمزامنة
+            </button>
+            <div id="user-info" style="display: none; align-items: center; gap: 1rem;">
+                <span id="user-name" style="font-weight: bold; color: var(--text-color);"></span>
+                <button id="logout-btn" style="padding: 0.4rem 0.8rem; border-radius: 4px; border: none; background: var(--error-color); color: white; cursor: pointer; font-family: inherit;">تسجيل الخروج</button>
+            </div>
+        </div>
     </header>
 
     <div class="layout">
@@ -554,7 +564,28 @@
         <button id="back-to-top" class="fab" title="العودة لأعلى الصفحة">⬆️</button>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB4SfmIJz8bKMuThFQ1IuoAzPFQ1e5uU2M",
+            authDomain: "habit-tracker-mralialnasser.firebaseapp.com",
+            projectId: "habit-tracker-mralialnasser",
+            storageBucket: "habit-tracker-mralialnasser.firebasestorage.app",
+            messagingSenderId: "139173227442",
+            appId: "1:139173227442:web:72d45847822642205f52ab",
+            measurementId: "G-H61D42VKVX"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const provider = new GoogleAuthProvider();
+
+        let currentUser = null;
+
         document.addEventListener('DOMContentLoaded', () => {
             // 2. شريط تقدم القراءة وزر الصعود للأعلى
             const progressBar = document.getElementById('reading-progress');
@@ -596,10 +627,69 @@
                 // حفظ حالة كل مربع
                 const states = Array.from(checkboxes).map(cb => cb.checked);
                 localStorage.setItem('habit-states', JSON.stringify(states));
+                
+                // الحفظ السحابي
+                if (currentUser) {
+                    setDoc(doc(db, "users", currentUser.uid), { habits: states }, { merge: true })
+                        .catch(err => console.error("Error saving to cloud:", err));
+                }
             }
 
             // استرجاع الحالات
-            const savedStates = JSON.parse(localStorage.getItem('habit-states') || '[]');
+            let savedStates = JSON.parse(localStorage.getItem('habit-states') || '[]');
+            
+            function applyStates(states) {
+                checkboxes.forEach((cb, index) => {
+                    cb.checked = !!states[index];
+                });
+                updateScore();
+            }
+
+            // إعدادات Firebase UI
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userInfo = document.getElementById('user-info');
+            const userName = document.getElementById('user-name');
+
+            loginBtn.addEventListener('click', () => {
+                signInWithPopup(auth, provider).catch(error => alert("خطأ في تسجيل الدخول: " + error.message));
+            });
+
+            logoutBtn.addEventListener('click', () => {
+                signOut(auth).then(() => {
+                    localStorage.removeItem('habit-states');
+                    savedStates = [];
+                    applyStates(savedStates);
+                });
+            });
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    loginBtn.style.display = 'none';
+                    userInfo.style.display = 'flex';
+                    userName.innerText = `أهلاً، ${user.displayName.split(" ")[0]} 👋`;
+                    
+                    try {
+                        const docSnap = await getDoc(doc(db, "users", user.uid));
+                        if (docSnap.exists() && docSnap.data().habits) {
+                            savedStates = docSnap.data().habits;
+                            localStorage.setItem('habit-states', JSON.stringify(savedStates));
+                        }
+                    } catch (e) {
+                        console.error("Error loading cloud data:", e);
+                    }
+                    applyStates(savedStates);
+                } else {
+                    currentUser = null;
+                    loginBtn.style.display = 'flex';
+                    userInfo.style.display = 'none';
+                    userName.innerText = '';
+                    
+                    savedStates = JSON.parse(localStorage.getItem('habit-states') || '[]');
+                    applyStates(savedStates);
+                }
+            });
             // Web Audio API Pop Sound
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             function playPopSound(isChecked) {
