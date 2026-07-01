@@ -1273,6 +1273,23 @@
             <div class="add-habit-container"
                 style="background: var(--surface); padding: 1.5rem; border-radius: var(--radius); margin-top: 1rem; border: 1px solid var(--border);">
                 <div class="add-habit-row">
+                    <select id="new-habit-icon" class="date-input" style="flex:0 0 auto; width: 55px; padding: 0.5rem 0.2rem; text-align: center; font-size: 1.2rem; appearance: none;">
+                        <option value="⭐">⭐</option>
+                        <option value="💧">💧</option>
+                        <option value="📖">📖</option>
+                        <option value="🏃">🏃</option>
+                        <option value="🧘">🧘</option>
+                        <option value="🍎">🍎</option>
+                        <option value="📝">📝</option>
+                        <option value="💻">💻</option>
+                        <option value="💡">💡</option>
+                        <option value="📿">📿</option>
+                        <option value="🕌">🕌</option>
+                        <option value="🏋️">🏋️</option>
+                        <option value="🎯">🎯</option>
+                        <option value="🎨">🎨</option>
+                        <option value="💊">💊</option>
+                    </select>
                     <select id="new-habit-cat" class="date-input" style="flex:0 0 auto;"></select>
                     <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
                     <button class="btn btn-primary" id="add-habit-btn"
@@ -1750,7 +1767,10 @@
                                 }
                             }
 
-                            habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val, cat, addedDate: dateKey, type, days });
+                            const iconSelect = document.getElementById('new-habit-icon');
+                            const icon = iconSelect ? iconSelect.value : '⭐';
+
+                            habits.push({ id: 'h' + Date.now(), icon: icon, name: val, cat, addedDate: dateKey, type, days });
                             saveHabits(habits);
                             input.value = '';
                             addHabitOptions.classList.remove('show');
