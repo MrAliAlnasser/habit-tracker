@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>روتين 🎯</title>
     <meta name="description" content="روتين 🎯، رفيقك اليومي لبناء العادات والمحافظة عليها..">
 
@@ -13,7 +13,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="روتين">
-    <meta name="theme-color" content="#0F6E5F">
+    <meta name="theme-color" content="#fbf7f0" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#17191C" media="(prefers-color-scheme: dark)">
 
     <!-- Open Graph / WhatsApp / Facebook -->
     <meta property="og:type" content="website">
@@ -92,6 +93,7 @@
             min-height: 100vh;
             transition: background .3s ease, color .3s ease;
             padding-bottom: 4rem;
+            padding-top: env(safe-area-inset-top); /* لتجنب النوتش وشريط الحالة الشفاف */
         }
 
         body::before {

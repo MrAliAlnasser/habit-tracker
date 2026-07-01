@@ -2,7 +2,7 @@
   "name": "روتين 🎯",
   "short_name": "روتين",
   "start_url": "./index.html",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#fbf7f0",
   "theme_color": "#0F6E5F",
   "description": "رفيقك اليومي لبناء العادات والمحافظة عليها.",
