@@ -1,754 +1,1198 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="sepia">
+<html lang="ar" dir="rtl" data-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متابعة العادات الأسبوعيّة</title>
+    <title>روتين — متابعة العادات اليوميّة</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            /* نظام الألوان الفاتح (الافتراضي) */
-            --bg-color: #fcfcfc;
-            --surface-color: #ffffff;
-            --text-color: #212529;
-            --text-light: #6c757d;
-            --primary-color: #0d6efd;
-            --border-color: #dee2e6;
-            --success-color: #198754;
-            --warning-color: #ffc107;
-            --error-color: #dc3545;
-            
-            /* أبعاد وخطوط */
-            --font-size-base: clamp(13px, 1.1vw, 15px);
-            --line-height: 1.85;
-            --border-radius: 12px;
-            --transition: all 0.3s ease;
+            --bg: #F6F1E6;
+            --surface: #FFFFFF;
+            --surface-2: #FBF8F1;
+            --ink: #23282B;
+            --muted: #7A7166;
+            --primary: #0F6E5F;
+            --primary-ink: #0B5347;
+            --accent: #D97B3F;
+            --border: #E7DFCD;
+            --danger: #C0453A;
+            --ring-bg: #E9E1CC;
+            --radius: 18px;
+            --radius-sm: 10px;
+            --shadow: 0 10px 30px -14px rgba(35, 40, 43, 0.18);
+            --font-display: 'Cairo', sans-serif;
+            --font-body: 'Tajawal', sans-serif;
         }
 
-        /* نظام الألوان الداكن */
         [data-theme="dark"] {
-            --bg-color: #121212;
-            --surface-color: #1e1e1e;
-            --text-color: #e0e0e0;
-            --text-light: #9e9e9e;
-            --primary-color: #6ea8fe;
-            --border-color: #333333;
+            --bg: #17191C;
+            --surface: #202327;
+            --surface-2: #26292E;
+            --ink: #E8E9EB;
+            --muted: #9297A0;
+            --primary: #6FA8DC;
+            --primary-ink: #8FBEE6;
+            --accent: #5B9BD5;
+            --border: #33373D;
+            --danger: #E17A6E;
+            --ring-bg: #2B2F35;
+            --shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.6);
         }
 
-        /* وضع القراءة (الداكن الدافئ) */
-        [data-theme="sepia"] {
-            --bg-color: #f4ecd8;
-            --surface-color: #e8dcb8;
-            --text-color: #5b4636;
-            --text-light: #7a6a58;
-            --primary-color: #8c3a00;
-            --border-color: #d8c39b;
-        }
-
-        /* إعادة ضبط وتجهيز */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-size: var(--font-size-base);
-            line-height: var(--line-height);
-            transition: var(--transition);
-            overflow-x: hidden;
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            transition: background .3s ease, color .3s ease;
+            padding-bottom: 4rem;
         }
 
-        /* شريط التقدم للقراءة */
-        #reading-progress {
+        body::before {
+            content: "";
             position: fixed;
-            top: 0;
-            right: 0;
-            width: 0%;
-            height: 4px;
-            background-color: var(--primary-color);
-            z-index: 1000;
-            transition: width 0.1s ease;
-        }
-
-        /* تخطيط الصفحة - Mobile First */
-        .layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            padding: 1rem;
-        }
-
-        main.content {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        header.main-header {
-            text-align: center;
-            padding: 3rem 1rem;
-            background-color: var(--surface-color);
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-        }
-
-        h1, h2, h3, h4 {
-            font-weight: 700;
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            line-height: 1.4;
-        }
-
-        h1 { font-size: clamp(24px, 4vw, 36px); margin-bottom: 0.5rem; }
-        h2 { 
-            font-size: clamp(20px, 3vw, 28px); 
-            margin-top: 2.5rem; 
-            border-bottom: 2px solid var(--border-color); 
-            padding-bottom: 0.5rem; 
-        }
-        h3 { font-size: clamp(18px, 2.5vw, 22px); }
-
-        p { margin-bottom: 1.2rem; }
-
-        .meta {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        /* التنسيقات الدلالية (Tooltips, Badges, Callouts, Quotes) */
-        .tooltip {
-            border-bottom: 1px dotted var(--text-color);
-            position: relative;
-            cursor: help;
-        }
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--text-color);
-            color: var(--bg-color);
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            opacity: 0;
+            inset: 0;
+            background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 1px);
+            background-size: 26px 26px;
+            opacity: .35;
             pointer-events: none;
-            transition: opacity 0.2s;
-            margin-bottom: 5px;
-            z-index: 10;
-        }
-        .tooltip:hover::after, .tooltip:active::after { opacity: 1; }
-
-        .callout {
-            padding: 1rem 1.2rem;
-            border-radius: var(--border-radius);
-            background-color: var(--surface-color);
-            border-right: 4px solid var(--primary-color);
-            margin: 1.5rem 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .callout-success { border-color: var(--success-color); }
-        .callout-warning { border-color: var(--warning-color); }
-
-        .badge {
-            background-color: var(--primary-color);
-            color: #fff;
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.8em;
-            display: inline-block;
+            z-index: 0;
         }
 
-        blockquote {
-            border-right: 4px solid var(--primary-color);
-            padding: 1.2rem 1.5rem;
-            margin: 1.5rem 0;
-            background-color: var(--surface-color);
-            font-style: italic;
-            border-radius: var(--border-radius) 0 0 var(--border-radius);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 1.25rem 1rem 2rem;
         }
 
-        /* جدول تتبع العادات */
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin: 1.5rem 0;
-            border-radius: var(--border-radius);
-            border: 1px solid var(--border-color);
-        }
-        
-        .habit-table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 600px;
-            background: var(--surface-color);
-        }
-        
-        .habit-table th, .habit-table td {
-            padding: 1rem;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            white-space: nowrap;
-        }
-        
-        .habit-table th {
-            background-color: rgba(0, 0, 0, 0.03);
-            font-weight: 700;
-        }
-        [data-theme="dark"] .habit-table th { background-color: rgba(255, 255, 255, 0.05); }
-        
-        .habit-table td:first-child {
-            text-align: right;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        input[type="checkbox"] {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            accent-color: var(--primary-color);
-            transition: transform 0.2s;
-        }
-        input[type="checkbox"]:hover { transform: scale(1.1); }
-        
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-        .pop-anim {
-            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* البطاقات والمقارنة */
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        .card {
-            background-color: var(--surface-color);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            border-top: 4px solid transparent;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .card-positive { border-top-color: var(--success-color); }
-        .card-negative { border-top-color: var(--error-color); }
-        .verdict-box {
-            background-color: var(--surface-color);
-            padding: 1.2rem;
-            border-radius: var(--border-radius);
-            text-align: center;
-            border: 1px dashed var(--primary-color);
-            margin-top: 1rem;
-            font-weight: 700;
-        }
-
-        /* شريط التقدم / النسبة */
-        .score-card {
-            background: var(--surface-color);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin: 1.5rem 0;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .score-header {
+        /* Header */
+        .top {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-        .progress-bar-bg {
-            background: var(--border-color);
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-        .progress-bar-fill {
-            background: var(--success-color);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s ease;
+            padding: 1rem 0 1.5rem;
+            gap: .75rem;
         }
 
-
-        /* الأزرار العائمة (FABs) */
-        .fab-container {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
+        .brand {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            z-index: 999;
+            align-items: center;
+            gap: .6rem;
         }
-        @media (max-width: 767px) {
-            .fab-container { right: 1rem; bottom: 1rem; }
-        }
-        .fab {
-            width: 48px;
-            height: 48px;
+
+        .brand-mark {
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            border: none;
-            background-color: var(--primary-color);
-            color: #fff;
-            font-size: 1.4rem;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            transition: var(--transition);
+            background: conic-gradient(from -90deg, var(--primary), var(--accent), var(--primary));
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow);
+            flex-shrink: 0;
         }
-        .fab:hover { transform: scale(1.1); }
-        
-        #back-to-top {
-            opacity: 0;
-            visibility: hidden;
-            transform: scale(0.8);
+
+        .brand-mark span {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
         }
-        #back-to-top.show {
+
+        .brand h1 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: .2px;
+        }
+
+        .brand p {
+            font-size: .72rem;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .top-actions {
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--ink);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: transform .15s ease, background .2s ease;
+        }
+
+        .icon-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .icon-btn:active {
+            transform: scale(.94);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 4px;
+            gap: 4px;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: .85rem;
+            padding: .65rem .5rem;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all .25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .35rem;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 6px 14px -6px var(--primary);
+        }
+
+        .view {
+            display: none;
+            animation: fade .35s ease;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section headers */
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: .9rem;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .section-head h2 {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .section-head .muted {
+            font-size: .8rem;
+            color: var(--muted);
+        }
+
+        /* Today card */
+        .date-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: .9rem 1rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .date-strip .cur-date {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .date-strip .cur-hijri {
+            font-size: .75rem;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .date-nav {
+            display: flex;
+            gap: .4rem;
+            align-items: center;
+        }
+
+        .date-nav button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            cursor: pointer;
+            color: var(--ink);
+        }
+
+        .date-input {
+            border: 1px solid var(--border);
+            background: var(--surface-2);
+            border-radius: var(--radius-sm);
+            padding: .35rem .5rem;
+            font-family: var(--font-body);
+            color: var(--ink);
+            font-size: .8rem;
+        }
+
+        /* Ring */
+        .ring-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.4rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.3rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .ring-wrap {
+            position: relative;
+            width: 104px;
+            height: 104px;
+            flex-shrink: 0;
+        }
+
+        .ring-wrap svg {
+            transform: rotate(-90deg);
+            width: 104px;
+            height: 104px;
+        }
+
+        .ring-bg-circle {
+            fill: none;
+            stroke: var(--ring-bg);
+            stroke-width: 10;
+        }
+
+        .ring-fg-circle {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 10;
+            stroke-linecap: round;
+            transition: stroke-dashoffset .6s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .ring-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ring-center .pct {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 1.4rem;
+        }
+
+        .ring-center .lbl {
+            font-size: .65rem;
+            color: var(--muted);
+        }
+
+        .ring-info {
+            flex: 1;
+        }
+
+        .ring-info h3 {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            margin-bottom: .3rem;
+        }
+
+        .ring-info p {
+            font-size: .82rem;
+            color: var(--muted);
+            margin-bottom: .6rem;
+        }
+
+        .streak-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            padding: .3rem .7rem;
+            border-radius: 999px;
+            font-size: .78rem;
+            font-weight: 700;
+        }
+
+        /* Habit list */
+        .habit-list {
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .habit-row {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: .75rem .9rem;
+            transition: border-color .2s ease, background .2s ease;
+        }
+
+        .habit-row.done {
+            border-color: var(--primary);
+            background: color-mix(in srgb, var(--primary) 7%, var(--surface));
+        }
+
+        .habit-check {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            background: var(--surface-2);
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: all .2s ease;
+            font-size: .85rem;
+        }
+
+        .habit-row.done .habit-check {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .habit-icon {
+            font-size: 1.15rem;
+            flex-shrink: 0;
+            width: 26px;
+            text-align: center;
+        }
+
+        .habit-name {
+            flex: 1;
+            font-weight: 600;
+            font-size: .92rem;
+        }
+
+        .habit-del {
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: .95rem;
+            opacity: .6;
+            padding: .2rem;
+        }
+
+        .habit-del:hover {
             opacity: 1;
-            visibility: visible;
-            transform: scale(1);
+            color: var(--danger);
         }
 
+        .add-habit-row {
+            display: flex;
+            gap: .5rem;
+            margin-bottom: 1rem;
+        }
 
-        /* Media Queries للمقاسات المختلفة */
-        @media (max-width: 768px) {
-            .main-header h1 {
+        .add-habit-row input {
+            flex: 1;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            padding: .65rem .8rem;
+            font-family: var(--font-body);
+            color: var(--ink);
+            font-size: .85rem;
+        }
+
+        .btn {
+            border: none;
+            border-radius: var(--radius-sm);
+            padding: .65rem 1.1rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: .85rem;
+            cursor: pointer;
+            transition: transform .15s ease, filter .2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+        }
+
+        .btn:active {
+            transform: scale(.97);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.08);
+        }
+
+        .btn-ghost {
+            background: var(--surface);
+            color: var(--ink);
+            border: 1px solid var(--border);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .apply-box {
+            background: var(--surface-2);
+            border: 1px dashed var(--primary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-top: 1.3rem;
+        }
+
+        .apply-box h4 {
+            font-family: var(--font-display);
+            font-size: .88rem;
+            margin-bottom: .5rem;
+        }
+
+        .apply-box p {
+            font-size: .76rem;
+            color: var(--muted);
+            margin-bottom: .7rem;
+        }
+
+        .apply-row {
+            display: flex;
+            gap: .5rem;
+            flex-wrap: wrap;
+        }
+
+        .apply-row input {
+            flex: 1;
+            min-width: 150px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: var(--radius-sm);
+            padding: .6rem .7rem;
+            font-family: var(--font-body);
+            color: var(--ink);
+            font-size: .85rem;
+        }
+
+        /* Calendar */
+        .cal-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .cal-head .month-label {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+        }
+
+        .cal-dow {
+            text-align: center;
+            font-size: .7rem;
+            color: var(--muted);
+            font-weight: 700;
+            padding-bottom: .3rem;
+        }
+
+        .cal-cell {
+            aspect-ratio: 1/1;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform .15s ease;
+        }
+
+        .cal-cell:hover {
+            transform: translateY(-2px);
+        }
+
+        .cal-cell.empty {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .cal-cell .num {
+            font-size: .8rem;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .cal-cell .fill {
+            position: absolute;
+            inset: 3px;
+            border-radius: 9px;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity .2s ease;
+        }
+
+        .cal-cell.today {
+            border-color: var(--accent);
+            border-width: 2px;
+        }
+
+        .cal-cell.has-data .fill {
+            opacity: var(--fill-opacity, 0);
+        }
+
+        .cal-cell.has-data .num,
+        .cal-cell.has-data.bright .num {
+            color: #fff;
+        }
+
+        .cal-legend {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-top: 1rem;
+            font-size: .72rem;
+            color: var(--muted);
+            flex-wrap: wrap;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            display: inline-block;
+            background: var(--primary);
+        }
+
+        /* Log */
+        .log-month-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .log-day {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: .9rem 1rem;
+            margin-bottom: .7rem;
+            box-shadow: var(--shadow);
+        }
+
+        .log-day-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: .5rem;
+            cursor: pointer;
+        }
+
+        .log-day-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: .9rem;
+        }
+
+        .log-day-sub {
+            font-size: .72rem;
+            color: var(--muted);
+        }
+
+        .log-day-pct {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: .85rem;
+            padding: .2rem .6rem;
+            border-radius: 999px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+        }
+
+        .log-habits {
+            display: none;
+            flex-wrap: wrap;
+            gap: .4rem;
+            margin-top: .6rem;
+            padding-top: .6rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        .log-day.open .log-habits {
+            display: flex;
+        }
+
+        .log-habit-tag {
+            font-size: .72rem;
+            padding: .25rem .6rem;
+            border-radius: 999px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: .3rem;
+        }
+
+        .log-habit-tag.miss {
+            opacity: .45;
+            text-decoration: line-through;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
+        }
+
+        .empty-state .em-icon {
+            font-size: 2rem;
+            margin-bottom: .6rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--ink);
+            color: var(--bg);
+            padding: .7rem 1.2rem;
+            border-radius: 999px;
+            font-size: .82rem;
+            font-weight: 700;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            pointer-events: none;
+            transition: all .3s ease;
+            z-index: 1000;
+            font-family: var(--font-display);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (max-width:480px) {
+            .ring-card {
+                flex-direction: column;
                 text-align: center;
-                line-height: 1.4;
-                font-size: 1.5rem;
             }
-            .layout { padding: 0.5rem; }
-            .content { padding: 1rem; }
-            .habit-table { min-width: 100%; }
-            .habit-table th, .habit-table td {
-                padding: 0.4rem 0.2rem;
-                font-size: 0.8rem;
-                white-space: normal; /* السماح بالتفاف النص */
-            }
-            .habit-table td:first-child {
-                min-width: 80px;
-                font-size: 0.85rem;
-                line-height: 1.2;
-            }
-            input[type="checkbox"] {
-                width: 18px;
-                height: 18px;
-            }
-            #user-profile { font-size: 0.85rem !important; }
-        }
-        @media (min-width: 768px) {
-            .comparison-grid { grid-template-columns: 1fr 1fr; }
-            .layout { padding: 2rem; }
-        }
 
-        /* إعدادات الطباعة */
-        @media print {
-            @page { size: A4; margin: 15mm; }
-            body {
-                background: transparent !important;
-                color: #000 !important;
-                font-size: 12pt !important;
+            .ring-info {
+                width: 100%;
             }
-            #reading-progress, .fab-container, .main-header .meta, #user-profile {
-                display: none !important;
-            }
-            main.content {
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            .card, .table-responsive, blockquote, .callout, .score-card {
-                break-inside: avoid;
-                box-shadow: none !important;
-                border: 1px solid #000 !important;
-            }
-            .table-responsive { overflow: visible !important; }
-            a { text-decoration: none !important; color: #000 !important; }
-            .badge { border: 1px solid #000; color: #000 !important; background: transparent !important; }
-            .progress-bar-fill { background-color: #000 !important; border-right: 1px solid #000; }
         }
     </style>
 </head>
+
 <body>
+    <div class="wrap">
 
-    <div id="reading-progress"></div>
-
-    <header class="main-header">
-        <h1>متابعة العادات الأسبوعيّة 🎯</h1>
-        <div id="user-profile" style="display: none; margin-top: 1rem; flex-direction: column; align-items: center; gap: 0.5rem; font-size: 0.95rem;">
-            <div style="display: flex; gap: 0.5rem; align-items: center; background: var(--surface-color); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <span id="display-name" style="font-weight: bold; color: var(--primary-color); cursor: pointer;" title="انقر لتسجيل أو تعديل اسمك">سجّل اسمك لأوّل مرّة ✏️</span>
-                <span style="color: var(--border-color);">|</span>
-                <span style="color: #888; font-size: 0.8rem;">ID:</span>
-                <span id="user-id" style="color: #666; font-family: monospace; font-size: 0.85rem; background: #f0f0f0; padding: 2px 6px; border-radius: 4px;" title="معرّف المزامنة السحابية الخاص بك"></span>
+        <div class="top">
+            <div class="brand">
+                <div class="brand-mark"><span>🎯</span></div>
+                <div>
+                    <h1>روتين</h1>
+                    <p>عاداتك اليوميّة، بخطوة بخطوة</p>
+                </div>
+            </div>
+            <div class="top-actions">
+                <button class="icon-btn" id="theme-btn" title="تبديل المظهر">🌙</button>
+                <button class="icon-btn" id="print-btn" title="طباعة">🖨️</button>
             </div>
         </div>
-    </header>
 
-    <div class="layout">
-        <!-- المحتوى الرئيسي -->
-        <main class="content">
-            <article>
-                <h2 id="tracker">🗓️ جدول العادات الأسبوعي</h2>
-                <p>استخدم هذا الجدول التفاعلي لتتبع التزامك بالعادات المقررة خلال أيام الأسبوع. انقر على المربعات لتسجيل إنجازك اليومي.</p>
-                
-                <div class="table-responsive">
-                    <table class="habit-table">
-                        <thead>
-                            <tr>
-                                <th>العادة / اليوم</th>
-                                <th>الأحد</th>
-                                <th>الإثنين</th>
-                                <th>الثلاثاء</th>
-                                <th>الأربعاء</th>
-                                <th>الخميس</th>
-                                <th>الجمعة</th>
-                                <th>السبت</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>🌅 صلاة الفجر</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>📿 استغفار بعد صلاة الفجر</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>☕ فطور + قهوة</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>☀️ صلاة الظهر</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>📿 تسبيح بعد صلاة الظهر</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>🍽️ وجبة الغداء</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>🌇 صلاة المغرب</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>📿 استغفار بعد صلاة المغرب</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>🚶 مشي لمدّة 15 دقيقة</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>🍲 وجبة العشاء</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                            <tr>
-                                <td>💧 مرطّب للشفاه</td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                                <td><input type="checkbox"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="tabs">
+            <button class="tab-btn active" data-view="today">📆 اليوم</button>
+            <button class="tab-btn" data-view="calendar">🗓️ التقويم</button>
+            <button class="tab-btn" data-view="log">📜 السجل</button>
+        </div>
+
+        <!-- ============ TODAY VIEW ============ -->
+        <section class="view active" id="view-today">
+
+            <div class="date-strip">
+                <div class="date-nav">
+                    <button id="day-prev">‹</button>
+                    <button id="day-next">›</button>
                 </div>
+                <div style="text-align:center;">
+                    <div class="cur-date" id="cur-date-label">—</div>
+                    <div class="cur-hijri" id="cur-day-name">—</div>
+                </div>
+                <input type="date" id="active-date-input" class="date-input">
+            </div>
 
-                <h2 id="progress">📊 نسبة الإنجاز العام</h2>
-                <div class="score-card">
-                    <div class="score-header">
-                        <span>معدل التقدم الأسبوعي الكلي</span>
-                        <span id="score-percentage">0%</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill" id="score-fill"></div>
+            <div class="ring-card">
+                <div class="ring-wrap">
+                    <svg viewBox="0 0 104 104">
+                        <circle class="ring-bg-circle" cx="52" cy="52" r="45"></circle>
+                        <circle class="ring-fg-circle" id="ring-fg" cx="52" cy="52" r="45" stroke-dasharray="283"
+                            stroke-dashoffset="283"></circle>
+                    </svg>
+                    <div class="ring-center">
+                        <div class="pct" id="ring-pct">0%</div>
+                        <div class="lbl">اليوم</div>
                     </div>
                 </div>
-
-                <h2 id="comparison">⚖️ مقارنة الأداء</h2>
-                <div class="comparison-grid">
-                    <div class="card card-positive">
-                        <h3>📈 الإيجابيات</h3>
-                        <p>تطبيقك المستمر للعادات المدرجة يزيد من التركيز، ويمنحك طاقة إيجابية عالية تدوم طوال اليوم.</p>
-                    </div>
-                    <div class="card card-negative">
-                        <h3>📉 السلبيات</h3>
-                        <p>إهمال المتابعة قد يؤدي إلى تراكم المهام والشعور بالإحباط وتراجع الإنتاجية بشكل ملحوظ.</p>
-                    </div>
+                <div class="ring-info">
+                    <h3 id="ring-title">لم تبدأ بعد</h3>
+                    <p id="ring-sub">أنجز عاداتك لهذا اليوم واحدة تلو الأخرى.</p>
+                    <span class="streak-pill">🔥 <span id="streak-count">0</span> يوم متتالي</span>
                 </div>
-                <h2 id="tips">💡 نصائح للالتزام</h2>
-                <blockquote>
-                    "نجاحك المستقبلي يختبئ في روتينك اليومي، فلا تستهن بتأثير الخطوات البسيطة التراكمية."
-                </blockquote>
-                <p>ننصحك باستخدام تقنية بومودورو لإنجاز المهام، والحرص على تسجيل تقدمك يومياً قبل النوم لتشجيع عقلك على الاستمرار.</p>
-            </article>
-        </main>
+            </div>
+
+            <div class="section-head">
+                <h2>عادات اليوم</h2>
+                <span class="muted" id="habit-count-lbl">0 عادة</span>
+            </div>
+
+            <div class="habit-list" id="habit-list"></div>
+
+            <div class="add-habit-row">
+                <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة… مثال: قراءة 10 صفحات">
+                <button class="btn btn-primary" id="add-habit-btn">إضافة</button>
+            </div>
+
+            <div class="apply-box">
+                <h4>📌 نقل الإدخالات إلى يوم محدد</h4>
+                <p>اختر تاريخًا آخر لتطبّق عليه نفس حالة العادات المحدّدة أعلاه (نسخ الإنجاز الحالي إلى ذلك اليوم).</p>
+                <div class="apply-row">
+                    <input type="date" id="apply-date-input">
+                    <button class="btn btn-accent" id="apply-date-btn">نسخ إلى هذا التاريخ</button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ============ CALENDAR VIEW ============ -->
+        <section class="view" id="view-calendar">
+            <div class="cal-head">
+                <button class="icon-btn" id="cal-prev">›</button>
+                <span class="month-label" id="cal-month-label">—</span>
+                <button class="icon-btn" id="cal-next">‹</button>
+            </div>
+            <div class="cal-grid" id="cal-dow-row"></div>
+            <div class="cal-grid" id="cal-grid" style="margin-top:6px;"></div>
+            <div class="cal-legend">
+                <span class="legend-dot" style="opacity:.15"></span> ضعيف
+                <span class="legend-dot" style="opacity:.55"></span> متوسط
+                <span class="legend-dot" style="opacity:1"></span> ممتاز
+                <span style="margin-inline-start:auto;">انقر على يوم للانتقال إليه</span>
+            </div>
+        </section>
+
+        <!-- ============ LOG VIEW ============ -->
+        <section class="view" id="view-log">
+            <div class="log-month-nav">
+                <button class="icon-btn" id="log-prev">›</button>
+                <span class="month-label" id="log-month-label">—</span>
+                <button class="icon-btn" id="log-next">‹</button>
+            </div>
+            <div id="log-list"></div>
+        </section>
 
     </div>
 
-    <!-- الأزرار العائمة -->
-    <div class="fab-container">
-        <button id="print-btn" class="fab" title="طباعة الصفحة">🖨️</button>
-        <button id="back-to-top" class="fab" title="العودة لأعلى الصفحة">⬆️</button>
-    </div>
+    <div class="toast" id="toast"></div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <script>
+        (function () {
+            const STORAGE_HABITS = 'rtn-habits-v1';
+            const STORAGE_RECORDS = 'rtn-records-v1';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB4SfmIJz8bKMuThFQ1IuoAzPFQ1e5uU2M",
-            authDomain: "habit-tracker-mralialnasser.firebaseapp.com",
-            projectId: "habit-tracker-mralialnasser",
-            storageBucket: "habit-tracker-mralialnasser.firebasestorage.app",
-            messagingSenderId: "139173227442",
-            appId: "1:139173227442:web:72d45847822642205f52ab",
-            measurementId: "G-H61D42VKVX"
-        };
+            const defaultHabits = [
+                { id: 'h1', icon: '🌅', name: 'صلاة الفجر' },
+                { id: 'h2', icon: '📿', name: 'استغفار بعد الفجر' },
+                { id: 'h3', icon: '☀️', name: 'صلاة الظهر' },
+                { id: 'h4', icon: '📿', name: 'تسبيح بعد الظهر' },
+                { id: 'h5', icon: '🌇', name: 'صلاة المغرب' },
+                { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة' },
+                { id: 'h7', icon: '📖', name: 'قراءة 10 صفحات' },
+                { id: 'h8', icon: '💧', name: 'شرب 8 أكواب ماء' },
+            ];
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+            function loadHabits() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_HABITS);
+                    if (raw) return JSON.parse(raw);
+                } catch (e) { }
+                saveHabits(defaultHabits);
+                return defaultHabits.slice();
+            }
+            function saveHabits(list) { localStorage.setItem(STORAGE_HABITS, JSON.stringify(list)); }
+            function loadRecords() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_RECORDS);
+                    if (raw) return JSON.parse(raw);
+                } catch (e) { }
+                return {};
+            }
+            function saveRecords(rec) { localStorage.setItem(STORAGE_RECORDS, JSON.stringify(rec)); }
 
-        let currentUser = null;
+            let habits = loadHabits();
+            let records = loadRecords(); // { 'YYYY-MM-DD': { habitId: true } }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // 2. شريط تقدم القراءة وزر الصعود للأعلى
-            const progressBar = document.getElementById('reading-progress');
-            const bttBtn = document.getElementById('back-to-top');
-            
-            window.addEventListener('scroll', () => {
-                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
-                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
-                progressBar.style.width = scrolled + '%';
-                
-                if (winScroll > 300) bttBtn.classList.add('show');
-                else bttBtn.classList.remove('show');
+            const fmt = d => {
+                const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            };
+            const todayStr = fmt(new Date());
+            let activeDate = new Date();
+            let calMonth = new Date();
+            let logMonth = new Date();
+
+            const dowNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+            // ---------- Toast ----------
+            let toastTimer;
+            function showToast(msg) {
+                const t = document.getElementById('toast');
+                t.textContent = msg;
+                t.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+            }
+
+            // ---------- Tabs ----------
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById('view-' + btn.dataset.view).classList.add('active');
+                    if (btn.dataset.view === 'calendar') renderCalendar();
+                    if (btn.dataset.view === 'log') renderLog();
+                });
             });
 
-            bttBtn.addEventListener('click', () => {
-                window.scrollTo({top: 0, behavior: 'smooth'});
-            });
+            function goToView(name) {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+                document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+            }
 
-            // زر الطباعة
+            // ---------- Theme ----------
+            const themeBtn = document.getElementById('theme-btn');
+            function applyTheme(t) {
+                document.documentElement.setAttribute('data-theme', t);
+                localStorage.setItem('rtn-theme', t);
+                themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
+            }
+            applyTheme(localStorage.getItem('rtn-theme') || 'light');
+            themeBtn.addEventListener('click', () => {
+                applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+            });
             document.getElementById('print-btn').addEventListener('click', () => window.print());
 
+            // ---------- TODAY VIEW ----------
+            const habitListEl = document.getElementById('habit-list');
+            const activeDateInput = document.getElementById('active-date-input');
+            const applyDateInput = document.getElementById('apply-date-input');
 
+            function dayLabel(d) {
+                return `${dowNames[d.getDay()]}، ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+            }
 
-            // 6. تتبع العادات (Habit Tracker)
-            const checkboxes = document.querySelectorAll('.habit-table input[type="checkbox"]');
-            const scorePercentage = document.getElementById('score-percentage');
-            const scoreFill = document.getElementById('score-fill');
-
-            function updateScore() {
-                const total = checkboxes.length;
-                if(total === 0) return;
-                const checked = document.querySelectorAll('.habit-table input[type="checkbox"]:checked').length;
-                const percentage = Math.round((checked / total) * 100);
-                
-                scorePercentage.innerText = `${percentage}%`;
-                scoreFill.style.width = `${percentage}%`;
-                
-                // حفظ حالة كل مربع
-                const states = Array.from(checkboxes).map(cb => cb.checked);
-                localStorage.setItem('habit-states', JSON.stringify(states));
-                
-                // الحفظ السحابي
-                if (currentUser) {
-                    setDoc(doc(db, "users", currentUser.uid), { habits: states }, { merge: true })
-                        .catch(err => console.error("Error saving to cloud:", err));
+            function renderHabitList() {
+                const key = fmt(activeDate);
+                const dayRec = records[key] || {};
+                habitListEl.innerHTML = '';
+                if (habits.length === 0) {
+                    habitListEl.innerHTML = `<div class="empty-state"><div class="em-icon">✨</div>لا توجد عادات بعد — أضف أول عادة لك بالأسفل</div>`;
                 }
-            }
-
-            // استرجاع الحالات
-            let savedStates = JSON.parse(localStorage.getItem('habit-states') || '[]');
-            
-            function applyStates(states) {
-                checkboxes.forEach((cb, index) => {
-                    cb.checked = !!states[index];
+                habits.forEach(h => {
+                    const done = !!dayRec[h.id];
+                    const row = document.createElement('div');
+                    row.className = 'habit-row' + (done ? ' done' : '');
+                    row.innerHTML = `
+        <button class="habit-check" data-id="${h.id}">${done ? '✓' : ''}</button>
+        <span class="habit-icon">${h.icon}</span>
+        <span class="habit-name">${h.name}</span>
+        <button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>
+      `;
+                    habitListEl.appendChild(row);
                 });
-                updateScore();
+                document.getElementById('habit-count-lbl').textContent = `${habits.length} عادة`;
+                updateRing();
             }
 
-            // عناصر واجهة المستخدم
-            const userProfile = document.getElementById('user-profile');
-            const displayName = document.getElementById('display-name');
-            const userId = document.getElementById('user-id');
-
-            displayName.addEventListener('click', async () => {
-                if (!currentUser) return;
-                const newName = prompt("أدخل اسمك الكريم:", displayName.innerText.includes("سجّل اسمك") ? "" : displayName.innerText);
-                if (newName && newName.trim() !== "") {
-                    displayName.innerText = newName.trim();
-                    try {
-                        await setDoc(doc(db, "users", currentUser.uid), { name: newName.trim() }, { merge: true });
-                    } catch (e) {
-                        console.error("Error saving name:", e);
+            habitListEl.addEventListener('click', (e) => {
+                const checkBtn = e.target.closest('.habit-check');
+                const delBtn = e.target.closest('.habit-del');
+                const key = fmt(activeDate);
+                if (checkBtn) {
+                    const id = checkBtn.dataset.id;
+                    records[key] = records[key] || {};
+                    records[key][id] = !records[key][id];
+                    if (!records[key][id]) delete records[key][id];
+                    saveRecords(records);
+                    renderHabitList();
+                } else if (delBtn) {
+                    const id = delBtn.dataset.id;
+                    const h = habits.find(x => x.id === id);
+                    if (confirm(`حذف عادة "${h ? h.name : ''}"؟ سيتم حذفها من كل الأيام.`)) {
+                        habits = habits.filter(x => x.id !== id);
+                        saveHabits(habits);
+                        Object.keys(records).forEach(dk => { delete records[dk][id]; });
+                        saveRecords(records);
+                        renderHabitList();
                     }
                 }
             });
 
-            // الدخول المخفي المجهول (Anonymous)
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    currentUser = user;
-                    userProfile.style.display = 'flex';
-                    userId.innerText = "#" + user.uid.substring(0, 8);
-                    userId.title = "المعرّف الكامل: " + user.uid;
-                    
-                    try {
-                        const docSnap = await getDoc(doc(db, "users", user.uid));
-                        if (docSnap.exists()) {
-                            const data = docSnap.data();
-                            if (data.habits) {
-                                savedStates = data.habits;
-                                localStorage.setItem('habit-states', JSON.stringify(savedStates));
-                            }
-                            if (data.name) {
-                                displayName.innerText = data.name;
-                            }
-                        }
-                    } catch (e) {
-                        console.error("Error loading cloud data:", e);
-                    }
-                    applyStates(savedStates);
-                } else {
-                    // إذا لم يكن هناك مستخدم مجهول بعد، قم بتسجيل دخوله فوراً
-                    signInAnonymously(auth).catch(error => {
-                        console.error("Anonymous login failed:", error);
-                        savedStates = JSON.parse(localStorage.getItem('habit-states') || '[]');
-                        applyStates(savedStates);
-                    });
-                }
-            });
-            // Web Audio API Pop Sound
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            function playPopSound(isChecked) {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                
-                oscillator.type = 'sine';
-                if (isChecked) {
-                    oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.1);
-                } else {
-                    oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
-                    oscillator.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.1);
-                }
-                
-                gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.1);
+            document.getElementById('add-habit-btn').addEventListener('click', addHabit);
+            document.getElementById('new-habit-input').addEventListener('keydown', e => { if (e.key === 'Enter') addHabit(); });
+            function addHabit() {
+                const input = document.getElementById('new-habit-input');
+                const val = input.value.trim();
+                if (!val) return;
+                habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val });
+                saveHabits(habits);
+                input.value = '';
+                renderHabitList();
+                showToast('تمت إضافة العادة');
             }
 
-            checkboxes.forEach((cb, index) => {
-                if(savedStates[index]) cb.checked = true;
-                cb.addEventListener('change', (e) => {
-                    updateScore();
-                    playPopSound(e.target.checked);
-                    
-                    cb.classList.remove('pop-anim');
-                    void cb.offsetWidth;
-                    cb.classList.add('pop-anim');
-                });
+            function updateRing() {
+                const key = fmt(activeDate);
+                const dayRec = records[key] || {};
+                const total = habits.length;
+                const done = habits.filter(h => dayRec[h.id]).length;
+                const pct = total ? Math.round((done / total) * 100) : 0;
+                const circle = document.getElementById('ring-fg');
+                const circumference = 283;
+                circle.style.strokeDashoffset = circumference - (circumference * pct / 100);
+                document.getElementById('ring-pct').textContent = pct + '%';
+                const title = document.getElementById('ring-title');
+                const sub = document.getElementById('ring-sub');
+                if (total === 0) { title.textContent = 'أضف عاداتك أولاً'; sub.textContent = 'ابدأ بإضافة عادة من القائمة أدناه.'; }
+                else if (pct === 100) { title.textContent = 'أحسنت! يوم مكتمل 🎉'; sub.textContent = 'أنجزت كل عاداتك لهذا اليوم.'; }
+                else if (pct === 0) { title.textContent = 'لم تبدأ بعد'; sub.textContent = 'أنجز عاداتك لهذا اليوم واحدة تلو الأخرى.'; }
+                else { title.textContent = `${done} من ${total} مكتملة`; sub.textContent = 'استمر، أنت قريب من إتمام يومك.'; }
+                document.getElementById('streak-count').textContent = computeStreak();
+            }
+
+            function computeStreak() {
+                if (habits.length === 0) return 0;
+                let streak = 0;
+                let d = new Date();
+                // count consecutive days (including today only if it already has full completion, else start from yesterday)
+                for (let i = 0; i < 400; i++) {
+                    const key = fmt(d);
+                    const rec = records[key] || {};
+                    const done = habits.filter(h => rec[h.id]).length;
+                    const complete = habits.length > 0 && done === habits.length;
+                    if (i === 0 && !complete) { d.setDate(d.getDate() - 1); continue; }
+                    if (complete) { streak++; d.setDate(d.getDate() - 1); } else break;
+                }
+                return streak;
+            }
+
+            function setActiveDate(d) {
+                activeDate = d;
+                activeDateInput.value = fmt(d);
+                applyDateInput.value = fmt(d);
+                document.getElementById('cur-date-label').textContent = `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+                document.getElementById('cur-day-name').textContent = dowNames[d.getDay()] + (fmt(d) === todayStr ? ' • اليوم' : '');
+                renderHabitList();
+            }
+
+            document.getElementById('day-prev').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() - 1); setActiveDate(d); });
+            document.getElementById('day-next').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() + 1); setActiveDate(d); });
+            activeDateInput.addEventListener('change', () => {
+                if (activeDateInput.value) { const [y, m, day] = activeDateInput.value.split('-').map(Number); setActiveDate(new Date(y, m - 1, day)); }
             });
-            updateScore(); // التحديث الأولي
 
+            document.getElementById('apply-date-btn').addEventListener('click', () => {
+                if (!applyDateInput.value) { showToast('اختر تاريخًا أولاً'); return; }
+                const [y, m, day] = applyDateInput.value.split('-').map(Number);
+                const targetKey = fmt(new Date(y, m - 1, day));
+                const sourceKey = fmt(activeDate);
+                records[targetKey] = JSON.parse(JSON.stringify(records[sourceKey] || {}));
+                saveRecords(records);
+                showToast(`تم النسخ إلى ${day}/${m}/${y}`);
+                if (document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
+            });
 
+            // ---------- CALENDAR VIEW ----------
+            const calGrid = document.getElementById('cal-grid');
+            const calDowRow = document.getElementById('cal-dow-row');
+            dowNames.forEach(n => {
+                const el = document.createElement('div');
+                el.className = 'cal-dow';
+                el.textContent = n.slice(0, 3);
+                calDowRow.appendChild(el);
+            });
 
-        });
+            function renderCalendar() {
+                const y = calMonth.getFullYear(), m = calMonth.getMonth();
+                document.getElementById('cal-month-label').textContent = `${monthNames[m]} ${y}`;
+                calGrid.innerHTML = '';
+                const firstDay = new Date(y, m, 1).getDay();
+                const daysInMonth = new Date(y, m + 1, 0).getDate();
+                for (let i = 0; i < firstDay; i++) {
+                    const empty = document.createElement('div');
+                    empty.className = 'cal-cell empty';
+                    calGrid.appendChild(empty);
+                }
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateObj = new Date(y, m, d);
+                    const key = fmt(dateObj);
+                    const rec = records[key] || {};
+                    const total = habits.length;
+                    const done = habits.filter(h => rec[h.id]).length;
+                    const pct = total ? done / total : 0;
+                    const cell = document.createElement('div');
+                    cell.className = 'cal-cell' + (pct > 0 ? ' has-data' : '') + (key === todayStr ? ' today' : '') + (pct > 0.5 ? ' bright' : '');
+                    cell.style.setProperty('--fill-opacity', pct > 0 ? Math.max(pct, 0.18) : 0);
+                    cell.innerHTML = `<div class="fill"></div><span class="num">${d}</span>`;
+                    cell.addEventListener('click', () => { setActiveDate(dateObj); goToView('today'); });
+                    calGrid.appendChild(cell);
+                }
+            }
+            document.getElementById('cal-prev').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() - 1); renderCalendar(); });
+            document.getElementById('cal-next').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() + 1); renderCalendar(); });
+
+            // ---------- LOG VIEW ----------
+            function renderLog() {
+                const y = logMonth.getFullYear(), m = logMonth.getMonth();
+                document.getElementById('log-month-label').textContent = `${monthNames[m]} ${y}`;
+                const list = document.getElementById('log-list');
+                list.innerHTML = '';
+                const daysInMonth = new Date(y, m + 1, 0).getDate();
+                let any = false;
+                for (let d = daysInMonth; d >= 1; d--) {
+                    const dateObj = new Date(y, m, d);
+                    const key = fmt(dateObj);
+                    const rec = records[key];
+                    if (!rec || Object.keys(rec).length === 0) continue;
+                    any = true;
+                    const total = habits.length;
+                    const done = habits.filter(h => rec[h.id]).length;
+                    const pct = total ? Math.round((done / total) * 100) : 0;
+                    const card = document.createElement('div');
+                    card.className = 'log-day';
+                    const tags = habits.map(h => {
+                        const ok = !!rec[h.id];
+                        return `<span class="log-habit-tag ${ok ? '' : 'miss'}">${h.icon} ${h.name}</span>`;
+                    }).join('');
+                    card.innerHTML = `
+        <div class="log-day-head">
+          <div>
+            <div class="log-day-title">${dowNames[dateObj.getDay()]}، ${d} ${monthNames[m]}</div>
+            <div class="log-day-sub">${done} من ${total} عادة منجزة</div>
+          </div>
+          <span class="log-day-pct">${pct}%</span>
+        </div>
+        <div class="log-habits">${tags}</div>
+      `;
+                    card.querySelector('.log-day-head').addEventListener('click', () => card.classList.toggle('open'));
+                    list.appendChild(card);
+                }
+                if (!any) {
+                    list.innerHTML = `<div class="empty-state"><div class="em-icon">📭</div>لا يوجد سجل إنجاز في هذا الشهر</div>`;
+                }
+            }
+            document.getElementById('log-prev').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() - 1); renderLog(); });
+            document.getElementById('log-next').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() + 1); renderLog(); });
+
+            // ---------- INIT ----------
+            setActiveDate(new Date());
+            renderCalendar();
+        })();
     </script>
 </body>
+
 </html>
