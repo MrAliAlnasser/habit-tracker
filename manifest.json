@@ -1,0 +1,21 @@
+{
+  "name": "روتين 🎯",
+  "short_name": "روتين",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf7f0",
+  "theme_color": "#0F6E5F",
+  "description": "رفيقك اليومي لبناء العادات والمحافظة عليها.",
+  "icons": [
+    {
+      "src": "og-image.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "og-image.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
