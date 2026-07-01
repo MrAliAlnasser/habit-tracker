@@ -381,14 +381,113 @@
             font-weight: 700;
         }
 
-        /* Habit list */
+        /* Outer daily card wrapper */
+        .daily-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.1rem;
+            margin-bottom: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .daily-card-head {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+            margin-bottom: 1rem;
+        }
+
+        .daily-card-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+        }
+
+        .daily-card-title {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 1.05rem;
+        }
+
+        /* Habit groups */
         .habit-list {
             display: flex;
             flex-direction: column;
-            gap: .6rem;
-            margin-bottom: 1.2rem;
+            gap: 1.1rem;
+            margin-bottom: 0;
         }
 
+        .habit-group {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            border-top: 3px solid var(--cat-color, var(--primary));
+        }
+
+        .habit-group[data-cat="ibadat"] {
+            --cat-color: #6FA8DC;
+        }
+
+        .habit-group[data-cat="sihha"] {
+            --cat-color: #5FBF8F;
+        }
+
+        .habit-group[data-cat="intaj"] {
+            --cat-color: #D9A544;
+        }
+
+        .habit-group-head {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            margin-bottom: .7rem;
+            padding-bottom: .6rem;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .habit-group-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: color-mix(in srgb, var(--cat-color, var(--primary)) 18%, var(--surface));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .habit-group-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: .95rem;
+        }
+
+        .habit-group-count {
+            margin-inline-start: auto;
+            font-size: .7rem;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .habit-group-body {
+            display: flex;
+            flex-direction: column;
+            gap: .55rem;
+        }
+
+        /* Habit list */
         .habit-row {
             display: flex;
             align-items: center;
@@ -739,23 +838,64 @@
             margin-bottom: .6rem;
         }
 
-        .toast {
+        .confirm-overlay {
             position: fixed;
-            bottom: 1.5rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--ink);
-            color: var(--bg);
-            padding: .7rem 1.2rem;
-            border-radius: 999px;
-            font-size: .82rem;
-            font-weight: 700;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .confirm-overlay.show {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.3rem;
+            max-width: 320px;
+            width: 100%;
             box-shadow: var(--shadow);
-            opacity: 0;
-            pointer-events: none;
-            transition: all .3s ease;
-            z-index: 1000;
-            font-family: var(--font-display);
+            text-align: center;
+        }
+
+        .confirm-box p {
+            font-size: .88rem;
+            margin-bottom: 1rem;
+            color: var(--ink);
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: .6rem;
+        }
+
+        .confirm-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        position:fixed;
+        bottom:1.5rem;
+        left:50%;
+        transform:translateX(-50%) translateY(20px);
+        background:var(--ink);
+        color:var(--bg);
+        padding:.7rem 1.2rem;
+        border-radius:999px;
+        font-size:.82rem;
+        font-weight:700;
+        box-shadow:var(--shadow);
+        opacity:0;
+        pointer-events:none;
+        transition:all .3s ease;
+        z-index:1000;
+        font-family:var(--font-display);
         }
 
         .toast.show {
@@ -838,10 +978,17 @@
                 <span class="muted" id="habit-count-lbl">0 عادة</span>
             </div>
 
-            <div class="habit-list" id="habit-list"></div>
+            <div class="daily-card">
+                <div class="daily-card-head">
+                    <span class="daily-card-icon">📋</span>
+                    <span class="daily-card-title">عادات يوميّة</span>
+                </div>
+                <div class="habit-list" id="habit-list"></div>
+            </div>
 
             <div class="add-habit-row">
-                <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة… مثال: قراءة 10 صفحات">
+                <select id="new-habit-cat" class="date-input" style="flex:0 0 auto;"></select>
+                <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
                 <button class="btn btn-primary" id="add-habit-btn">إضافة</button>
             </div>
 
@@ -887,26 +1034,46 @@
 
     <div class="toast" id="toast"></div>
 
+    <div class="confirm-overlay" id="confirm-overlay">
+        <div class="confirm-box">
+            <p id="confirm-text">هل أنت متأكد؟</p>
+            <div class="confirm-actions">
+                <button class="btn btn-ghost" id="confirm-cancel">إلغاء</button>
+                <button class="btn btn-primary" id="confirm-ok" style="background:var(--danger);">حذف</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function () {
             const STORAGE_HABITS = 'rtn-habits-v1';
             const STORAGE_RECORDS = 'rtn-records-v1';
 
+            const categories = [
+                { id: 'ibadat', name: 'عبادات', icon: '🕌' },
+                { id: 'sihha', name: 'صحّة', icon: '🌿' },
+                { id: 'intaj', name: 'إنتاجيّة', icon: '💡' },
+            ];
+
             const defaultHabits = [
-                { id: 'h1', icon: '🌅', name: 'صلاة الفجر' },
-                { id: 'h2', icon: '📿', name: 'استغفار بعد الفجر' },
-                { id: 'h3', icon: '☀️', name: 'صلاة الظهر' },
-                { id: 'h4', icon: '📿', name: 'تسبيح بعد الظهر' },
-                { id: 'h5', icon: '🌇', name: 'صلاة المغرب' },
-                { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة' },
-                { id: 'h7', icon: '📖', name: 'قراءة 10 صفحات' },
-                { id: 'h8', icon: '💧', name: 'شرب 8 أكواب ماء' },
+                { id: 'h1', icon: '🌅', name: 'صلاة الفجر', cat: 'ibadat' },
+                { id: 'h2', icon: '🕌', name: 'صلاة الظهرين', cat: 'ibadat' },
+                { id: 'h3', icon: '🌇', name: 'صلاة العشائين', cat: 'ibadat' },
+                { id: 'h4', icon: '📿', name: 'استغفار', cat: 'ibadat' },
+                { id: 'h5', icon: '📿', name: 'تسبيح', cat: 'ibadat' },
+                { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة', cat: 'sihha' },
+                { id: 'h7', icon: '💧', name: 'شرب 8 أكواب من الماء', cat: 'sihha' },
+                { id: 'h8', icon: '🧴', name: 'مرطّب للبشرة', cat: 'sihha' },
+                { id: 'h9', icon: '✍️', name: 'كتابة فكرة / مقال / تعلّم شيء جديد', cat: 'intaj' },
             ];
 
             function loadHabits() {
                 try {
                     const raw = localStorage.getItem(STORAGE_HABITS);
-                    if (raw) return JSON.parse(raw);
+                    if (raw) {
+                        const list = JSON.parse(raw);
+                        return list.map(h => ({ ...h, cat: h.cat || 'intaj' }));
+                    }
                 } catch (e) { }
                 saveHabits(defaultHabits);
                 return defaultHabits.slice();
@@ -935,6 +1102,30 @@
 
             const dowNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
             const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+            // ---------- Custom confirm (native confirm() is blocked in sandboxed iframes) ----------
+            const confirmOverlay = document.getElementById('confirm-overlay');
+            const confirmText = document.getElementById('confirm-text');
+            const confirmOkBtn = document.getElementById('confirm-ok');
+            const confirmCancelBtn = document.getElementById('confirm-cancel');
+            let pendingConfirmAction = null;
+            function askConfirm(message, onConfirm) {
+                confirmText.textContent = message;
+                pendingConfirmAction = onConfirm;
+                confirmOverlay.classList.add('show');
+            }
+            confirmOkBtn.addEventListener('click', () => {
+                confirmOverlay.classList.remove('show');
+                if (pendingConfirmAction) pendingConfirmAction();
+                pendingConfirmAction = null;
+            });
+            confirmCancelBtn.addEventListener('click', () => {
+                confirmOverlay.classList.remove('show');
+                pendingConfirmAction = null;
+            });
+            confirmOverlay.addEventListener('click', (e) => {
+                if (e.target === confirmOverlay) { confirmOverlay.classList.remove('show'); pendingConfirmAction = null; }
+            });
 
             // ---------- Toast ----------
             let toastTimer;
@@ -992,21 +1183,47 @@
                 if (habits.length === 0) {
                     habitListEl.innerHTML = `<div class="empty-state"><div class="em-icon">✨</div>لا توجد عادات بعد — أضف أول عادة لك بالأسفل</div>`;
                 }
-                habits.forEach(h => {
-                    const done = !!dayRec[h.id];
-                    const row = document.createElement('div');
-                    row.className = 'habit-row' + (done ? ' done' : '');
-                    row.innerHTML = `
-        <button class="habit-check" data-id="${h.id}">${done ? '✓' : ''}</button>
-        <span class="habit-icon">${h.icon}</span>
-        <span class="habit-name">${h.name}</span>
-        <button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>
+                categories.forEach(cat => {
+                    const catHabits = habits.filter(h => h.cat === cat.id);
+                    if (catHabits.length === 0) return;
+                    const group = document.createElement('div');
+                    group.className = 'habit-group';
+                    group.dataset.cat = cat.id;
+                    const doneCount = catHabits.filter(h => dayRec[h.id]).length;
+                    group.innerHTML = `
+        <div class="habit-group-head">
+          <span class="habit-group-icon">${cat.icon}</span>
+          <span class="habit-group-title">${cat.name}</span>
+          <span class="habit-group-count">${doneCount}/${catHabits.length}</span>
+        </div>
+        <div class="habit-group-body"></div>
       `;
-                    habitListEl.appendChild(row);
+                    const body = group.querySelector('.habit-group-body');
+                    catHabits.forEach(h => {
+                        const done = !!dayRec[h.id];
+                        const row = document.createElement('div');
+                        row.className = 'habit-row' + (done ? ' done' : '');
+                        row.innerHTML = `
+          <button class="habit-check" data-id="${h.id}">${done ? '✓' : ''}</button>
+          <span class="habit-icon">${h.icon}</span>
+          <span class="habit-name">${h.name}</span>
+          <button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>
+        `;
+                        body.appendChild(row);
+                    });
+                    habitListEl.appendChild(group);
                 });
                 document.getElementById('habit-count-lbl').textContent = `${habits.length} عادة`;
                 updateRing();
             }
+
+            const newHabitCatSelect = document.getElementById('new-habit-cat');
+            categories.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.icon + ' ' + c.name;
+                newHabitCatSelect.appendChild(opt);
+            });
 
             habitListEl.addEventListener('click', (e) => {
                 const checkBtn = e.target.closest('.habit-check');
@@ -1022,13 +1239,14 @@
                 } else if (delBtn) {
                     const id = delBtn.dataset.id;
                     const h = habits.find(x => x.id === id);
-                    if (confirm(`حذف عادة "${h ? h.name : ''}"؟ سيتم حذفها من كل الأيام.`)) {
+                    askConfirm(`حذف عادة "${h ? h.name : ''}"؟ سيتم حذفها من كل الأيام.`, () => {
                         habits = habits.filter(x => x.id !== id);
                         saveHabits(habits);
                         Object.keys(records).forEach(dk => { delete records[dk][id]; });
                         saveRecords(records);
                         renderHabitList();
-                    }
+                        showToast('تم حذف العادة');
+                    });
                 }
             });
 
@@ -1038,7 +1256,8 @@
                 const input = document.getElementById('new-habit-input');
                 const val = input.value.trim();
                 if (!val) return;
-                habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val });
+                const cat = newHabitCatSelect.value || 'intaj';
+                habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val, cat });
                 saveHabits(habits);
                 input.value = '';
                 renderHabitList();
