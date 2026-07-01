@@ -694,10 +694,12 @@
 
         .cal-dow {
             text-align: center;
-            font-size: .7rem;
+            font-size: .56rem;
             color: var(--muted);
             font-weight: 700;
             padding-bottom: .3rem;
+            letter-spacing: -0.2px;
+            line-height: 1.2;
         }
 
         .cal-cell {
@@ -1323,7 +1325,7 @@
             let calMonth = new Date();
             let logMonth = new Date();
 
-            const dowNames = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const dowNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
             const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 
             // ---------- Custom confirm (native confirm() is blocked in sandboxed iframes) ----------
@@ -1648,7 +1650,7 @@
             dowNames.forEach(n => {
                 const el = document.createElement('div');
                 el.className = 'cal-dow';
-                el.textContent = n.slice(0, 3);
+                el.textContent = n;
                 calDowRow.appendChild(el);
             });
 
