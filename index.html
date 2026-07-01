@@ -897,6 +897,59 @@
             margin-bottom: .6rem;
         }
 
+        .emoji-modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .emoji-modal-overlay.show {
+            display: flex;
+            animation: fade .2s ease;
+        }
+
+        .emoji-modal-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.3rem;
+            max-width: 320px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            text-align: center;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .emoji-btn {
+            font-size: 1.5rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            padding: 8px 0;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .emoji-btn:hover {
+            background: var(--ring-bg);
+            transform: scale(1.1);
+        }
+
         .confirm-overlay {
             position: fixed;
             inset: 0;
@@ -1273,33 +1326,20 @@
             <div class="add-habit-container"
                 style="background: var(--surface); padding: 1.5rem; border-radius: var(--radius); margin-top: 1rem; border: 1px solid var(--border);">
                 <div class="add-habit-row">
-                    <select id="new-habit-icon" class="date-input" style="flex:0 0 auto; width: 55px; padding: 0.5rem 0.2rem; text-align: center; font-size: 1.2rem; appearance: none;">
-                        <option value="⭐">⭐</option>
-                        <option value="💧">💧</option>
-                        <option value="📖">📖</option>
-                        <option value="🏃">🏃</option>
-                        <option value="🧘">🧘</option>
-                        <option value="🍎">🍎</option>
-                        <option value="📝">📝</option>
-                        <option value="💻">💻</option>
-                        <option value="💡">💡</option>
-                        <option value="📿">📿</option>
-                        <option value="🕌">🕌</option>
-                        <option value="🏋️">🏋️</option>
-                        <option value="🎯">🎯</option>
-                        <option value="🎨">🎨</option>
-                        <option value="💊">💊</option>
-                    </select>
+                    <button type="button" id="emoji-picker-btn" class="date-input" style="flex:0 0 auto; width: 55px; padding: 0.5rem 0; text-align: center; font-size: 1.2rem; cursor: pointer; background: var(--surface); border: 1px solid var(--border);">⭐</button>
+                    <input type="hidden" id="new-habit-icon-val" value="⭐">
                     <select id="new-habit-cat" class="date-input" style="flex:0 0 auto;"></select>
                     <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
-                    <button class="btn btn-primary" id="add-habit-btn"
-                        style="background-color: #D97B3F; border-color: #D97B3F;">إضافة</button>
                 </div>
 
-                <button class="advanced-toggle-btn" id="advanced-toggle-btn"
-                    style="font-family: 'Tajawal', sans-serif;">
-                    ⚙️ (تحديد الأيام)
-                </button>
+                <div style="display: flex; gap: 10px; margin-top: 10px; justify-content: space-between; align-items: center;">
+                    <button class="advanced-toggle-btn" id="advanced-toggle-btn"
+                        style="font-family: 'Tajawal', sans-serif; margin: 0;">
+                        ⚙️ (تحديد الأيام)
+                    </button>
+                    <button class="btn btn-primary" id="add-habit-btn"
+                        style="background-color: #D97B3F; border-color: #D97B3F; padding: 0.5rem 1.5rem;">إضافة</button>
+                </div>
 
                 <div class="add-habit-options" id="add-habit-options">
                     <div style="margin-bottom:10px;">
@@ -1372,6 +1412,14 @@
             <div id="log-list"></div>
         </section>
 
+    </div>
+
+    <div class="emoji-modal-overlay" id="emoji-modal-overlay">
+        <div class="emoji-modal-box">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px;">اختر أيقونة</h3>
+            <div class="emoji-grid" id="emoji-grid"></div>
+            <button class="btn btn-ghost" id="emoji-modal-close" style="width: 100%; margin-top: 15px;">إلغاء</button>
+        </div>
     </div>
 
     <div class="toast" id="toast"></div>
@@ -1741,6 +1789,35 @@
                         });
                     });
 
+                    // ---------- Emoji Picker Logic ----------
+                    const emojis = ['⭐', '💧', '📖', '🏃', '🧘', '🍎', '📝', '💻', '💡', '📿', '🕌', '🏋️', '🎯', '🎨', '💊', '💰', '🧹', '🪴', '🎸', '🎮'];
+                    const emojiPickerBtn = document.getElementById('emoji-picker-btn');
+                    const emojiIconVal = document.getElementById('new-habit-icon-val');
+                    const emojiModalOverlay = document.getElementById('emoji-modal-overlay');
+                    const emojiModalClose = document.getElementById('emoji-modal-close');
+                    const emojiGrid = document.getElementById('emoji-grid');
+
+                    if (emojiGrid) {
+                        emojis.forEach(em => {
+                            const btn = document.createElement('button');
+                            btn.className = 'emoji-btn';
+                            btn.textContent = em;
+                            btn.addEventListener('click', () => {
+                                if (emojiIconVal) emojiIconVal.value = em;
+                                if (emojiPickerBtn) emojiPickerBtn.textContent = em;
+                                emojiModalOverlay.classList.remove('show');
+                            });
+                            emojiGrid.appendChild(btn);
+                        });
+                    }
+
+                    if (emojiPickerBtn) {
+                        emojiPickerBtn.addEventListener('click', () => emojiModalOverlay.classList.add('show'));
+                    }
+                    if (emojiModalClose) {
+                        emojiModalClose.addEventListener('click', () => emojiModalOverlay.classList.remove('show'));
+                    }
+
                     document.getElementById('add-habit-btn').addEventListener('click', addHabit);
                     newHabitInput.addEventListener('keydown', e => { if (e.key === 'Enter') addHabit(); });
 
@@ -1767,8 +1844,8 @@
                                 }
                             }
 
-                            const iconSelect = document.getElementById('new-habit-icon');
-                            const icon = iconSelect ? iconSelect.value : '⭐';
+                            const iconVal = document.getElementById('new-habit-icon-val');
+                            const icon = iconVal ? iconVal.value : '⭐';
 
                             habits.push({ id: 'h' + Date.now(), icon: icon, name: val, cat, addedDate: dateKey, type, days });
                             saveHabits(habits);
