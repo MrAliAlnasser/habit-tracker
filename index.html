@@ -827,6 +827,32 @@
             border-top: 1px dashed var(--border);
         }
 
+        .add-habit-options {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--border);
+            display: none;
+            animation: fadeSlideUp 0.3s ease;
+        }
+
+        .add-habit-options.show {
+            display: block !important;
+        }
+
+        .advanced-toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+
         .log-day.open .log-habits {
             display: flex;
         }
@@ -1110,6 +1136,8 @@
 </head>
 
 <body>
+    <script>window.onerror = function (msg, url, lineNo, columnNo, error) {
+            alert(msg + " \\nLine: \ + lineNo); return false; };</script>
     <!-- ========== SPLASH SCREEN ========== -->
     <div class="splash" id="splash">
         <div class="splash-logo">🎯</div>
@@ -1186,20 +1214,38 @@
                 <div class="habit-list" id="habit-list"></div>
             </div>
 
-            <div class="add-habit-row">
-                <select id="new-habit-cat" class="date-input" style="flex:0 0 auto;"></select>
-                <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
-                <button class="btn btn-primary" id="add-habit-btn">إضافة</button>
-            </div>
+            <div class="add-habit-container"
+                style="background: var(--surface); padding: 1.5rem; border-radius: var(--radius); margin-top: 1rem; border: 1px solid var(--border);">
+                <div class="add-habit-row">
+                    <select id="new-habit-cat" class="date-input" style="flex:0 0 auto;"></select>
+                    <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
+                    <button class="btn btn-primary" id="add-habit-btn" style="background-color: #D97B3F; border-color: #D97B3F;">إضافة</button>
+                </div>
 
-            <div class="apply-box">
-                <h4>📌 نقل الإدخالات إلى يوم محدد</h4>
-                <p>اختر تاريخًا آخر لتطبّق عليه نفس حالة العادات المحدّدة أعلاه (نسخ الإنجاز الحالي إلى ذلك اليوم).</p>
-                <div class="apply-row">
-                    <input type="date" id="apply-date-input">
-                    <button class="btn btn-accent" id="apply-date-btn">نسخ إلى هذا التاريخ</button>
+                <button class="advanced-toggle-btn" id="advanced-toggle-btn"
+                    style="font-family: 'Tajawal', sans-serif;">
+                    ⚙️ (تحديد الأيام)
+                </button>
+
+                <div class="add-habit-options" id="add-habit-options">
+                    <div style="margin-bottom:10px;">
+                        <label><input type="radio" name="habit_type" value="continuous" checked> يوميّة</label>
+                        <label style="margin-right:15px;"><input type="radio" name="habit_type" value="specific_days">
+                            أيام محدّدة</label>
+                    </div>
+                    <div id="days-selector" style="display:none; flex-wrap:wrap; gap:5px;">
+                        <label><input type="checkbox" value="0"> أحد</label>
+                        <label><input type="checkbox" value="1"> اثنين</label>
+                        <label><input type="checkbox" value="2"> ثلاثاء</label>
+                        <label><input type="checkbox" value="3"> أربعاء</label>
+                        <label><input type="checkbox" value="4"> خميس</label>
+                        <label><input type="checkbox" value="5"> جمعة</label>
+                        <label><input type="checkbox" value="6"> سبت</label>
+                    </div>
                 </div>
             </div>
+
+
 
         </section>
 
@@ -1245,231 +1291,243 @@
     </div>
 
     <script>
-        (function () {
-            const STORAGE_HABITS = 'rtn-habits-v1';
-            const STORAGE_RECORDS = 'rtn-records-v1';
+                (function () {
+                    const STORAGE_HABITS = 'rtn-habits-v1';
+                    const STORAGE_RECORDS = 'rtn-records-v1';
 
-            const categories = [
-                { id: 'ibadat', name: 'عبادات', icon: '🕌' },
-                { id: 'sihha', name: 'صحّة', icon: '🌿' },
-                { id: 'intaj', name: 'إنتاجيّة', icon: '💡' },
-            ];
+                    const categories = [
+                        { id: 'ibadat', name: 'عبادات', icon: '🕌' },
+                        { id: 'sihha', name: 'صحّة', icon: '🌿' },
+                        { id: 'intaj', name: 'إنتاجيّة', icon: '💡' },
+                    ];
 
-            const defaultHabits = [
-                { id: 'h1', icon: '🌅', name: 'صلاة الفجر', cat: 'ibadat' },
-                { id: 'h2', icon: '🕌', name: 'صلاة الظهرين', cat: 'ibadat' },
-                { id: 'h3', icon: '🌇', name: 'صلاة العشائين', cat: 'ibadat' },
-                { id: 'h4', icon: '📿', name: 'استغفار', cat: 'ibadat' },
-                { id: 'h5', icon: '📿', name: 'تسبيح', cat: 'ibadat' },
-                { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة', cat: 'sihha' },
-                { id: 'h7', icon: '💧', name: 'شرب 8 أكواب من الماء', cat: 'sihha' },
-                { id: 'h8', icon: '🧴', name: 'مرطّب للبشرة', cat: 'sihha' },
-                { id: 'h9', icon: '✍️', name: 'كتابة فكرة / مقال / تعلّم شيء جديد', cat: 'intaj' },
-            ];
-            const defaultHabitIds = new Set(defaultHabits.map(h => h.id));
+                    const defaultHabits = [
+                        { id: 'h1', icon: '🌅', name: 'صلاة الفجر', cat: 'ibadat' },
+                        { id: 'h2', icon: '🕌', name: 'صلاة الظهرين', cat: 'ibadat' },
+                        { id: 'h3', icon: '🌇', name: 'صلاة العشائين', cat: 'ibadat' },
+                        { id: 'h4', icon: '📿', name: 'استغفار', cat: 'ibadat' },
+                        { id: 'h5', icon: '📿', name: 'تسبيح', cat: 'ibadat' },
+                        { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة', cat: 'sihha' },
+                        { id: 'h7', icon: '💧', name: 'شرب 8 أكواب من الماء', cat: 'sihha' },
+                        { id: 'h8', icon: '🧴', name: 'مرطّب للبشرة', cat: 'sihha' },
+                        { id: 'h9', icon: '✍️', name: 'كتابة فكرة / مقال / تعلّم شيء جديد', cat: 'intaj' },
+                    ];
+                    const defaultHabitIds = new Set(defaultHabits.map(h => h.id));
 
-            // Returns habits visible on a given date key:
-            // all default habits + custom habits whose addedDate matches
-            function habitsForDate(dateKey) {
-                return habits.filter(h => {
-                    if (defaultHabitIds.has(h.id)) return true;
-                    return h.addedDate === dateKey;
-                });
-            }
+                    // Returns habits visible on a given date key:
+                    // all default habits + custom habits based on their addedDate and type
+                    function habitsForDate(dateKey) {
+                        const [y, m, d] = dateKey.split('-');
+                        const dateObj = new Date(y, m - 1, d);
+                        const dayOfWeek = dateObj.getDay();
 
-            function loadHabits() {
-                try {
-                    const raw = localStorage.getItem(STORAGE_HABITS);
-                    if (raw) {
-                        let list = JSON.parse(raw);
-                        const newDefaultsMap = {};
-                        defaultHabits.forEach(dh => newDefaultsMap[dh.id] = dh);
+                        return habits.filter(h => {
+                            if (defaultHabitIds.has(h.id)) return true;
 
-                        list = list.map(h => {
-                            if (newDefaultsMap[h.id]) {
-                                return newDefaultsMap[h.id];
+                            // If the habit was added after this date, hide it
+                            if (h.addedDate && dateKey < h.addedDate) return false;
+
+                            // If it has no type, treat it as continuous for backward compatibility
+                            if (!h.type || h.type === 'continuous') {
+                                return true;
                             }
-                            return { ...h, cat: h.cat || 'intaj' };
+
+                            if (h.type === 'specific_days' && h.days) {
+                                return h.days.includes(dayOfWeek);
+                            }
+
+                            return false;
                         });
-
-                        if (!list.find(h => h.id === 'h9')) {
-                            list.push(newDefaultsMap['h9']);
-                        }
-
-                        saveHabits(list);
-                        return list;
                     }
-                } catch (e) { }
-                saveHabits(defaultHabits);
-                return defaultHabits.slice();
-            }
-            function saveHabits(list) { localStorage.setItem(STORAGE_HABITS, JSON.stringify(list)); }
-            function loadRecords() {
-                try {
-                    const raw = localStorage.getItem(STORAGE_RECORDS);
-                    if (raw) return JSON.parse(raw);
-                } catch (e) { }
-                return {};
-            }
-            function saveRecords(rec) { localStorage.setItem(STORAGE_RECORDS, JSON.stringify(rec)); }
 
-            let habits = loadHabits();
-            let records = loadRecords(); // { 'YYYY-MM-DD': { habitId: true } }
+                    function loadHabits() {
+                        try {
+                            const raw = localStorage.getItem(STORAGE_HABITS);
+                            if (raw) {
+                                let list = JSON.parse(raw);
+                                const newDefaultsMap = {};
+                                defaultHabits.forEach(dh => newDefaultsMap[dh.id] = dh);
 
-            const fmt = d => {
-                const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
-                return `${y}-${m}-${day}`;
-            };
-            const todayStr = fmt(new Date());
-            let activeDate = new Date();
-            let calMonth = new Date();
-            let logMonth = new Date();
+                                list = list.map(h => {
+                                    if (newDefaultsMap[h.id]) {
+                                        return newDefaultsMap[h.id];
+                                    }
+                                    return { ...h, cat: h.cat || 'intaj' };
+                                });
 
-            const dowNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-            const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+                                if (!list.find(h => h.id === 'h9')) {
+                                    list.push(newDefaultsMap['h9']);
+                                }
 
-            // ---------- Custom confirm (native confirm() is blocked in sandboxed iframes) ----------
-            const confirmOverlay = document.getElementById('confirm-overlay');
-            const confirmText = document.getElementById('confirm-text');
-            const confirmOkBtn = document.getElementById('confirm-ok');
-            const confirmCancelBtn = document.getElementById('confirm-cancel');
-            let pendingConfirmAction = null;
-            function askConfirm(message, onConfirm) {
-                confirmText.textContent = message;
-                pendingConfirmAction = onConfirm;
-                confirmOverlay.classList.add('show');
-            }
-            confirmOkBtn.addEventListener('click', () => {
-                confirmOverlay.classList.remove('show');
-                if (pendingConfirmAction) pendingConfirmAction();
-                pendingConfirmAction = null;
-            });
-            confirmCancelBtn.addEventListener('click', () => {
-                confirmOverlay.classList.remove('show');
-                pendingConfirmAction = null;
-            });
-            confirmOverlay.addEventListener('click', (e) => {
-                if (e.target === confirmOverlay) { confirmOverlay.classList.remove('show'); pendingConfirmAction = null; }
-            });
+                                saveHabits(list);
+                                return list;
+                            }
+                        } catch (e) { }
+                        saveHabits(defaultHabits);
+                        return defaultHabits.slice();
+                    }
+                    function saveHabits(list) { localStorage.setItem(STORAGE_HABITS, JSON.stringify(list)); }
+                    function loadRecords() {
+                        try {
+                            const raw = localStorage.getItem(STORAGE_RECORDS);
+                            if (raw) return JSON.parse(raw);
+                        } catch (e) { }
+                        return {};
+                    }
+                    function saveRecords(rec) { localStorage.setItem(STORAGE_RECORDS, JSON.stringify(rec)); }
 
-            // ---------- Toast ----------
-            let toastTimer;
-            function showToast(msg) {
-                const t = document.getElementById('toast');
-                t.textContent = msg;
-                t.classList.add('show');
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
-            }
+                    let habits = loadHabits();
+                    let records = loadRecords(); // { 'YYYY-MM-DD': { habitId: true } }
 
-            // ---------- Tabs ----------
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                    btn.classList.add('active');
-                    document.getElementById('view-' + btn.dataset.view).classList.add('active');
-                    if (btn.dataset.view === 'calendar') renderCalendar();
-                    if (btn.dataset.view === 'log') renderLog();
-                });
-            });
+                    const fmt = d => {
+                        const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+                        return `${y}-${m}-${day}`;
+                    };
+                    const todayStr = fmt(new Date());
+                    let activeDate = new Date();
+                    let calMonth = new Date();
+                    let logMonth = new Date();
 
-            function goToView(name) {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
-                document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
-            }
+                    const dowNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                    const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
 
-            // ---------- Theme ----------
-            const themeBtn = document.getElementById('theme-btn');
-            function applyTheme(t) {
-                document.documentElement.setAttribute('data-theme', t);
-                localStorage.setItem('rtn-theme', t);
-                themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
-            }
-            applyTheme(localStorage.getItem('rtn-theme') || 'light');
-            themeBtn.addEventListener('click', () => {
-                applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-            });
-            document.getElementById('print-btn').addEventListener('click', () => window.print());
-
-            // ---------- POP SOUNDS (Web Audio API) ----------
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            function playPopSound(isChecked) {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const t = audioCtx.currentTime;
-                if (isChecked) {
-                    // ─── صوت إنجاز مستوحى من أفضل تطبيقات العادات العالميّة ───
-                    // 1) نقرة خفيفة لطيفة (tactile pop)
-                    const pop = audioCtx.createOscillator();
-                    const popGain = audioCtx.createGain();
-                    pop.type = 'sine';
-                    pop.frequency.setValueAtTime(1800, t);
-                    pop.frequency.exponentialRampToValueAtTime(400, t + 0.03);
-                    popGain.gain.setValueAtTime(0.15, t);
-                    popGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
-                    pop.connect(popGain);
-                    popGain.connect(audioCtx.destination);
-                    pop.start(t);
-                    pop.stop(t + 0.06);
-
-                    // 2) وتر دافئ (E5 + B5) — شعور بالاكتمال والرضا
-                    [
-                        { f: 659.25, v: 0.10 },  // E5
-                        { f: 987.77, v: 0.05 },  // B5 — خامسة مثالية
-                    ].forEach(n => {
-                        const o = audioCtx.createOscillator();
-                        const g = audioCtx.createGain();
-                        o.type = 'sine';
-                        o.frequency.setValueAtTime(n.f, t);
-                        g.gain.setValueAtTime(0, t + 0.02);
-                        g.gain.linearRampToValueAtTime(n.v, t + 0.05);
-                        g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-                        o.connect(g);
-                        g.connect(audioCtx.destination);
-                        o.start(t + 0.02);
-                        o.stop(t + 0.4);
+                    // ---------- Custom confirm (native confirm() is blocked in sandboxed iframes) ----------
+                    const confirmOverlay = document.getElementById('confirm-overlay');
+                    const confirmText = document.getElementById('confirm-text');
+                    const confirmOkBtn = document.getElementById('confirm-ok');
+                    const confirmCancelBtn = document.getElementById('confirm-cancel');
+                    let pendingConfirmAction = null;
+                    function askConfirm(message, onConfirm) {
+                        confirmText.textContent = message;
+                        pendingConfirmAction = onConfirm;
+                        confirmOverlay.classList.add('show');
+                    }
+                    confirmOkBtn.addEventListener('click', () => {
+                        confirmOverlay.classList.remove('show');
+                        if (pendingConfirmAction) pendingConfirmAction();
+                        pendingConfirmAction = null;
                     });
-                } else {
-                    // صوت إلغاء: نغمة هادئة قصيرة
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-                    osc.type = 'sine';
-                    osc.frequency.setValueAtTime(440, t);
-                    osc.frequency.exponentialRampToValueAtTime(300, t + 0.15);
-                    gain.gain.setValueAtTime(0.07, t);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-                    osc.start(t);
-                    osc.stop(t + 0.15);
-                }
-            }
+                    confirmCancelBtn.addEventListener('click', () => {
+                        confirmOverlay.classList.remove('show');
+                        pendingConfirmAction = null;
+                    });
+                    confirmOverlay.addEventListener('click', (e) => {
+                        if (e.target === confirmOverlay) { confirmOverlay.classList.remove('show'); pendingConfirmAction = null; }
+                    });
 
-            // ---------- TODAY VIEW ----------
-            const habitListEl = document.getElementById('habit-list');
-            const activeDateInput = document.getElementById('active-date-input');
-            const applyDateInput = document.getElementById('apply-date-input');
+                    // ---------- Toast ----------
+                    let toastTimer;
+                    function showToast(msg) {
+                        const t = document.getElementById('toast');
+                        t.textContent = msg;
+                        t.classList.add('show');
+                        clearTimeout(toastTimer);
+                        toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+                    }
 
-            function dayLabel(d) {
-                return `${dowNames[d.getDay()]}، ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
-            }
+                    // ---------- Tabs ----------
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                            btn.classList.add('active');
+                            document.getElementById('view-' + btn.dataset.view).classList.add('active');
+                            if (btn.dataset.view === 'calendar') renderCalendar();
+                            if (btn.dataset.view === 'log') renderLog();
+                        });
+                    });
 
-            function renderHabitList() {
-                const key = fmt(activeDate);
-                const dayRec = records[key] || {};
-                const visibleHabits = habitsForDate(key);
-                habitListEl.innerHTML = '';
-                if (visibleHabits.length === 0) {
-                    habitListEl.innerHTML = `<div class="empty-state"><div class="em-icon">✨</div>لا توجد عادات بعد — أضف أول عادة لك بالأسفل</div>`;
-                }
-                categories.forEach(cat => {
-                    const catHabits = visibleHabits.filter(h => h.cat === cat.id);
-                    if (catHabits.length === 0) return;
-                    const group = document.createElement('div');
-                    group.className = 'habit-group';
-                    group.dataset.cat = cat.id;
-                    const doneCount = catHabits.filter(h => dayRec[h.id]).length;
-                    group.innerHTML = `
+                    function goToView(name) {
+                        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+                        document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+                    }
+
+                    // ---------- Theme ----------
+                    const themeBtn = document.getElementById('theme-btn');
+                    function applyTheme(t) {
+                        document.documentElement.setAttribute('data-theme', t);
+                        localStorage.setItem('rtn-theme', t);
+                        themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
+                    }
+                    applyTheme(localStorage.getItem('rtn-theme') || 'light');
+                    themeBtn.addEventListener('click', () => {
+                        applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+                    });
+                    document.getElementById('print-btn').addEventListener('click', () => window.print());
+
+                    // ---------- POP SOUNDS (Web Audio API) ----------
+                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    function playPopSound(isChecked) {
+                        if (audioCtx.state === 'suspended') audioCtx.resume();
+                        const t = audioCtx.currentTime;
+                        if (isChecked) {
+                            const pop = audioCtx.createOscillator();
+                            const popGain = audioCtx.createGain();
+                            pop.type = 'sine';
+                            pop.frequency.setValueAtTime(1800, t);
+                            pop.frequency.exponentialRampToValueAtTime(400, t + 0.03);
+                            popGain.gain.setValueAtTime(0.15, t);
+                            popGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+                            pop.connect(popGain);
+                            popGain.connect(audioCtx.destination);
+                            pop.start(t);
+                            pop.stop(t + 0.06);
+
+                            [
+                                { f: 659.25, v: 0.10 },
+                                { f: 987.77, v: 0.05 },
+                            ].forEach(n => {
+                                const o = audioCtx.createOscillator();
+                                const g = audioCtx.createGain();
+                                o.type = 'sine';
+                                o.frequency.setValueAtTime(n.f, t);
+                                g.gain.setValueAtTime(0, t + 0.02);
+                                g.gain.linearRampToValueAtTime(n.v, t + 0.05);
+                                g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+                                o.connect(g);
+                                g.connect(audioCtx.destination);
+                                o.start(t + 0.02);
+                                o.stop(t + 0.4);
+                            });
+                        } else {
+                            const osc = audioCtx.createOscillator();
+                            const gain = audioCtx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(440, t);
+                            osc.frequency.exponentialRampToValueAtTime(300, t + 0.15);
+                            gain.gain.setValueAtTime(0.07, t);
+                            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+                            osc.connect(gain);
+                            gain.connect(audioCtx.destination);
+                            osc.start(t);
+                            osc.stop(t + 0.15);
+                        }
+                    }
+
+                    // ---------- TODAY VIEW ----------
+                    const habitListEl = document.getElementById('habit-list');
+                    const activeDateInput = document.getElementById('active-date-input');
+
+                    function dayLabel(d) {
+                        return `${dowNames[d.getDay()]}، ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+                    }
+
+                    function renderHabitList() {
+                        const key = fmt(activeDate);
+                        const dayRec = records[key] || {};
+                        const visibleHabits = habitsForDate(key);
+                        habitListEl.innerHTML = '';
+                        if (visibleHabits.length === 0) {
+                            habitListEl.innerHTML = `<div class="empty-state"><div class="em-icon">✨</div>لا توجد عادات بعد — أضف أول عادة لك بالأسفل</div>`;
+                        }
+                        categories.forEach(cat => {
+                            const catHabits = visibleHabits.filter(h => h.cat === cat.id);
+                            if (catHabits.length === 0) return;
+                            const group = document.createElement('div');
+                            group.className = 'habit-group';
+                            group.dataset.cat = cat.id;
+                            const doneCount = catHabits.filter(h => dayRec[h.id]).length;
+                            group.innerHTML = `
         <div class="habit-group-head">
           <span class="habit-group-icon">${cat.icon}</span>
           <span class="habit-group-title">${cat.name}</span>
@@ -1477,238 +1535,277 @@
         </div>
         <div class="habit-group-body"></div>
       `;
-                    const body = group.querySelector('.habit-group-body');
-                    catHabits.forEach(h => {
-                        const done = !!dayRec[h.id];
-                        const isDefault = defaultHabitIds.has(h.id);
-                        const row = document.createElement('div');
-                        row.className = 'habit-row' + (done ? ' done' : '');
-                        row.innerHTML = `
+                            const body = group.querySelector('.habit-group-body');
+                            catHabits.forEach(h => {
+                                const done = !!dayRec[h.id];
+                                const isDefault = defaultHabitIds.has(h.id);
+                                const row = document.createElement('div');
+                                row.className = 'habit-row' + (done ? ' done' : '');
+                                row.innerHTML = `
           <button class="habit-check" data-id="${h.id}">${done ? '✓' : ''}</button>
           <span class="habit-icon">${h.icon}</span>
           <span class="habit-name">${h.name}</span>
           ${isDefault ? '' : `<button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>`}
         `;
-                        body.appendChild(row);
+                                body.appendChild(row);
+                            });
+                            habitListEl.appendChild(group);
+                        });
+                        document.getElementById('habit-count-lbl').textContent = `${visibleHabits.length} عادة`;
+                        updateRing();
+                    }
+
+                    const newHabitCatSelect = document.getElementById('new-habit-cat');
+                    categories.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c.id;
+                        opt.textContent = c.icon + ' ' + c.name;
+                        newHabitCatSelect.appendChild(opt);
                     });
-                    habitListEl.appendChild(group);
-                });
-                document.getElementById('habit-count-lbl').textContent = `${visibleHabits.length} عادة`;
-                updateRing();
-            }
 
-            const newHabitCatSelect = document.getElementById('new-habit-cat');
-            categories.forEach(c => {
-                const opt = document.createElement('option');
-                opt.value = c.id;
-                opt.textContent = c.icon + ' ' + c.name;
-                newHabitCatSelect.appendChild(opt);
-            });
-
-            habitListEl.addEventListener('click', (e) => {
-                const checkBtn = e.target.closest('.habit-check');
-                const delBtn = e.target.closest('.habit-del');
-                const key = fmt(activeDate);
-                if (checkBtn) {
-                    const id = checkBtn.dataset.id;
-                    records[key] = records[key] || {};
-                    const wasChecked = !!records[key][id];
-                    records[key][id] = !wasChecked;
-                    if (!records[key][id]) delete records[key][id];
-                    saveRecords(records);
-
-                    // تحديث العنصر مباشرة بدون إعادة بناء القائمة (لمنع الوميض)
-                    const row = checkBtn.closest('.habit-row');
-                    const nowChecked = !wasChecked;
-                    if (nowChecked) {
-                        row.classList.add('done');
-                        checkBtn.textContent = '✓';
-                    } else {
-                        row.classList.remove('done');
-                        checkBtn.textContent = '';
-                    }
-
-                    // تحديث عداد المجموعة
-                    const group = row.closest('.habit-group');
-                    if (group) {
-                        const catId = group.dataset.cat;
-                        const catHabits = habits.filter(h => h.cat === catId);
-                        const dayRec = records[key] || {};
-                        const doneCount = catHabits.filter(h => dayRec[h.id]).length;
-                        const countEl = group.querySelector('.habit-group-count');
-                        if (countEl) countEl.textContent = `${doneCount}/${catHabits.length}`;
-                    }
-
-                    // أنيميشن الزر
-                    checkBtn.style.transform = 'scale(1.3)';
-                    setTimeout(() => checkBtn.style.transform = '', 200);
-
-                    // صوت
-                    playPopSound(nowChecked);
-
-                    // تحديث الحلقة
-                    updateRing();
-                } else if (delBtn) {
-                    const id = delBtn.dataset.id;
-                    if (defaultHabitIds.has(id)) return; // default habits cannot be deleted
-                    const h = habits.find(x => x.id === id);
-                    askConfirm(`حذف عادة "${h ? h.name : ''}"؟`, () => {
-                        habits = habits.filter(x => x.id !== id);
-                        saveHabits(habits);
-                        // Remove records for this custom habit from its specific day only
-                        if (h && h.addedDate && records[h.addedDate]) {
-                            delete records[h.addedDate][id];
+                    habitListEl.addEventListener('click', (e) => {
+                        const checkBtn = e.target.closest('.habit-check');
+                        const delBtn = e.target.closest('.habit-del');
+                        const key = fmt(activeDate);
+                        if (checkBtn) {
+                            const id = checkBtn.dataset.id;
+                            records[key] = records[key] || {};
+                            const wasChecked = !!records[key][id];
+                            records[key][id] = !wasChecked;
+                            if (!records[key][id]) delete records[key][id];
                             saveRecords(records);
+
+                            const row = checkBtn.closest('.habit-row');
+                            const nowChecked = !wasChecked;
+                            if (nowChecked) {
+                                row.classList.add('done');
+                                checkBtn.textContent = '✓';
+                            } else {
+                                row.classList.remove('done');
+                                checkBtn.textContent = '';
+                            }
+
+                            const group = row.closest('.habit-group');
+                            if (group) {
+                                const catId = group.dataset.cat;
+                                const catHabits = habits.filter(h => h.cat === catId);
+                                const dayRec = records[key] || {};
+                                const doneCount = catHabits.filter(h => dayRec[h.id]).length;
+                                const countEl = group.querySelector('.habit-group-count');
+                                if (countEl) countEl.textContent = `${doneCount}/${catHabits.length}`;
+                            }
+
+                            checkBtn.style.transform = 'scale(1.3)';
+                            setTimeout(() => checkBtn.style.transform = '', 200);
+
+                            playPopSound(nowChecked);
+
+                            updateRing();
+                        } else if (delBtn) {
+                            const id = delBtn.dataset.id;
+                            if (defaultHabitIds.has(id)) return;
+                            const h = habits.find(x => x.id === id);
+                            askConfirm(`حذف عادة "${h ? h.name : ''}"؟`, () => {
+                                habits = habits.filter(x => x.id !== id);
+                                saveHabits(habits);
+                                if (h && h.addedDate && records[h.addedDate]) {
+                                    delete records[h.addedDate][id];
+                                    saveRecords(records);
+                                }
+                                renderHabitList();
+                                showToast('تم حذف العادة');
+                            });
                         }
-                        renderHabitList();
-                        showToast('تم حذف العادة');
                     });
-                }
-            });
 
-            document.getElementById('add-habit-btn').addEventListener('click', addHabit);
-            document.getElementById('new-habit-input').addEventListener('keydown', e => { if (e.key === 'Enter') addHabit(); });
-            function addHabit() {
-                const input = document.getElementById('new-habit-input');
-                const val = input.value.trim();
-                if (!val) return;
-                const cat = newHabitCatSelect.value || 'intaj';
-                const dateKey = fmt(activeDate);
-                habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val, cat, addedDate: dateKey });
-                saveHabits(habits);
-                input.value = '';
-                renderHabitList();
-                showToast('تمت إضافة العادة');
-            }
+                    // ---------- Add Habit UI Events ----------
+                    const newHabitInput = document.getElementById('new-habit-input');
+                    const addHabitOptions = document.getElementById('add-habit-options');
+                    const advancedToggleBtn = document.getElementById('advanced-toggle-btn');
+                    const daysSelector = document.getElementById('days-selector');
+                    const habitTypeRadios = document.querySelectorAll('input[name="habit_type"]');
 
-            function updateRing() {
-                const key = fmt(activeDate);
-                const dayRec = records[key] || {};
-                const visibleHabits = habitsForDate(key);
-                const total = visibleHabits.length;
-                const done = visibleHabits.filter(h => dayRec[h.id]).length;
-                const pct = total ? Math.round((done / total) * 100) : 0;
-                const circle = document.getElementById('ring-fg');
-                const circumference = 283;
-                circle.style.strokeDashoffset = circumference - (circumference * pct / 100);
-                document.getElementById('ring-pct').textContent = pct + '%';
-                const title = document.getElementById('ring-title');
-                const sub = document.getElementById('ring-sub');
-                if (total === 0) { title.textContent = 'أضف عاداتك أولاً'; sub.textContent = 'ابدأ بإضافة عادة من القائمة أدناه.'; }
-                else if (pct === 100) { title.textContent = 'أحسنت! يوم مكتمل 🎉'; sub.textContent = 'أنجزت كل عاداتك لهذا اليوم.'; }
-                else if (pct === 0) { title.textContent = 'لم تبدأ بعد'; sub.textContent = 'أنجز عاداتك لهذا اليوم واحدة تلو الأخرى.'; }
-                else { title.textContent = `${done} من ${total} مكتملة`; sub.textContent = 'استمر، أنت قريب من إتمام يومك.'; }
-                document.getElementById('streak-count').textContent = computeStreak();
-            }
+                    advancedToggleBtn.addEventListener('click', () => {
+                        addHabitOptions.classList.toggle('show');
+                    });
+                    newHabitInput.addEventListener('focus', () => {
+                        addHabitOptions.classList.add('show');
+                    });
+                    newHabitInput.addEventListener('input', () => {
+                        addHabitOptions.classList.add('show');
+                    });
 
-            function computeStreak() {
-                if (habits.length === 0) return 0;
-                let streak = 0;
-                let d = new Date();
-                // count consecutive days (including today only if it already has full completion, else start from yesterday)
-                for (let i = 0; i < 400; i++) {
-                    const key = fmt(d);
-                    const dayHabits = habitsForDate(key);
-                    const rec = records[key] || {};
-                    const done = dayHabits.filter(h => rec[h.id]).length;
-                    const complete = dayHabits.length > 0 && done === dayHabits.length;
-                    if (i === 0 && !complete) { d.setDate(d.getDate() - 1); continue; }
-                    if (complete) { streak++; d.setDate(d.getDate() - 1); } else break;
-                }
-                return streak;
-            }
+                    habitTypeRadios.forEach(r => {
+                        r.addEventListener('change', (e) => {
+                            if (e.target.value === 'specific_days') {
+                                daysSelector.style.display = 'flex';
+                            } else {
+                                daysSelector.style.display = 'none';
+                            }
+                        });
+                    });
 
-            function setActiveDate(d) {
-                activeDate = d;
-                activeDateInput.value = fmt(d);
-                applyDateInput.value = fmt(d);
-                document.getElementById('cur-date-label').textContent = `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
-                document.getElementById('cur-day-name').textContent = dowNames[d.getDay()] + (fmt(d) === todayStr ? ' • اليوم' : '');
-                renderHabitList();
-            }
+                    document.getElementById('add-habit-btn').addEventListener('click', addHabit);
+                    newHabitInput.addEventListener('keydown', e => { if (e.key === 'Enter') addHabit(); });
 
-            document.getElementById('day-prev').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() - 1); setActiveDate(d); });
-            document.getElementById('day-next').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() + 1); setActiveDate(d); });
-            activeDateInput.addEventListener('change', () => {
-                if (activeDateInput.value) { const [y, m, day] = activeDateInput.value.split('-').map(Number); setActiveDate(new Date(y, m - 1, day)); }
-            });
+                    function addHabit() {
+                        try {
+                            const input = newHabitInput;
+                            const val = input.value.trim();
+                            if (!val) return;
 
-            document.getElementById('apply-date-btn').addEventListener('click', () => {
-                if (!applyDateInput.value) { showToast('اختر تاريخًا أولاً'); return; }
-                const [y, m, day] = applyDateInput.value.split('-').map(Number);
-                const targetKey = fmt(new Date(y, m - 1, day));
-                const sourceKey = fmt(activeDate);
-                records[targetKey] = JSON.parse(JSON.stringify(records[sourceKey] || {}));
-                saveRecords(records);
-                showToast(`تم النسخ إلى ${day}/${m}/${y}`);
-                if (document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
-            });
+                            const catSelect = document.getElementById('new-habit-cat');
+                            const cat = catSelect ? catSelect.value : 'intaj';
+                            const dateKey = fmt(activeDate);
 
-            // ---------- CALENDAR VIEW ----------
-            const calGrid = document.getElementById('cal-grid');
-            const calDowRow = document.getElementById('cal-dow-row');
-            dowNames.forEach(n => {
-                const el = document.createElement('div');
-                el.className = 'cal-dow';
-                el.textContent = n;
-                calDowRow.appendChild(el);
-            });
+                            const typeRadio = document.querySelector('input[name="habit_type"]:checked');
+                            const type = typeRadio ? typeRadio.value : 'continuous';
+                            let days = null;
 
-            function renderCalendar() {
-                const y = calMonth.getFullYear(), m = calMonth.getMonth();
-                document.getElementById('cal-month-label').textContent = `${monthNames[m]} ${y}`;
-                calGrid.innerHTML = '';
-                const firstDay = new Date(y, m, 1).getDay();
-                const daysInMonth = new Date(y, m + 1, 0).getDate();
-                for (let i = 0; i < firstDay; i++) {
-                    const empty = document.createElement('div');
-                    empty.className = 'cal-cell empty';
-                    calGrid.appendChild(empty);
-                }
-                for (let d = 1; d <= daysInMonth; d++) {
-                    const dateObj = new Date(y, m, d);
-                    const key = fmt(dateObj);
-                    const rec = records[key] || {};
-                    const dayHabits = habitsForDate(key);
-                    const total = dayHabits.length;
-                    const done = dayHabits.filter(h => rec[h.id]).length;
-                    const pct = total ? done / total : 0;
-                    const cell = document.createElement('div');
-                    cell.className = 'cal-cell' + (pct > 0 ? ' has-data' : '') + (key === todayStr ? ' today' : '') + (pct > 0.5 ? ' bright' : '');
-                    cell.style.setProperty('--fill-opacity', pct > 0 ? Math.max(pct, 0.18) : 0);
-                    cell.innerHTML = `<div class="fill"></div><span class="num">${d}</span>`;
-                    cell.addEventListener('click', () => { setActiveDate(dateObj); goToView('today'); });
-                    calGrid.appendChild(cell);
-                }
-            }
-            document.getElementById('cal-prev').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() - 1); renderCalendar(); });
-            document.getElementById('cal-next').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() + 1); renderCalendar(); });
+                            if (type === 'specific_days') {
+                                const checkboxes = document.querySelectorAll('#days-selector input[type="checkbox"]:checked');
+                                days = Array.from(checkboxes).map(cb => parseInt(cb.value));
+                                if (days.length === 0) {
+                                    showToast('الرجاء اختيار يوم واحد على الأقل');
+                                    return;
+                                }
+                            }
 
-            // ---------- LOG VIEW ----------
-            function renderLog() {
-                const y = logMonth.getFullYear(), m = logMonth.getMonth();
-                document.getElementById('log-month-label').textContent = `${monthNames[m]} ${y}`;
-                const list = document.getElementById('log-list');
-                list.innerHTML = '';
-                const daysInMonth = new Date(y, m + 1, 0).getDate();
-                let any = false;
-                for (let d = daysInMonth; d >= 1; d--) {
-                    const dateObj = new Date(y, m, d);
-                    const key = fmt(dateObj);
-                    const rec = records[key];
-                    if (!rec || Object.keys(rec).length === 0) continue;
-                    any = true;
-                    const dayHabits = habitsForDate(key);
-                    const total = dayHabits.length;
-                    const done = dayHabits.filter(h => rec[h.id]).length;
-                    const pct = total ? Math.round((done / total) * 100) : 0;
-                    const card = document.createElement('div');
-                    card.className = 'log-day';
-                    const tags = dayHabits.map(h => {
-                        const ok = !!rec[h.id];
-                        return `<span class="log-habit-tag ${ok ? '' : 'miss'}">${h.icon} ${h.name}</span>`;
-                    }).join('');
-                    card.innerHTML = `
+                            habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val, cat, addedDate: dateKey, type, days });
+                            saveHabits(habits);
+                            input.value = '';
+                            addHabitOptions.classList.remove('show');
+
+                            // Reset UI
+                            const continuousRadio = document.querySelector('input[name="habit_type"][value="continuous"]');
+                            if (continuousRadio) continuousRadio.checked = true;
+                            daysSelector.style.display = 'none';
+                            document.querySelectorAll('#days-selector input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+                            // Re-render immediately
+                            renderHabitList();
+                            showToast('تمت إضافة العادة بنجاح');
+                        } catch (err) {
+                            alert('Error adding habit: ' + err.message);
+                        }
+                    }
+
+                    function updateRing() {
+                        const key = fmt(activeDate);
+                        const dayRec = records[key] || {};
+                        const visibleHabits = habitsForDate(key);
+                        const total = visibleHabits.length;
+                        const done = visibleHabits.filter(h => dayRec[h.id]).length;
+                        const pct = total ? Math.round((done / total) * 100) : 0;
+                        const circle = document.getElementById('ring-fg');
+                        const circumference = 283;
+                        circle.style.strokeDashoffset = circumference - (circumference * pct / 100);
+                        document.getElementById('ring-pct').textContent = pct + '%';
+                        const title = document.getElementById('ring-title');
+                        const sub = document.getElementById('ring-sub');
+                        if (total === 0) { title.textContent = 'أضف عاداتك أولاً'; sub.textContent = 'ابدأ بإضافة عادة من القائمة أدناه.'; }
+                        else if (pct === 100) { title.textContent = 'أحسنت! يوم مكتمل 🎉'; sub.textContent = 'أنجزت كل عاداتك لهذا اليوم.'; }
+                        else if (pct === 0) { title.textContent = 'لم تبدأ بعد'; sub.textContent = 'أنجز عاداتك لهذا اليوم واحدة تلو الأخرى.'; }
+                        else { title.textContent = `${done} من ${total} مكتملة`; sub.textContent = 'استمر، أنت قريب من إتمام يومك.'; }
+                        document.getElementById('streak-count').textContent = computeStreak();
+                    }
+
+                    function computeStreak() {
+                        if (habits.length === 0) return 0;
+                        let streak = 0;
+                        let d = new Date();
+                        // count consecutive days (including today only if it already has full completion, else start from yesterday)
+                        for (let i = 0; i < 400; i++) {
+                            const key = fmt(d);
+                            const dayHabits = habitsForDate(key);
+                            const rec = records[key] || {};
+                            const done = dayHabits.filter(h => rec[h.id]).length;
+                            const complete = dayHabits.length > 0 && done === dayHabits.length;
+                            if (i === 0 && !complete) { d.setDate(d.getDate() - 1); continue; }
+                            if (complete) { streak++; d.setDate(d.getDate() - 1); } else break;
+                        }
+                        return streak;
+                    }
+
+                    function setActiveDate(d) {
+                        activeDate = d;
+                        activeDateInput.value = fmt(d);
+                        document.getElementById('cur-date-label').textContent = `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+                        document.getElementById('cur-day-name').textContent = dowNames[d.getDay()] + (fmt(d) === todayStr ? ' • اليوم' : '');
+                        renderHabitList();
+                    }
+
+                    document.getElementById('day-prev').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() - 1); setActiveDate(d); });
+                    document.getElementById('day-next').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() + 1); setActiveDate(d); });
+                    activeDateInput.addEventListener('change', () => {
+                        if (activeDateInput.value) { const [y, m, day] = activeDateInput.value.split('-').map(Number); setActiveDate(new Date(y, m - 1, day)); }
+                    });
+
+                    // ---------- CALENDAR VIEW ----------
+                    const calGrid = document.getElementById('cal-grid');
+                    const calDowRow = document.getElementById('cal-dow-row');
+                    dowNames.forEach(n => {
+                        const el = document.createElement('div');
+                        el.className = 'cal-dow';
+                        el.textContent = n;
+                        calDowRow.appendChild(el);
+                    });
+
+                    function renderCalendar() {
+                        const y = calMonth.getFullYear(), m = calMonth.getMonth();
+                        document.getElementById('cal-month-label').textContent = `${monthNames[m]} ${y}`;
+                        calGrid.innerHTML = '';
+                        const firstDay = new Date(y, m, 1).getDay();
+                        const daysInMonth = new Date(y, m + 1, 0).getDate();
+                        for (let i = 0; i < firstDay; i++) {
+                            const empty = document.createElement('div');
+                            empty.className = 'cal-cell empty';
+                            calGrid.appendChild(empty);
+                        }
+                        for (let d = 1; d <= daysInMonth; d++) {
+                            const dateObj = new Date(y, m, d);
+                            const key = fmt(dateObj);
+                            const rec = records[key] || {};
+                            const dayHabits = habitsForDate(key);
+                            const total = dayHabits.length;
+                            const done = dayHabits.filter(h => rec[h.id]).length;
+                            const pct = total ? done / total : 0;
+                            const cell = document.createElement('div');
+                            cell.className = 'cal-cell' + (pct > 0 ? ' has-data' : '') + (key === todayStr ? ' today' : '') + (pct > 0.5 ? ' bright' : '');
+                            cell.style.setProperty('--fill-opacity', pct > 0 ? Math.max(pct, 0.18) : 0);
+                            cell.innerHTML = `<div class="fill"></div><span class="num">${d}</span>`;
+                            cell.addEventListener('click', () => { setActiveDate(dateObj); goToView('today'); });
+                            calGrid.appendChild(cell);
+                        }
+                    }
+                    document.getElementById('cal-prev').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() - 1); renderCalendar(); });
+                    document.getElementById('cal-next').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() + 1); renderCalendar(); });
+
+                    // ---------- LOG VIEW ----------
+                    function renderLog() {
+                        const y = logMonth.getFullYear(), m = logMonth.getMonth();
+                        document.getElementById('log-month-label').textContent = `${monthNames[m]} ${y}`;
+                        const list = document.getElementById('log-list');
+                        list.innerHTML = '';
+                        const daysInMonth = new Date(y, m + 1, 0).getDate();
+                        let any = false;
+                        for (let d = daysInMonth; d >= 1; d--) {
+                            const dateObj = new Date(y, m, d);
+                            const key = fmt(dateObj);
+                            const rec = records[key];
+                            if (!rec || Object.keys(rec).length === 0) continue;
+                            any = true;
+                            const dayHabits = habitsForDate(key);
+                            const total = dayHabits.length;
+                            const done = dayHabits.filter(h => rec[h.id]).length;
+                            const pct = total ? Math.round((done / total) * 100) : 0;
+                            const card = document.createElement('div');
+                            card.className = 'log-day';
+                            const tags = dayHabits.map(h => {
+                                const ok = !!rec[h.id];
+                                return `<span class="log-habit-tag ${ok ? '' : 'miss'}">${h.icon} ${h.name}</span>`;
+                            }).join('');
+                            card.innerHTML = `
         <div class="log-day-head">
           <div>
             <div class="log-day-title">${dowNames[dateObj.getDay()]}، ${d} ${monthNames[m]}</div>
@@ -1718,28 +1815,28 @@
         </div>
         <div class="log-habits">${tags}</div>
       `;
-                    card.querySelector('.log-day-head').addEventListener('click', () => card.classList.toggle('open'));
-                    list.appendChild(card);
-                }
-                if (!any) {
-                    list.innerHTML = `<div class="empty-state"><div class="em-icon">📭</div>لا يوجد سجل إنجاز في هذا الشهر</div>`;
-                }
-            }
-            document.getElementById('log-prev').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() - 1); renderLog(); });
-            document.getElementById('log-next').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() + 1); renderLog(); });
+                            card.querySelector('.log-day-head').addEventListener('click', () => card.classList.toggle('open'));
+                            list.appendChild(card);
+                        }
+                        if (!any) {
+                            list.innerHTML = `<div class="empty-state"><div class="em-icon">📭</div>لا يوجد سجل إنجاز في هذا الشهر</div>`;
+                        }
+                    }
+                    document.getElementById('log-prev').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() - 1); renderLog(); });
+                    document.getElementById('log-next').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() + 1); renderLog(); });
 
-            // ---------- INIT ----------
-            setActiveDate(new Date());
-            renderCalendar();
+                    // ---------- INIT ----------
+                    setActiveDate(new Date());
+                    renderCalendar();
 
-            // ---------- SPLASH & ENTRANCE ANIMATIONS ----------
-            setTimeout(() => {
-                const splash = document.getElementById('splash');
-                splash.classList.add('hide');
-                document.querySelector('.wrap').classList.add('anim-ready');
-                splash.addEventListener('transitionend', () => splash.remove());
-            }, 1200);
-        })();
+                    // ---------- SPLASH & ENTRANCE ANIMATIONS ----------
+                    setTimeout(() => {
+                        const splash = document.getElementById('splash');
+                        splash.classList.add('hide');
+                        document.querySelector('.wrap').classList.add('anim-ready');
+                        splash.addEventListener('transitionend', () => splash.remove());
+                    }, 1200);
+                })();
     </script>
 </body>
 
