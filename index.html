@@ -1328,7 +1328,8 @@
                 <div class="add-habit-row">
                     <button type="button" id="emoji-picker-btn" class="date-input" style="flex:0 0 auto; width: 55px; padding: 0.5rem 0; text-align: center; font-size: 1.2rem; cursor: pointer; background: var(--surface); border: 1px solid var(--border);">⭐</button>
                     <input type="hidden" id="new-habit-icon-val" value="⭐">
-                    <select id="new-habit-cat" class="date-input" style="flex:0 0 auto;"></select>
+                    <button type="button" id="cat-picker-btn" class="date-input" style="flex:0 0 auto; min-width: 90px; padding: 0.5rem 0.5rem; text-align: center; font-size: 1rem; font-family: 'Tajawal', sans-serif; cursor: pointer; background: var(--surface); border: 1px solid var(--border);">💡 إنتاجيّة</button>
+                    <input type="hidden" id="new-habit-cat-val" value="intaj">
                     <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
                 </div>
 
@@ -1419,6 +1420,14 @@
             <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px;">اختر أيقونة</h3>
             <div class="emoji-grid" id="emoji-grid"></div>
             <button class="btn btn-ghost" id="emoji-modal-close" style="width: 100%; margin-top: 15px;">إلغاء</button>
+        </div>
+    </div>
+
+    <div class="emoji-modal-overlay" id="cat-modal-overlay">
+        <div class="emoji-modal-box">
+            <h3 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 10px;">اختر التصنيف</h3>
+            <div class="emoji-grid" id="cat-grid" style="grid-template-columns: 1fr; gap: 8px;"></div>
+            <button class="btn btn-ghost" id="cat-modal-close" style="width: 100%; margin-top: 15px;">إلغاء</button>
         </div>
     </div>
 
@@ -1699,13 +1708,36 @@
                         updateRing();
                     }
 
-                    const newHabitCatSelect = document.getElementById('new-habit-cat');
-                    categories.forEach(c => {
-                        const opt = document.createElement('option');
-                        opt.value = c.id;
-                        opt.textContent = c.icon + ' ' + c.name;
-                        newHabitCatSelect.appendChild(opt);
-                    });
+                    // ---------- Category Picker Logic ----------
+                    const catPickerBtn = document.getElementById('cat-picker-btn');
+                    const catIconVal = document.getElementById('new-habit-cat-val');
+                    const catModalOverlay = document.getElementById('cat-modal-overlay');
+                    const catModalClose = document.getElementById('cat-modal-close');
+                    const catGrid = document.getElementById('cat-grid');
+
+                    if (catGrid) {
+                        categories.forEach(c => {
+                            const btn = document.createElement('button');
+                            btn.className = 'emoji-btn';
+                            btn.style.fontSize = '1.1rem';
+                            btn.style.padding = '10px';
+                            btn.style.fontFamily = "'Tajawal', sans-serif";
+                            btn.innerHTML = `${c.icon} ${c.name}`;
+                            btn.addEventListener('click', () => {
+                                if (catIconVal) catIconVal.value = c.id;
+                                if (catPickerBtn) catPickerBtn.textContent = `${c.icon} ${c.name}`;
+                                catModalOverlay.classList.remove('show');
+                            });
+                            catGrid.appendChild(btn);
+                        });
+                    }
+
+                    if (catPickerBtn) {
+                        catPickerBtn.addEventListener('click', () => catModalOverlay.classList.add('show'));
+                    }
+                    if (catModalClose) {
+                        catModalClose.addEventListener('click', () => catModalOverlay.classList.remove('show'));
+                    }
 
                     habitListEl.addEventListener('click', (e) => {
                         const checkBtn = e.target.closest('.habit-check');
@@ -1790,7 +1822,7 @@
                     });
 
                     // ---------- Emoji Picker Logic ----------
-                    const emojis = ['⭐', '💧', '📖', '🏃', '🧘', '🍎', '📝', '💻', '💡', '📿', '🕌', '🏋️', '🎯', '🎨', '💊', '💰', '🧹', '🪴', '🎸', '🎮'];
+                    const emojis = ['⭐', '💧', '📖', '🏃', '🧘', '🍎', '📝', '💻', '💡', '📿', '🕌', '🏋️', '🎯', '🎨', '💊', '💰', '🧹', '🪴', '🥦', '🎮'];
                     const emojiPickerBtn = document.getElementById('emoji-picker-btn');
                     const emojiIconVal = document.getElementById('new-habit-icon-val');
                     const emojiModalOverlay = document.getElementById('emoji-modal-overlay');
@@ -1827,8 +1859,8 @@
                             const val = input.value.trim();
                             if (!val) return;
 
-                            const catSelect = document.getElementById('new-habit-cat');
-                            const cat = catSelect ? catSelect.value : 'intaj';
+                            const catVal = document.getElementById('new-habit-cat-val');
+                            const cat = catVal ? catVal.value : 'intaj';
                             const dateKey = fmt(activeDate);
 
                             const typeRadio = document.querySelector('input[name="habit_type"]:checked');
