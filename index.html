@@ -1055,9 +1055,12 @@
             display: inline-block;
             margin: 0;
         }
+
         .day-badge-label input[type="checkbox"] {
-            display: none !important; /* إخفاء مربع الاختيار تماماً */
+            display: none !important;
+            /* إخفاء مربع الاختيار تماماً */
         }
+
         .category-badge {
             display: inline-flex;
             align-items: center;
@@ -1071,20 +1074,23 @@
             color: #3f3d56;
             transition: all 0.25s ease;
         }
+
         .category-badge:hover {
             background-color: #ffffff;
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
             border-color: #e4ded5;
         }
-        .day-badge-label input[type="checkbox"]:checked + .category-badge {
+
+        .day-badge-label input[type="checkbox"]:checked+.category-badge {
             background-color: var(--primary);
             color: #ffffff;
             border-color: var(--primary-ink);
             box-shadow: 0 4px 12px rgba(15, 110, 95, 0.2);
             transform: translateY(-2px);
         }
-        .day-badge-label input[type="checkbox"]:checked + .category-badge:hover {
+
+        .day-badge-label input[type="checkbox"]:checked+.category-badge:hover {
             filter: brightness(1.1);
         }
 
@@ -1259,7 +1265,8 @@
                 <div class="add-habit-row">
                     <select id="new-habit-cat" class="date-input" style="flex:0 0 auto;"></select>
                     <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
-                    <button class="btn btn-primary" id="add-habit-btn" style="background-color: #D97B3F; border-color: #D97B3F;">إضافة</button>
+                    <button class="btn btn-primary" id="add-habit-btn"
+                        style="background-color: #D97B3F; border-color: #D97B3F;">إضافة</button>
                 </div>
 
                 <button class="advanced-toggle-btn" id="advanced-toggle-btn"
@@ -1273,14 +1280,15 @@
                         <label style="margin-right:15px;"><input type="radio" name="habit_type" value="specific_days">
                             أيام محدّدة</label>
                     </div>
-                    <div id="days-selector" style="display:none; flex-wrap:wrap; gap:8px; justify-content: center; margin-top: 15px; padding: 10px 0;">
+                    <div id="days-selector"
+                        style="display:none; flex-wrap:wrap; gap:8px; justify-content: center; margin-top: 15px; padding: 10px 0;">
                         <label class="day-badge-label">
                             <input type="checkbox" value="0">
                             <div class="category-badge">الأحد</div>
                         </label>
                         <label class="day-badge-label">
                             <input type="checkbox" value="1">
-                            <div class="category-badge">الإثنين</div>
+                            <div class="category-badge">الاثنين</div>
                         </label>
                         <label class="day-badge-label">
                             <input type="checkbox" value="2">
