@@ -4,7 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>روتين</title>
+    <title>روتين 🎯 — رفيقك اليومي لبناء العادات</title>
+    <meta name="description" content="روتين 🎯، رفيقك اليومي لبناء العادات والمحافظة عليها.">
+
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mralialnasser.github.io/habit-tracker/">
+    <meta property="og:title" content="روتين 🎯">
+    <meta property="og:description" content="رفيقك اليومي لبناء العادات والمحافظة عليها.">
+    <meta property="og:image" content="https://mralialnasser.github.io/habit-tracker/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="ar_SA">
+    <meta property="og:site_name" content="روتين">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="روتين 🎯">
+    <meta name="twitter:description" content="رفيقك اليومي لبناء العادات والمحافظة عليها.">
+    <meta name="twitter:image" content="https://mralialnasser.github.io/habit-tracker/og-image.png">
+
     <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230F6E5F'/%3E%3Cstop offset='100%25' stop-color='%23D97B3F'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='48' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='white'%3E🎯%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1245,6 +1264,16 @@
                 { id: 'h8', icon: '🧴', name: 'مرطّب للبشرة', cat: 'sihha' },
                 { id: 'h9', icon: '✍️', name: 'كتابة فكرة / مقال / تعلّم شيء جديد', cat: 'intaj' },
             ];
+            const defaultHabitIds = new Set(defaultHabits.map(h => h.id));
+
+            // Returns habits visible on a given date key:
+            // all default habits + custom habits whose addedDate matches
+            function habitsForDate(dateKey) {
+                return habits.filter(h => {
+                    if (defaultHabitIds.has(h.id)) return true;
+                    return h.addedDate === dateKey;
+                });
+            }
 
             function loadHabits() {
                 try {
@@ -1399,12 +1428,13 @@
             function renderHabitList() {
                 const key = fmt(activeDate);
                 const dayRec = records[key] || {};
+                const visibleHabits = habitsForDate(key);
                 habitListEl.innerHTML = '';
-                if (habits.length === 0) {
+                if (visibleHabits.length === 0) {
                     habitListEl.innerHTML = `<div class="empty-state"><div class="em-icon">✨</div>لا توجد عادات بعد — أضف أول عادة لك بالأسفل</div>`;
                 }
                 categories.forEach(cat => {
-                    const catHabits = habits.filter(h => h.cat === cat.id);
+                    const catHabits = visibleHabits.filter(h => h.cat === cat.id);
                     if (catHabits.length === 0) return;
                     const group = document.createElement('div');
                     group.className = 'habit-group';
@@ -1421,19 +1451,20 @@
                     const body = group.querySelector('.habit-group-body');
                     catHabits.forEach(h => {
                         const done = !!dayRec[h.id];
+                        const isDefault = defaultHabitIds.has(h.id);
                         const row = document.createElement('div');
                         row.className = 'habit-row' + (done ? ' done' : '');
                         row.innerHTML = `
           <button class="habit-check" data-id="${h.id}">${done ? '✓' : ''}</button>
           <span class="habit-icon">${h.icon}</span>
           <span class="habit-name">${h.name}</span>
-          <button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>
+          ${isDefault ? '' : `<button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>`}
         `;
                         body.appendChild(row);
                     });
                     habitListEl.appendChild(group);
                 });
-                document.getElementById('habit-count-lbl').textContent = `${habits.length} عادة`;
+                document.getElementById('habit-count-lbl').textContent = `${visibleHabits.length} عادة`;
                 updateRing();
             }
 
@@ -1490,12 +1521,16 @@
                     updateRing();
                 } else if (delBtn) {
                     const id = delBtn.dataset.id;
+                    if (defaultHabitIds.has(id)) return; // default habits cannot be deleted
                     const h = habits.find(x => x.id === id);
-                    askConfirm(`حذف عادة "${h ? h.name : ''}"؟ سيتم حذفها من كل الأيام.`, () => {
+                    askConfirm(`حذف عادة "${h ? h.name : ''}"؟`, () => {
                         habits = habits.filter(x => x.id !== id);
                         saveHabits(habits);
-                        Object.keys(records).forEach(dk => { delete records[dk][id]; });
-                        saveRecords(records);
+                        // Remove records for this custom habit from its specific day only
+                        if (h && h.addedDate && records[h.addedDate]) {
+                            delete records[h.addedDate][id];
+                            saveRecords(records);
+                        }
                         renderHabitList();
                         showToast('تم حذف العادة');
                     });
@@ -1509,7 +1544,8 @@
                 const val = input.value.trim();
                 if (!val) return;
                 const cat = newHabitCatSelect.value || 'intaj';
-                habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val, cat });
+                const dateKey = fmt(activeDate);
+                habits.push({ id: 'h' + Date.now(), icon: '⭐', name: val, cat, addedDate: dateKey });
                 saveHabits(habits);
                 input.value = '';
                 renderHabitList();
@@ -1519,8 +1555,9 @@
             function updateRing() {
                 const key = fmt(activeDate);
                 const dayRec = records[key] || {};
-                const total = habits.length;
-                const done = habits.filter(h => dayRec[h.id]).length;
+                const visibleHabits = habitsForDate(key);
+                const total = visibleHabits.length;
+                const done = visibleHabits.filter(h => dayRec[h.id]).length;
                 const pct = total ? Math.round((done / total) * 100) : 0;
                 const circle = document.getElementById('ring-fg');
                 const circumference = 283;
@@ -1542,9 +1579,10 @@
                 // count consecutive days (including today only if it already has full completion, else start from yesterday)
                 for (let i = 0; i < 400; i++) {
                     const key = fmt(d);
+                    const dayHabits = habitsForDate(key);
                     const rec = records[key] || {};
-                    const done = habits.filter(h => rec[h.id]).length;
-                    const complete = habits.length > 0 && done === habits.length;
+                    const done = dayHabits.filter(h => rec[h.id]).length;
+                    const complete = dayHabits.length > 0 && done === dayHabits.length;
                     if (i === 0 && !complete) { d.setDate(d.getDate() - 1); continue; }
                     if (complete) { streak++; d.setDate(d.getDate() - 1); } else break;
                 }
@@ -1602,8 +1640,9 @@
                     const dateObj = new Date(y, m, d);
                     const key = fmt(dateObj);
                     const rec = records[key] || {};
-                    const total = habits.length;
-                    const done = habits.filter(h => rec[h.id]).length;
+                    const dayHabits = habitsForDate(key);
+                    const total = dayHabits.length;
+                    const done = dayHabits.filter(h => rec[h.id]).length;
                     const pct = total ? done / total : 0;
                     const cell = document.createElement('div');
                     cell.className = 'cal-cell' + (pct > 0 ? ' has-data' : '') + (key === todayStr ? ' today' : '') + (pct > 0.5 ? ' bright' : '');
@@ -1630,12 +1669,13 @@
                     const rec = records[key];
                     if (!rec || Object.keys(rec).length === 0) continue;
                     any = true;
-                    const total = habits.length;
-                    const done = habits.filter(h => rec[h.id]).length;
+                    const dayHabits = habitsForDate(key);
+                    const total = dayHabits.length;
+                    const done = dayHabits.filter(h => rec[h.id]).length;
                     const pct = total ? Math.round((done / total) * 100) : 0;
                     const card = document.createElement('div');
                     card.className = 'log-day';
-                    const tags = habits.map(h => {
+                    const tags = dayHabits.map(h => {
                         const ok = !!rec[h.id];
                         return `<span class="log-habit-tag ${ok ? '' : 'miss'}">${h.icon} ${h.name}</span>`;
                     }).join('');
