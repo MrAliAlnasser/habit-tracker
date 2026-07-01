@@ -1048,6 +1048,46 @@
             }
         }
 
+        /* ========== DAY SELECTION BADGES ========== */
+        .day-badge-label {
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+            margin: 0;
+        }
+        .day-badge-label input[type="checkbox"] {
+            display: none !important; /* إخفاء مربع الاختيار تماماً */
+        }
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #fbf7f0;
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 1px solid #efeae2;
+            font-family: var(--font-display);
+            font-size: 16px;
+            color: #3f3d56;
+            transition: all 0.25s ease;
+        }
+        .category-badge:hover {
+            background-color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-color: #e4ded5;
+        }
+        .day-badge-label input[type="checkbox"]:checked + .category-badge {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary-ink);
+            box-shadow: 0 4px 12px rgba(15, 110, 95, 0.2);
+            transform: translateY(-2px);
+        }
+        .day-badge-label input[type="checkbox"]:checked + .category-badge:hover {
+            filter: brightness(1.1);
+        }
+
         /* ========== ENTRANCE ANIMATIONS ========== */
         @keyframes fadeSlideUp {
             from {
