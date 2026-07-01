@@ -93,7 +93,8 @@
             min-height: 100vh;
             transition: background .3s ease, color .3s ease;
             padding-bottom: 4rem;
-            padding-top: env(safe-area-inset-top); /* لتجنب النوتش وشريط الحالة الشفاف */
+            padding-top: env(safe-area-inset-top);
+            /* لتجنب النوتش وشريط الحالة الشفاف */
         }
 
         body::before {
@@ -1326,27 +1327,31 @@
             <div class="add-habit-container"
                 style="background: var(--surface); padding: 1.5rem; border-radius: var(--radius); margin-top: 1rem; border: 1px solid var(--border);">
                 <div class="add-habit-row">
-                    <button type="button" id="emoji-picker-btn" class="date-input" style="flex:0 0 auto; width: 55px; padding: 0.5rem 0; text-align: center; font-size: 1.2rem; cursor: pointer; background: var(--surface); border: 1px solid var(--border);">⭐</button>
+                    <button type="button" id="emoji-picker-btn" class="date-input"
+                        style="flex:0 0 auto; width: 55px; padding: 0.5rem 0; text-align: center; font-size: 1.2rem; cursor: pointer; background: var(--surface); border: 1px solid var(--border);">⭐</button>
                     <input type="hidden" id="new-habit-icon-val" value="⭐">
-                    <button type="button" id="cat-picker-btn" class="date-input" style="flex:0 0 auto; min-width: 90px; padding: 0.5rem 0.5rem; text-align: center; font-size: 1rem; font-family: 'Tajawal', sans-serif; cursor: pointer; background: var(--surface); border: 1px solid var(--border);">💡 إنتاجيّة</button>
+                    <button type="button" id="cat-picker-btn" class="date-input"
+                        style="flex:0 0 auto; min-width: 90px; padding: 0.5rem 0.5rem; text-align: center; font-size: 1rem; font-family: 'Tajawal', sans-serif; cursor: pointer; background: var(--surface); border: 1px solid var(--border);">💡
+                        إنتاجيّة</button>
                     <input type="hidden" id="new-habit-cat-val" value="intaj">
                     <input type="text" id="new-habit-input" placeholder="أضف عادة جديدة…">
                 </div>
 
-                <div style="display: flex; gap: 10px; margin-top: 10px; justify-content: space-between; align-items: center;">
+                <div
+                    style="display: flex; gap: 10px; margin-top: 10px; justify-content: space-between; align-items: center;">
                     <button class="advanced-toggle-btn" id="advanced-toggle-btn"
                         style="font-family: 'Tajawal', sans-serif; margin: 0;">
-                        ⚙️ (تحديد الأيام)
+                        ⚙️ إعدادات
                     </button>
                     <button class="btn btn-primary" id="add-habit-btn"
                         style="background-color: #D97B3F; border-color: #D97B3F; padding: 0.5rem 1.5rem;">إضافة</button>
                 </div>
 
                 <div class="add-habit-options" id="add-habit-options">
-                    <div style="margin-bottom:10px;">
+                    <div style="margin-bottom:10px; display: flex; flex-wrap: wrap; gap: 15px;">
                         <label><input type="radio" name="habit_type" value="continuous" checked> يوميّة</label>
-                        <label style="margin-right:15px;"><input type="radio" name="habit_type" value="specific_days">
-                            أيام محدّدة</label>
+                        <label><input type="radio" name="habit_type" value="specific_days"> أيام محدّدة</label>
+                        <label><input type="radio" name="habit_type" value="once"> لهذا اليوم فقط</label>
                     </div>
                     <div id="days-selector"
                         style="display:none; flex-wrap:wrap; gap:8px; justify-content: center; margin-top: 15px; padding: 10px 0;">
@@ -1487,6 +1492,10 @@
 
                             if (h.type === 'specific_days' && h.days) {
                                 return h.days.includes(dayOfWeek);
+                            }
+
+                            if (h.type === 'once') {
+                                return dateKey === h.addedDate;
                             }
 
                             return false;
