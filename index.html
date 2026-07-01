@@ -1072,8 +1072,23 @@
                 try {
                     const raw = localStorage.getItem(STORAGE_HABITS);
                     if (raw) {
-                        const list = JSON.parse(raw);
-                        return list.map(h => ({ ...h, cat: h.cat || 'intaj' }));
+                        let list = JSON.parse(raw);
+                        const newDefaultsMap = {};
+                        defaultHabits.forEach(dh => newDefaultsMap[dh.id] = dh);
+                        
+                        list = list.map(h => {
+                            if (newDefaultsMap[h.id]) {
+                                return newDefaultsMap[h.id];
+                            }
+                            return { ...h, cat: h.cat || 'intaj' };
+                        });
+                        
+                        if (!list.find(h => h.id === 'h9')) {
+                            list.push(newDefaultsMap['h9']);
+                        }
+                        
+                        saveHabits(list);
+                        return list;
                     }
                 } catch (e) { }
                 saveHabits(defaultHabits);
