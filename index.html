@@ -1904,20 +1904,40 @@
             <div class="del-opts-name" id="del-opts-name"></div>
             <div class="del-opts-list">
                 <button class="del-opt-btn" id="del-opt-today">
-                    <span class="opt-icon">📌</span>
-                    <span class="opt-text">لهذا اليوم فقط<small>إخفاء العادة من هذا اليوم</small></span>
-                </button>
-                <button class="del-opt-btn" id="del-opt-future">
-                    <span class="opt-icon">⏩</span>
-                    <span class="opt-text">من اليوم فصاعدًا<small>إبقاؤها في الأيّام السابقة</small></span>
-                </button>
-                <button class="del-opt-btn" id="del-opt-all">
-                    <span class="opt-icon">❌</span>
-                    <span class="opt-text">حذف نهائي<small>إزالتها من جميع الأيّام</small></span>
-                </button>
-            </div>
-            <button class="del-opts-cancel" id="del-opts-cancel">إلغاء</button>
-        </div>
+        <div class="confirm-overlay" id="confirm-overlay">
+        <div class="confirm-box">
+            <p id="confirm-text">هل أنت متأكد؟</p>
+            <div class="confirm-actions">
+                <button class="btn btn-ghost" id="confirm-cancel">إلغاء</button>
+                <button class="btn btn-primary" id="confirm-ok" style="background:var(--danger);">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Options Modal -->
+    <div class="del-opts-overlay" id="del-opts-overlay">
+        <div class="del-opts-box">
+            <div class="del-opts-header">
+                <div class="del-opts-icon">🗑️</div>
+                <span class="del-opts-title">حذف العادة</span>
+            </div>
+            <div class="del-opts-name" id="del-opts-name"></div>
+            <div class="del-opts-list">
+                <button class="del-opt-btn" id="del-opt-today">
+                    <span class="opt-icon">📌</span>
+                    <span class="opt-text">لهذا اليوم فقط<small>إخفاء العادة من هذا اليوم</small></span>
+                </button>
+                <button class="del-opt-btn" id="del-opt-future">
+                    <span class="opt-icon">⏩</span>
+                    <span class="opt-text">من اليوم فصاعدًا<small>إبقاؤها في الأيّام السابقة</small></span>
+                </button>
+                <button class="del-opt-btn" id="del-opt-all">
+                    <span class="opt-icon">❌</span>
+                    <span class="opt-text">حذف نهائي<small>إزالتها من جميع الأيّام</small></span>
+                </button>
+            </div>
+            <button class="del-opts-cancel" id="del-opts-cancel">إلغاء</button>
+        </div>
     </div>
 
     <script>
@@ -1933,10 +1953,11 @@
 
             const defaultHabits = [
                 { id: 'h1', icon: '🌅', name: 'صلاة الفجر', cat: 'ibadat' },
-                { id: 'h2', icon: '🕌', name: 'صلاة الظهرين', cat: 'ibadat' },
-                { id: 'h3', icon: '🌇', name: 'صلاة العشائين', cat: 'ibadat' },
-                { id: 'h4', icon: '📿', name: 'استغفار', cat: 'ibadat' },
-                { id: 'h5', icon: '📿', name: 'تسبيح', cat: 'ibadat' },
+                { id: 'h2', icon: '☀️', name: 'صلاة الظهر', cat: 'ibadat' },
+                { id: 'h10', icon: '🌤️', name: 'صلاة العصر', cat: 'ibadat' },
+                { id: 'h3', icon: '🌇', name: 'صلاة المغرب', cat: 'ibadat' },
+                { id: 'h11', icon: '🌙', name: 'صلاة العشاء', cat: 'ibadat' },
+                { id: 'h4', icon: '📿', name: 'تسبيح / استغفار', cat: 'ibadat' },
                 { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة', cat: 'sihha' },
                 { id: 'h7', icon: '💧', name: 'شرب 8 أكواب من الماء', cat: 'sihha' },
                 { id: 'h8', icon: '🧴', name: 'مرطّب للبشرة', cat: 'sihha' },
@@ -1944,41 +1965,41 @@
             ];
             const defaultHabitIds = new Set(defaultHabits.map(h => h.id));
 
-                                // Returns habits visible on a given date key:
-                    // all default habits + custom habits based on their addedDate and type
-                    function habitsForDate(dateKey) {
-                        const [y, m, d] = dateKey.split('-');
-                        const dateObj = new Date(y, m - 1, d);
-                        const dayOfWeek = dateObj.getDay();
-
-                        return habits.filter(h => {
-                            if (defaultHabitIds.has(h.id)) return true;
-
-                            // If the habit was added after this date, hide it
-                            if (h.addedDate && dateKey < h.addedDate) return false;
-
-                            // If the habit has an endDate, hide it from that date onwards
-                            if (h.endDate && dateKey >= h.endDate) return false;
-
-                            // If this specific day is hidden
-                            if (h.hiddenDays && h.hiddenDays.includes(dateKey)) return false;
-
-                            // If it has no type, treat it as continuous for backward compatibility
-                            if (!h.type || h.type === 'continuous') {
-                                return true;
-                            }
-
-                            if (h.type === 'specific_days' && h.days) {
-                                return h.days.includes(dayOfWeek);
-                            }
-
-                            if (h.type === 'once') {
-                                return dateKey === h.addedDate;
-                            }
-
-                            return false;
-                        });
+            // Returns habits visible on a given date key:
+            // all default habits + custom habits based on their addedDate and type
+            function habitsForDate(dateKey) {
+                const [y, m, d] = dateKey.split('-');
+                const dateObj = new Date(y, m - 1, d);
+                const dayOfWeek = dateObj.getDay();
+
+                return habits.filter(h => {
+                    if (defaultHabitIds.has(h.id)) return true;
+
+                    // If the habit was added after this date, hide it
+                    if (h.addedDate && dateKey < h.addedDate) return false;
+
+                    // If the habit has an endDate, hide it from that date onwards
+                    if (h.endDate && dateKey >= h.endDate) return false;
+
+                    // If this specific day is hidden
+                    if (h.hiddenDays && h.hiddenDays.includes(dateKey)) return false;
+
+                    // If it has no type, treat it as continuous for backward compatibility
+                    if (!h.type || h.type === 'continuous') {
+                        return true;
                     }
+
+                    if (h.type === 'specific_days' && h.days) {
+                        return h.days.includes(dayOfWeek);
+                    }
+
+                    if (h.type === 'once') {
+                        return dateKey === h.addedDate;
+                    }
+
+                    return false;
+                });
+            }
 
             function loadHabits() {
                 try {
@@ -1995,9 +2016,12 @@
                             return { ...h, cat: h.cat || 'intaj' };
                         });
 
-                        if (!list.find(h => h.id === 'h9')) {
-                            list.push(newDefaultsMap['h9']);
-                        }
+                        // Add any new default habits that aren't in the user's list
+                        defaultHabits.forEach(dh => {
+                            if (!list.find(h => h.id === dh.id)) {
+                                list.push(dh);
+                            }
+                        });
 
                         saveHabits(list);
                         return list;
