@@ -532,9 +532,7 @@
             transition: border-color .2s ease, background .2s ease;
         }
 
-        .habit-row .pomodoro-panel {
-            flex-basis: 100%;
-        }
+        
 
         .habit-row.done {
             border-color: var(--primary);
@@ -956,46 +954,183 @@
             transform: scale(1.1);
         }
 
-        .confirm-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, .45);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 1rem;
-        }
-
-        .confirm-overlay.show {
-            display: flex;
-        }
-
-        .confirm-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 1.3rem;
-            max-width: 320px;
-            width: 100%;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .confirm-box p {
-            font-size: .88rem;
-            margin-bottom: 1rem;
-            color: var(--ink);
-        }
-
-        .confirm-actions {
-            display: flex;
-            gap: .6rem;
-        }
-
-        .confirm-actions .btn {
-            flex: 1;
-            justify-content: center;
+                .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .confirm-overlay.show {
+            display: flex;
+        }
+
+        .confirm-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.3rem;
+            max-width: 320px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .confirm-box p {
+            font-size: .88rem;
+            margin-bottom: 1rem;
+            color: var(--ink);
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: .6rem;
+        }
+
+        .confirm-actions .btn {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* ========== DELETE OPTIONS MODAL ========== */
+        .del-opts-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .5);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2100;
+            padding: 1rem;
+        }
+
+        .del-opts-overlay.show {
+            display: flex;
+            animation: fade .25s ease;
+        }
+
+        .del-opts-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            max-width: 340px;
+            width: 100%;
+            box-shadow: 0 20px 50px -12px rgba(0,0,0,.3);
+            animation: scaleIn .25s ease;
+        }
+
+        .del-opts-header {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-bottom: .6rem;
+        }
+
+        .del-opts-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .del-opts-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--ink);
+        }
+
+        .del-opts-name {
+            font-size: .82rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            padding-bottom: .8rem;
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .del-opts-list {
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            margin-bottom: .8rem;
+        }
+
+        .del-opt-btn {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            width: 100%;
+            padding: .7rem .9rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface-2);
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: .84rem;
+            font-weight: 600;
+            color: var(--ink);
+            text-align: start;
+            transition: all .2s ease;
+        }
+
+        .del-opt-btn:hover {
+            border-color: var(--danger);
+            background: color-mix(in srgb, var(--danger) 6%, var(--surface));
+            transform: translateY(-1px);
+        }
+
+        .del-opt-btn:active {
+            transform: scale(.98);
+        }
+
+        .del-opt-btn .opt-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            width: 28px;
+            text-align: center;
+        }
+
+        .del-opt-btn .opt-text {
+            flex: 1;
+        }
+
+        .del-opt-btn .opt-text small {
+            display: block;
+            font-size: .7rem;
+            font-weight: 400;
+            color: var(--muted);
+            margin-top: 1px;
+        }
+
+        .del-opts-cancel {
+            width: 100%;
+            padding: .6rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--surface);
+            cursor: pointer;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: .85rem;
+            color: var(--muted);
+            transition: all .2s ease;
+        }
+
+        .del-opts-cancel:hover {
+            background: var(--surface-2);
+            color: var(--ink);
         }
 
         .toast {
@@ -1151,7 +1286,7 @@
             border-color: #e4ded5;
         }
 
-        .day-badge-label input[type="checkbox"]:checked+.category-badge {
+                .day-badge-label input[type="checkbox"]:checked+.category-badge {
             background-color: var(--primary);
             color: #ffffff;
             border-color: var(--primary-ink);
@@ -1162,6 +1297,68 @@
         .day-badge-label input[type="checkbox"]:checked+.category-badge:hover {
             filter: brightness(1.1);
         }
+
+        /* Time Selection Badges */
+        .time-badge-label {
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+            margin: 0;
+        }
+
+        .time-badge-label input[type="radio"] {
+            display: none !important;
+        }
+
+        .time-badge-label input[type="radio"]:checked+.category-badge {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary-ink);
+            box-shadow: 0 4px 12px rgba(15, 110, 95, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .time-badge-label input[type="radio"]:checked+.category-badge:hover {
+            filter: brightness(1.1);
+        }
+
+        .focus-card.running .focus-time-selector {
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+
+        /* Time Selection Badges */
+        .time-badge-label {
+            cursor: pointer;
+            user-select: none;
+            display: inline-block;
+            margin: 0;
+        }
+
+        .time-badge-label input[type="radio"] {
+            display: none !important;
+        }
+
+        .time-badge-label input[type="radio"]:checked+.category-badge {
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary-ink);
+            box-shadow: 0 4px 12px rgba(15, 110, 95, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .time-badge-label input[type="radio"]:checked+.category-badge:hover {
+            filter: brightness(1.1);
+        }
+
+        .focus-card.running .focus-time-selector {
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
 
         /* ========== ENTRANCE ANIMATIONS ========== */
         @keyframes fadeSlideUp {
@@ -1248,207 +1445,220 @@
             animation: fadeSlideUp .4s ease both;
         }
 
-        /* ========== POMODORO TIMER ========== */
-        .pomodoro-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 1.5px solid var(--border);
-            background: linear-gradient(135deg, #fff5f0, #ffe8db);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: .85rem;
-            flex-shrink: 0;
-            transition: all .25s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        [data-theme="dark"] .pomodoro-btn {
-            background: linear-gradient(135deg, #3a2a22, #2d2219);
-            border-color: #4a3a30;
-        }
-
-        .pomodoro-btn:hover {
-            transform: scale(1.12);
-            border-color: var(--accent);
-            box-shadow: 0 3px 12px -3px rgba(217, 123, 63, .35);
-        }
-
-        .pomodoro-btn:active {
-            transform: scale(.95);
-        }
-
-        .pomodoro-btn.timer-active {
-            border-color: var(--accent);
-            background: linear-gradient(135deg, var(--accent), #e8943f);
-            color: #fff;
-            animation: pomodoro-pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pomodoro-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(217, 123, 63, .4); }
-            50% { box-shadow: 0 0 0 6px rgba(217, 123, 63, 0); }
-        }
-
-        .pomodoro-panel {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height .45s cubic-bezier(.4, 0, .2, 1), opacity .3s ease, padding .35s ease;
-            opacity: 0;
-            background: linear-gradient(135deg, #fdf6f1 0%, #f9ede4 100%);
-            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-            margin-top: 0;
-            padding: 0 .9rem;
-        }
-
-        [data-theme="dark"] .pomodoro-panel {
-            background: linear-gradient(135deg, #2a2420 0%, #302820 100%);
-        }
-
-        .pomodoro-panel.open {
-            max-height: 220px;
-            opacity: 1;
-            padding: .9rem;
-            margin-top: .5rem;
-            border-top: 1px dashed color-mix(in srgb, var(--accent) 30%, var(--border));
-        }
-
-        .pomo-display {
-            text-align: center;
-            margin-bottom: .6rem;
-        }
-
-        .pomo-time {
-            font-family: var(--font-display);
-            font-weight: 900;
-            font-size: 2.4rem;
-            letter-spacing: 2px;
-            background: linear-gradient(135deg, var(--accent), #c06830);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-            transition: transform .2s ease;
-        }
-
-        .pomo-time.tick {
-            transform: scale(1.04);
-        }
-
-        .pomo-label {
-            font-size: .7rem;
-            color: var(--muted);
-            font-weight: 600;
-            margin-top: 2px;
-        }
-
-        .pomo-progress {
-            width: 100%;
-            height: 4px;
-            background: var(--ring-bg);
-            border-radius: 999px;
-            overflow: hidden;
-            margin-bottom: .7rem;
-        }
-
-        .pomo-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), #e8943f);
-            border-radius: 999px;
-            transition: width .4s ease;
-            width: 0%;
-        }
-
-        .pomo-controls {
-            display: flex;
-            gap: .5rem;
-            justify-content: center;
-        }
-
-        .pomo-ctrl-btn {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: .45rem .9rem;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: .78rem;
-            cursor: pointer;
-            transition: all .2s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: .3rem;
-        }
-
-        .pomo-ctrl-btn:active {
-            transform: scale(.96);
-        }
-
-        .pomo-start {
-            background: linear-gradient(135deg, var(--accent), #c86e35);
-            color: #fff;
-            border-color: transparent;
-        }
-
-        .pomo-start:hover {
-            filter: brightness(1.1);
-        }
-
-        .pomo-pause {
-            background: linear-gradient(135deg, #5b9bd5, #4080c0);
-            color: #fff;
-            border-color: transparent;
-        }
-
-        .pomo-pause:hover {
-            filter: brightness(1.1);
-        }
-
-        .pomo-reset {
-            background: var(--surface);
-            color: var(--muted);
-        }
-
-        .pomo-reset:hover {
-            color: var(--danger);
-            border-color: var(--danger);
-        }
-
-        .habit-row.pomo-completed {
-            border-color: var(--primary);
-            background: color-mix(in srgb, var(--primary) 10%, var(--surface));
-            position: relative;
-        }
-
-        .habit-row.pomo-completed::after {
-            content: '🍅';
-            position: absolute;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: .7rem;
-            opacity: .7;
-        }
-
-        @keyframes pomodoroComplete {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.03); }
-            50% { transform: scale(.98); }
-            75% { transform: scale(1.01); }
-            100% { transform: scale(1); }
-        }
-
-        .pomo-celebrate {
-            animation: pomodoroComplete .5s ease;
+                /* ========== FOCUS SESSION CARD ========== */
+        .focus-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 1.2rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .focus-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--primary), var(--accent));
+            background-size: 200% 100%;
+            animation: focus-gradient-shift 4s ease infinite;
+        }
+
+        @keyframes focus-gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .focus-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            margin-bottom: .8rem;
+        }
+
+        .focus-header-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), #c86e35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px -3px rgba(217, 123, 63, .3);
+        }
+
+        .focus-header-title {
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 1.05rem;
+        }
+
+        .focus-quote {
+            font-size: .85rem;
+            color: var(--muted);
+            font-weight: 500;
+            min-height: 1.5em;
+            margin-bottom: 1rem;
+            transition: opacity .3s ease;
+            font-style: italic;
+        }
+
+        .focus-quote.fade {
+            opacity: 0;
+        }
+
+        .focus-timer-display {
+            margin-bottom: .8rem;
+        }
+
+        .focus-timer-time {
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 3.2rem;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--accent), #c06830);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            transition: transform .2s ease;
+        }
+
+        .focus-timer-time.tick {
+            transform: scale(1.03);
+        }
+
+        .focus-timer-time.paused {
+            opacity: .5;
+        }
+
+        .focus-progress {
+            width: 100%;
+            height: 5px;
+            background: var(--ring-bg);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .focus-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            border-radius: 999px;
+            transition: width .5s ease;
+            width: 0%;
+        }
+
+        .focus-controls {
+            display: flex;
+            gap: .6rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .focus-ctrl-btn {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: .55rem 1.2rem;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: .82rem;
+            cursor: pointer;
+            transition: all .2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        .focus-ctrl-btn:active {
+            transform: scale(.96);
+        }
+
+        .focus-start-btn {
+            background: linear-gradient(135deg, var(--accent), #c86e35);
+            color: #fff;
+            border-color: transparent;
+            padding: .65rem 2rem;
+            font-size: .9rem;
+            box-shadow: 0 4px 14px -4px rgba(217, 123, 63, .4);
+        }
+
+        .focus-start-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px -4px rgba(217, 123, 63, .5);
+        }
+
+        .focus-pause-btn {
+            background: linear-gradient(135deg, #5b9bd5, #4080c0);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .focus-pause-btn:hover {
+            filter: brightness(1.1);
+        }
+
+        .focus-reset-btn {
+            background: var(--surface-2);
+            color: var(--muted);
+        }
+
+        .focus-reset-btn:hover {
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .focus-card.running {
+            border-color: var(--accent);
+        }
+
+        .focus-card.running::before {
+            height: 3px;
+            animation: focus-gradient-shift 1.5s ease infinite;
+        }
+
+        @keyframes focus-celebrate {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.02); }
+            50% { transform: scale(.99); }
+            75% { transform: scale(1.01); }
+            100% { transform: scale(1); }
+        }
+
+        .focus-card.celebrate {
+            animation: focus-celebrate .5s ease;
+        }
+
+        .focus-sessions-count {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            margin-top: .8rem;
+            font-size: .75rem;
+            color: var(--muted);
+            font-weight: 600;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            padding: .3rem .7rem;
+            border-radius: 999px;
         }
     </style>
 </head>
 
 <body>
     <script>window.onerror = function (msg, url, lineNo, columnNo, error) {
-            alert(msg + " \nLine: " + lineNo); return false; };</script>
+            alert(msg + " \nLine: " + lineNo); return false;
+        };</script>
     <!-- ========== SPLASH SCREEN ========== -->
     <div class="splash" id="splash">
         <div class="splash-logo">🎯</div>
@@ -1586,10 +1796,45 @@
                         </label>
                     </div>
                 </div>
-            </div>
-
-
-
+                        </div>
+
+            <!-- ========== FOCUS SESSION CARD ========== -->
+            <div class="focus-card" id="focus-card">
+                <div class="focus-header">
+                    <div class="focus-header-icon">🎯</div>
+                    <span class="focus-header-title">جلسة تركيز</span>
+                </div>
+                                <div class="focus-quote" id="focus-quote">ابدأ الآن.. كل جلسة تركيز تقرّبك لهدفك 🚀</div>
+                <div class="focus-time-selector" id="focus-time-selector" style="display:flex; flex-wrap:wrap; gap:8px; justify-content: center; margin-bottom: 1.2rem;">
+                    <label class="time-badge-label">
+                        <input type="radio" name="focus_time" value="60">
+                        <div class="category-badge" style="padding: 6px 12px; font-size: 14px;">دقيقة</div>
+                    </label>
+                    <label class="time-badge-label">
+                        <input type="radio" name="focus_time" value="120">
+                        <div class="category-badge" style="padding: 6px 12px; font-size: 14px;">دقيقتان</div>
+                    </label>
+                    <label class="time-badge-label">
+                        <input type="radio" name="focus_time" value="300">
+                        <div class="category-badge" style="padding: 6px 12px; font-size: 14px;">5 دقائق</div>
+                    </label>
+                    <label class="time-badge-label">
+                        <input type="radio" name="focus_time" value="600" checked>
+                        <div class="category-badge" style="padding: 6px 12px; font-size: 14px;">10 دقائق</div>
+                    </label>
+                </div>
+                <div class="focus-timer-display">
+                    <div class="focus-timer-time" id="focus-time">10:00</div>
+                </div>
+                <div class="focus-progress"><div class="focus-progress-bar" id="focus-bar"></div></div>
+                <div class="focus-controls">
+                    <button class="focus-ctrl-btn focus-start-btn" id="focus-start-btn">ابدأ الجلسة ▶️</button>
+                    <button class="focus-ctrl-btn focus-pause-btn" id="focus-pause-btn" style="display:none;">إيقاف مؤقت ⏸️</button>
+                    <button class="focus-ctrl-btn focus-reset-btn" id="focus-reset-btn" style="display:none;">إلغاء 🔄</button>
+                </div>
+                <div class="focus-sessions-count">⚡ أنجزت <strong id="focus-sessions-num">0</strong> جلسة اليوم</div>
+            </div>
+
         </section>
 
         <!-- ============ CALENDAR VIEW ============ -->
@@ -1639,258 +1884,290 @@
 
     <div class="toast" id="toast"></div>
 
-    <div class="confirm-overlay" id="confirm-overlay">
-        <div class="confirm-box">
-            <p id="confirm-text">هل أنت متأكد؟</p>
-            <div class="confirm-actions">
-                <button class="btn btn-ghost" id="confirm-cancel">إلغاء</button>
-                <button class="btn btn-primary" id="confirm-ok" style="background:var(--danger);">حذف</button>
-            </div>
-        </div>
+        <div class="confirm-overlay" id="confirm-overlay">
+        <div class="confirm-box">
+            <p id="confirm-text">هل أنت متأكد؟</p>
+            <div class="confirm-actions">
+                <button class="btn btn-ghost" id="confirm-cancel">إلغاء</button>
+                <button class="btn btn-primary" id="confirm-ok" style="background:var(--danger);">حذف</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Options Modal -->
+    <div class="del-opts-overlay" id="del-opts-overlay">
+        <div class="del-opts-box">
+            <div class="del-opts-header">
+                <div class="del-opts-icon">🗑️</div>
+                <span class="del-opts-title">حذف العادة</span>
+            </div>
+            <div class="del-opts-name" id="del-opts-name"></div>
+            <div class="del-opts-list">
+                <button class="del-opt-btn" id="del-opt-today">
+                    <span class="opt-icon">📌</span>
+                    <span class="opt-text">لهذا اليوم فقط<small>إخفاء العادة من هذا اليوم</small></span>
+                </button>
+                <button class="del-opt-btn" id="del-opt-future">
+                    <span class="opt-icon">⏩</span>
+                    <span class="opt-text">من اليوم فصاعدًا<small>إبقاؤها في الأيّام السابقة</small></span>
+                </button>
+                <button class="del-opt-btn" id="del-opt-all">
+                    <span class="opt-icon">❌</span>
+                    <span class="opt-text">حذف نهائي<small>إزالتها من جميع الأيّام</small></span>
+                </button>
+            </div>
+            <button class="del-opts-cancel" id="del-opts-cancel">إلغاء</button>
+        </div>
     </div>
 
     <script>
-                (function () {
-                    const STORAGE_HABITS = 'rtn-habits-v1';
-                    const STORAGE_RECORDS = 'rtn-records-v1';
+        (function () {
+            const STORAGE_HABITS = 'rtn-habits-v1';
+            const STORAGE_RECORDS = 'rtn-records-v1';
 
-                    const categories = [
-                        { id: 'ibadat', name: 'عبادات', icon: '🕌' },
-                        { id: 'sihha', name: 'صحّة', icon: '🌿' },
-                        { id: 'intaj', name: 'إنتاجيّة', icon: '💡' },
-                    ];
+            const categories = [
+                { id: 'ibadat', name: 'عبادات', icon: '🕌' },
+                { id: 'sihha', name: 'صحّة', icon: '🌿' },
+                { id: 'intaj', name: 'إنتاجيّة', icon: '💡' },
+            ];
 
-                    const defaultHabits = [
-                        { id: 'h1', icon: '🌅', name: 'صلاة الفجر', cat: 'ibadat' },
-                        { id: 'h2', icon: '🕌', name: 'صلاة الظهرين', cat: 'ibadat' },
-                        { id: 'h3', icon: '🌇', name: 'صلاة العشائين', cat: 'ibadat' },
-                        { id: 'h4', icon: '📿', name: 'استغفار', cat: 'ibadat' },
-                        { id: 'h5', icon: '📿', name: 'تسبيح', cat: 'ibadat' },
-                        { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة', cat: 'sihha' },
-                        { id: 'h7', icon: '💧', name: 'شرب 8 أكواب من الماء', cat: 'sihha' },
-                        { id: 'h8', icon: '🧴', name: 'مرطّب للبشرة', cat: 'sihha' },
-                        { id: 'h9', icon: '✍️', name: 'كتابة فكرة / مقال / تعلّم شيء جديد', cat: 'intaj' },
-                    ];
-                    const defaultHabitIds = new Set(defaultHabits.map(h => h.id));
+            const defaultHabits = [
+                { id: 'h1', icon: '🌅', name: 'صلاة الفجر', cat: 'ibadat' },
+                { id: 'h2', icon: '🕌', name: 'صلاة الظهرين', cat: 'ibadat' },
+                { id: 'h3', icon: '🌇', name: 'صلاة العشائين', cat: 'ibadat' },
+                { id: 'h4', icon: '📿', name: 'استغفار', cat: 'ibadat' },
+                { id: 'h5', icon: '📿', name: 'تسبيح', cat: 'ibadat' },
+                { id: 'h6', icon: '🚶', name: 'مشي 15 دقيقة', cat: 'sihha' },
+                { id: 'h7', icon: '💧', name: 'شرب 8 أكواب من الماء', cat: 'sihha' },
+                { id: 'h8', icon: '🧴', name: 'مرطّب للبشرة', cat: 'sihha' },
+                { id: 'h9', icon: '✍️', name: 'كتابة فكرة / مقال / تعلّم شيء جديد', cat: 'intaj' },
+            ];
+            const defaultHabitIds = new Set(defaultHabits.map(h => h.id));
 
-                    // Returns habits visible on a given date key:
-                    // all default habits + custom habits based on their addedDate and type
-                    function habitsForDate(dateKey) {
-                        const [y, m, d] = dateKey.split('-');
-                        const dateObj = new Date(y, m - 1, d);
-                        const dayOfWeek = dateObj.getDay();
+                                // Returns habits visible on a given date key:
+                    // all default habits + custom habits based on their addedDate and type
+                    function habitsForDate(dateKey) {
+                        const [y, m, d] = dateKey.split('-');
+                        const dateObj = new Date(y, m - 1, d);
+                        const dayOfWeek = dateObj.getDay();
+
+                        return habits.filter(h => {
+                            if (defaultHabitIds.has(h.id)) return true;
+
+                            // If the habit was added after this date, hide it
+                            if (h.addedDate && dateKey < h.addedDate) return false;
+
+                            // If the habit has an endDate, hide it from that date onwards
+                            if (h.endDate && dateKey >= h.endDate) return false;
+
+                            // If this specific day is hidden
+                            if (h.hiddenDays && h.hiddenDays.includes(dateKey)) return false;
+
+                            // If it has no type, treat it as continuous for backward compatibility
+                            if (!h.type || h.type === 'continuous') {
+                                return true;
+                            }
+
+                            if (h.type === 'specific_days' && h.days) {
+                                return h.days.includes(dayOfWeek);
+                            }
+
+                            if (h.type === 'once') {
+                                return dateKey === h.addedDate;
+                            }
+
+                            return false;
+                        });
+                    }
 
-                        return habits.filter(h => {
-                            if (defaultHabitIds.has(h.id)) return true;
+            function loadHabits() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_HABITS);
+                    if (raw) {
+                        let list = JSON.parse(raw);
+                        const newDefaultsMap = {};
+                        defaultHabits.forEach(dh => newDefaultsMap[dh.id] = dh);
 
-                            // If the habit was added after this date, hide it
-                            if (h.addedDate && dateKey < h.addedDate) return false;
-
-                            // If it has no type, treat it as continuous for backward compatibility
-                            if (!h.type || h.type === 'continuous') {
-                                return true;
+                        list = list.map(h => {
+                            if (newDefaultsMap[h.id]) {
+                                return newDefaultsMap[h.id];
                             }
-
-                            if (h.type === 'specific_days' && h.days) {
-                                return h.days.includes(dayOfWeek);
-                            }
-
-                            if (h.type === 'once') {
-                                return dateKey === h.addedDate;
-                            }
-
-                            return false;
+                            return { ...h, cat: h.cat || 'intaj' };
                         });
-                    }
 
-                    function loadHabits() {
-                        try {
-                            const raw = localStorage.getItem(STORAGE_HABITS);
-                            if (raw) {
-                                let list = JSON.parse(raw);
-                                const newDefaultsMap = {};
-                                defaultHabits.forEach(dh => newDefaultsMap[dh.id] = dh);
-
-                                list = list.map(h => {
-                                    if (newDefaultsMap[h.id]) {
-                                        return newDefaultsMap[h.id];
-                                    }
-                                    return { ...h, cat: h.cat || 'intaj' };
-                                });
-
-                                if (!list.find(h => h.id === 'h9')) {
-                                    list.push(newDefaultsMap['h9']);
-                                }
-
-                                saveHabits(list);
-                                return list;
-                            }
-                        } catch (e) { }
-                        saveHabits(defaultHabits);
-                        return defaultHabits.slice();
-                    }
-                    function saveHabits(list) { localStorage.setItem(STORAGE_HABITS, JSON.stringify(list)); }
-                    function loadRecords() {
-                        try {
-                            const raw = localStorage.getItem(STORAGE_RECORDS);
-                            if (raw) return JSON.parse(raw);
-                        } catch (e) { }
-                        return {};
-                    }
-                    function saveRecords(rec) { localStorage.setItem(STORAGE_RECORDS, JSON.stringify(rec)); }
-
-                    let habits = loadHabits();
-                    let records = loadRecords(); // { 'YYYY-MM-DD': { habitId: true } }
-
-                    const fmt = d => {
-                        const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
-                        return `${y}-${m}-${day}`;
-                    };
-                    const todayStr = fmt(new Date());
-                    let activeDate = new Date();
-                    let calMonth = new Date();
-                    let logMonth = new Date();
-
-                    const dowNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
-                    const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
-
-                    // ---------- Custom confirm (native confirm() is blocked in sandboxed iframes) ----------
-                    const confirmOverlay = document.getElementById('confirm-overlay');
-                    const confirmText = document.getElementById('confirm-text');
-                    const confirmOkBtn = document.getElementById('confirm-ok');
-                    const confirmCancelBtn = document.getElementById('confirm-cancel');
-                    let pendingConfirmAction = null;
-                    function askConfirm(message, onConfirm) {
-                        confirmText.textContent = message;
-                        pendingConfirmAction = onConfirm;
-                        confirmOverlay.classList.add('show');
-                    }
-                    confirmOkBtn.addEventListener('click', () => {
-                        confirmOverlay.classList.remove('show');
-                        if (pendingConfirmAction) pendingConfirmAction();
-                        pendingConfirmAction = null;
-                    });
-                    confirmCancelBtn.addEventListener('click', () => {
-                        confirmOverlay.classList.remove('show');
-                        pendingConfirmAction = null;
-                    });
-                    confirmOverlay.addEventListener('click', (e) => {
-                        if (e.target === confirmOverlay) { confirmOverlay.classList.remove('show'); pendingConfirmAction = null; }
-                    });
-
-                    // ---------- Toast ----------
-                    let toastTimer;
-                    function showToast(msg) {
-                        const t = document.getElementById('toast');
-                        t.textContent = msg;
-                        t.classList.add('show');
-                        clearTimeout(toastTimer);
-                        toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
-                    }
-
-                    // ---------- Tabs ----------
-                    document.querySelectorAll('.tab-btn').forEach(btn => {
-                        btn.addEventListener('click', () => {
-                            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                            btn.classList.add('active');
-                            document.getElementById('view-' + btn.dataset.view).classList.add('active');
-                            if (btn.dataset.view === 'calendar') renderCalendar();
-                            if (btn.dataset.view === 'log') renderLog();
-                        });
-                    });
-
-                    function goToView(name) {
-                        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
-                        document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
-                    }
-
-                    // ---------- Theme ----------
-                    const themeBtn = document.getElementById('theme-btn');
-                    function applyTheme(t) {
-                        document.documentElement.setAttribute('data-theme', t);
-                        localStorage.setItem('rtn-theme', t);
-                        themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
-                    }
-                    applyTheme(localStorage.getItem('rtn-theme') || 'light');
-                    themeBtn.addEventListener('click', () => {
-                        applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-                    });
-                    document.getElementById('print-btn').addEventListener('click', () => window.print());
-
-                    // ---------- POP SOUNDS (Web Audio API) ----------
-                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    function playPopSound(isChecked) {
-                        if (audioCtx.state === 'suspended') audioCtx.resume();
-                        const t = audioCtx.currentTime;
-                        if (isChecked) {
-                            const pop = audioCtx.createOscillator();
-                            const popGain = audioCtx.createGain();
-                            pop.type = 'sine';
-                            pop.frequency.setValueAtTime(1800, t);
-                            pop.frequency.exponentialRampToValueAtTime(400, t + 0.03);
-                            popGain.gain.setValueAtTime(0.15, t);
-                            popGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
-                            pop.connect(popGain);
-                            popGain.connect(audioCtx.destination);
-                            pop.start(t);
-                            pop.stop(t + 0.06);
-
-                            [
-                                { f: 659.25, v: 0.10 },
-                                { f: 987.77, v: 0.05 },
-                            ].forEach(n => {
-                                const o = audioCtx.createOscillator();
-                                const g = audioCtx.createGain();
-                                o.type = 'sine';
-                                o.frequency.setValueAtTime(n.f, t);
-                                g.gain.setValueAtTime(0, t + 0.02);
-                                g.gain.linearRampToValueAtTime(n.v, t + 0.05);
-                                g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-                                o.connect(g);
-                                g.connect(audioCtx.destination);
-                                o.start(t + 0.02);
-                                o.stop(t + 0.4);
-                            });
-                        } else {
-                            const osc = audioCtx.createOscillator();
-                            const gain = audioCtx.createGain();
-                            osc.type = 'sine';
-                            osc.frequency.setValueAtTime(440, t);
-                            osc.frequency.exponentialRampToValueAtTime(300, t + 0.15);
-                            gain.gain.setValueAtTime(0.07, t);
-                            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-                            osc.connect(gain);
-                            gain.connect(audioCtx.destination);
-                            osc.start(t);
-                            osc.stop(t + 0.15);
+                        if (!list.find(h => h.id === 'h9')) {
+                            list.push(newDefaultsMap['h9']);
                         }
+
+                        saveHabits(list);
+                        return list;
                     }
+                } catch (e) { }
+                saveHabits(defaultHabits);
+                return defaultHabits.slice();
+            }
+            function saveHabits(list) { localStorage.setItem(STORAGE_HABITS, JSON.stringify(list)); }
+            function loadRecords() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_RECORDS);
+                    if (raw) return JSON.parse(raw);
+                } catch (e) { }
+                return {};
+            }
+            function saveRecords(rec) { localStorage.setItem(STORAGE_RECORDS, JSON.stringify(rec)); }
 
-                    // ---------- TODAY VIEW ----------
-                    const habitListEl = document.getElementById('habit-list');
-                    const activeDateInput = document.getElementById('active-date-input');
+            let habits = loadHabits();
+            let records = loadRecords(); // { 'YYYY-MM-DD': { habitId: true } }
 
-                    function dayLabel(d) {
-                        return `${dowNames[d.getDay()]}، ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
-                    }
+            const fmt = d => {
+                const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), day = String(d.getDate()).padStart(2, '0');
+                return `${y}-${m}-${day}`;
+            };
+            const todayStr = fmt(new Date());
+            let activeDate = new Date();
+            let calMonth = new Date();
+            let logMonth = new Date();
 
-                    function renderHabitList() {
-                        const key = fmt(activeDate);
-                        const dayRec = records[key] || {};
-                        const visibleHabits = habitsForDate(key);
-                        habitListEl.innerHTML = '';
-                        if (visibleHabits.length === 0) {
-                            habitListEl.innerHTML = `<div class="empty-state"><div class="em-icon">✨</div>لا توجد عادات بعد — أضف أول عادة لك بالأسفل</div>`;
-                        }
-                        categories.forEach(cat => {
-                            const catHabits = visibleHabits.filter(h => h.cat === cat.id);
-                            if (catHabits.length === 0) return;
-                            const group = document.createElement('div');
-                            group.className = 'habit-group';
-                            group.dataset.cat = cat.id;
-                            const doneCount = catHabits.filter(h => dayRec[h.id]).length;
-                            group.innerHTML = `
+            const dowNames = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            const monthNames = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+            // ---------- Custom confirm (native confirm() is blocked in sandboxed iframes) ----------
+            const confirmOverlay = document.getElementById('confirm-overlay');
+            const confirmText = document.getElementById('confirm-text');
+            const confirmOkBtn = document.getElementById('confirm-ok');
+            const confirmCancelBtn = document.getElementById('confirm-cancel');
+            let pendingConfirmAction = null;
+            function askConfirm(message, onConfirm) {
+                confirmText.textContent = message;
+                pendingConfirmAction = onConfirm;
+                confirmOverlay.classList.add('show');
+            }
+            confirmOkBtn.addEventListener('click', () => {
+                confirmOverlay.classList.remove('show');
+                if (pendingConfirmAction) pendingConfirmAction();
+                pendingConfirmAction = null;
+            });
+            confirmCancelBtn.addEventListener('click', () => {
+                confirmOverlay.classList.remove('show');
+                pendingConfirmAction = null;
+            });
+            confirmOverlay.addEventListener('click', (e) => {
+                if (e.target === confirmOverlay) { confirmOverlay.classList.remove('show'); pendingConfirmAction = null; }
+            });
+
+            // ---------- Toast ----------
+            let toastTimer;
+            function showToast(msg) {
+                const t = document.getElementById('toast');
+                t.textContent = msg;
+                t.classList.add('show');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+            }
+
+            // ---------- Tabs ----------
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById('view-' + btn.dataset.view).classList.add('active');
+                    if (btn.dataset.view === 'calendar') renderCalendar();
+                    if (btn.dataset.view === 'log') renderLog();
+                });
+            });
+
+            function goToView(name) {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+                document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+            }
+
+            // ---------- Theme ----------
+            const themeBtn = document.getElementById('theme-btn');
+            function applyTheme(t) {
+                document.documentElement.setAttribute('data-theme', t);
+                localStorage.setItem('rtn-theme', t);
+                themeBtn.textContent = t === 'dark' ? '☀️' : '🌙';
+            }
+            applyTheme(localStorage.getItem('rtn-theme') || 'light');
+            themeBtn.addEventListener('click', () => {
+                applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+            });
+            document.getElementById('print-btn').addEventListener('click', () => window.print());
+
+            // ---------- POP SOUNDS (Web Audio API) ----------
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            function playPopSound(isChecked) {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const t = audioCtx.currentTime;
+                if (isChecked) {
+                    const pop = audioCtx.createOscillator();
+                    const popGain = audioCtx.createGain();
+                    pop.type = 'sine';
+                    pop.frequency.setValueAtTime(1800, t);
+                    pop.frequency.exponentialRampToValueAtTime(400, t + 0.03);
+                    popGain.gain.setValueAtTime(0.15, t);
+                    popGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+                    pop.connect(popGain);
+                    popGain.connect(audioCtx.destination);
+                    pop.start(t);
+                    pop.stop(t + 0.06);
+
+                    [
+                        { f: 659.25, v: 0.10 },
+                        { f: 987.77, v: 0.05 },
+                    ].forEach(n => {
+                        const o = audioCtx.createOscillator();
+                        const g = audioCtx.createGain();
+                        o.type = 'sine';
+                        o.frequency.setValueAtTime(n.f, t);
+                        g.gain.setValueAtTime(0, t + 0.02);
+                        g.gain.linearRampToValueAtTime(n.v, t + 0.05);
+                        g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+                        o.connect(g);
+                        g.connect(audioCtx.destination);
+                        o.start(t + 0.02);
+                        o.stop(t + 0.4);
+                    });
+                } else {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, t);
+                    osc.frequency.exponentialRampToValueAtTime(300, t + 0.15);
+                    gain.gain.setValueAtTime(0.07, t);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(t);
+                    osc.stop(t + 0.15);
+                }
+            }
+
+            // ---------- TODAY VIEW ----------
+            const habitListEl = document.getElementById('habit-list');
+            const activeDateInput = document.getElementById('active-date-input');
+
+            function dayLabel(d) {
+                return `${dowNames[d.getDay()]}، ${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+            }
+
+            function renderHabitList() {
+                const key = fmt(activeDate);
+                const dayRec = records[key] || {};
+                const visibleHabits = habitsForDate(key);
+                habitListEl.innerHTML = '';
+                if (visibleHabits.length === 0) {
+                    habitListEl.innerHTML = `<div class="empty-state"><div class="em-icon">✨</div>لا توجد عادات بعد — أضف أول عادة لك بالأسفل</div>`;
+                }
+                categories.forEach(cat => {
+                    const catHabits = visibleHabits.filter(h => h.cat === cat.id);
+                    if (catHabits.length === 0) return;
+                    const group = document.createElement('div');
+                    group.className = 'habit-group';
+                    group.dataset.cat = cat.id;
+                    const doneCount = catHabits.filter(h => dayRec[h.id]).length;
+                    group.innerHTML = `
         <div class="habit-group-head">
           <span class="habit-group-icon">${cat.icon}</span>
           <span class="habit-group-title">${cat.name}</span>
@@ -1898,354 +2175,325 @@
         </div>
         <div class="habit-group-body"></div>
       `;
-                            const body = group.querySelector('.habit-group-body');
-                            catHabits.forEach(h => {
-                                const done = !!dayRec[h.id];
-                                const isDefault = defaultHabitIds.has(h.id);
-                                const isIntaj = h.cat === 'intaj';
-                                const row = document.createElement('div');
-                                row.className = 'habit-row' + (done ? ' done' : '');
-                                row.dataset.habitId = h.id;
-                                const pomoBtn = isIntaj ? `<button class="pomodoro-btn" data-pomo-id="${h.id}" title="مؤقت بومودورو 🍅">⏱️</button>` : '';
-                                row.innerHTML = `
-          <button class="habit-check" data-id="${h.id}">${done ? '✓' : ''}</button>
-          <span class="habit-icon">${h.icon}</span>
-          <span class="habit-name">${h.name}</span>
-          ${pomoBtn}
-          ${isDefault ? '' : `<button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>`}
-        `;
-                                if (isIntaj) {
-                                    const panel = document.createElement('div');
-                                    panel.className = 'pomodoro-panel';
-                                    panel.id = `pomo-panel-${h.id}`;
-                                    panel.innerHTML = `
-            <div class="pomo-display">
-              <div class="pomo-time" id="pomo-time-${h.id}">10:00</div>
-              <div class="pomo-label">مؤقت تركيز 🍅</div>
-            </div>
-            <div class="pomo-progress"><div class="pomo-progress-bar" id="pomo-bar-${h.id}"></div></div>
-            <div class="pomo-controls">
-              <button class="pomo-ctrl-btn pomo-start" data-pomo-action="start" data-pomo-id="${h.id}">بدء ▶️</button>
-              <button class="pomo-ctrl-btn pomo-pause" data-pomo-action="pause" data-pomo-id="${h.id}" style="display:none;">إيقاف ⏸️</button>
-              <button class="pomo-ctrl-btn pomo-reset" data-pomo-action="reset" data-pomo-id="${h.id}">إلغاء 🔄</button>
-            </div>
-          `;
-                                    row.appendChild(panel);
-                                }
+                    const body = group.querySelector('.habit-group-body');
+                                                catHabits.forEach(h => {
+                                const done = !!dayRec[h.id];
+                                const isDefault = defaultHabitIds.has(h.id);
+                                const row = document.createElement('div');
+                                row.className = 'habit-row' + (done ? ' done' : '');
+                                row.dataset.habitId = h.id;
+                                row.innerHTML = `
+          <button class="habit-check" data-id="${h.id}">${done ? '✓' : ''}</button>
+          <span class="habit-icon">${h.icon}</span>
+          <span class="habit-name">${h.name}</span>
+          ${isDefault ? '' : `<button class="habit-del" data-id="${h.id}" title="حذف العادة">🗑️</button>`}
+        `;
                                 body.appendChild(row);
-                            });
-                            habitListEl.appendChild(group);
-                        });
-                        document.getElementById('habit-count-lbl').textContent = `${visibleHabits.length} عادة`;
-                        updateRing();
-                    }
-
-                    // ---------- Category Picker Logic ----------
-                    const catPickerBtn = document.getElementById('cat-picker-btn');
-                    const catIconVal = document.getElementById('new-habit-cat-val');
-                    const catModalOverlay = document.getElementById('cat-modal-overlay');
-                    const catModalClose = document.getElementById('cat-modal-close');
-                    const catGrid = document.getElementById('cat-grid');
-
-                    if (catGrid) {
-                        categories.forEach(c => {
-                            const btn = document.createElement('button');
-                            btn.className = 'emoji-btn';
-                            btn.style.fontSize = '1.1rem';
-                            btn.style.padding = '10px';
-                            btn.style.fontFamily = "'Tajawal', sans-serif";
-                            btn.innerHTML = `${c.icon} ${c.name}`;
-                            btn.addEventListener('click', () => {
-                                if (catIconVal) catIconVal.value = c.id;
-                                if (catPickerBtn) catPickerBtn.textContent = `${c.icon} ${c.name}`;
-                                catModalOverlay.classList.remove('show');
-                            });
-                            catGrid.appendChild(btn);
-                        });
-                    }
-
-                    if (catPickerBtn) {
-                        catPickerBtn.addEventListener('click', () => catModalOverlay.classList.add('show'));
-                    }
-                    if (catModalClose) {
-                        catModalClose.addEventListener('click', () => catModalOverlay.classList.remove('show'));
-                    }
-
-                    habitListEl.addEventListener('click', (e) => {
-                        const checkBtn = e.target.closest('.habit-check');
-                        const delBtn = e.target.closest('.habit-del');
-                        const key = fmt(activeDate);
-                        if (checkBtn) {
-                            const id = checkBtn.dataset.id;
-                            records[key] = records[key] || {};
-                            const wasChecked = !!records[key][id];
-                            records[key][id] = !wasChecked;
-                            if (!records[key][id]) delete records[key][id];
-                            saveRecords(records);
-
-                            const row = checkBtn.closest('.habit-row');
-                            const nowChecked = !wasChecked;
-                            if (nowChecked) {
-                                row.classList.add('done');
-                                checkBtn.textContent = '✓';
-                            } else {
-                                row.classList.remove('done');
-                                checkBtn.textContent = '';
-                            }
-
-                            const group = row.closest('.habit-group');
-                            if (group) {
-                                const catId = group.dataset.cat;
-                                const catHabits = habits.filter(h => h.cat === catId);
-                                const dayRec = records[key] || {};
-                                const doneCount = catHabits.filter(h => dayRec[h.id]).length;
-                                const countEl = group.querySelector('.habit-group-count');
-                                if (countEl) countEl.textContent = `${doneCount}/${catHabits.length}`;
-                            }
-
-                            checkBtn.style.transform = 'scale(1.3)';
-                            setTimeout(() => checkBtn.style.transform = '', 200);
-
-                            playPopSound(nowChecked);
-
-                            updateRing();
-                        } else if (delBtn) {
-                            const id = delBtn.dataset.id;
-                            if (defaultHabitIds.has(id)) return;
-                            const h = habits.find(x => x.id === id);
-                            askConfirm(`حذف عادة "${h ? h.name : ''}"؟`, () => {
-                                habits = habits.filter(x => x.id !== id);
-                                saveHabits(habits);
-                                if (h && h.addedDate && records[h.addedDate]) {
-                                    delete records[h.addedDate][id];
-                                    saveRecords(records);
-                                }
-                                renderHabitList();
-                                showToast('تم حذف العادة');
-                            });
-                        }
                     });
+                    habitListEl.appendChild(group);
+                });
+                document.getElementById('habit-count-lbl').textContent = `${visibleHabits.length} عادة`;
+                updateRing();
+            }
 
-                    // ---------- Add Habit UI Events ----------
-                    const newHabitInput = document.getElementById('new-habit-input');
-                    const addHabitOptions = document.getElementById('add-habit-options');
-                    const advancedToggleBtn = document.getElementById('advanced-toggle-btn');
-                    const daysSelector = document.getElementById('days-selector');
-                    const habitTypeRadios = document.querySelectorAll('input[name="habit_type"]');
+            // ---------- Category Picker Logic ----------
+            const catPickerBtn = document.getElementById('cat-picker-btn');
+            const catIconVal = document.getElementById('new-habit-cat-val');
+            const catModalOverlay = document.getElementById('cat-modal-overlay');
+            const catModalClose = document.getElementById('cat-modal-close');
+            const catGrid = document.getElementById('cat-grid');
 
-                    advancedToggleBtn.addEventListener('click', () => {
-                        addHabitOptions.classList.toggle('show');
+            if (catGrid) {
+                categories.forEach(c => {
+                    const btn = document.createElement('button');
+                    btn.className = 'emoji-btn';
+                    btn.style.fontSize = '1.1rem';
+                    btn.style.padding = '10px';
+                    btn.style.fontFamily = "'Tajawal', sans-serif";
+                    btn.innerHTML = `${c.icon} ${c.name}`;
+                    btn.addEventListener('click', () => {
+                        if (catIconVal) catIconVal.value = c.id;
+                        if (catPickerBtn) catPickerBtn.textContent = `${c.icon} ${c.name}`;
+                        catModalOverlay.classList.remove('show');
                     });
-                    newHabitInput.addEventListener('focus', () => {
-                        addHabitOptions.classList.add('show');
-                    });
-                    newHabitInput.addEventListener('input', () => {
-                        addHabitOptions.classList.add('show');
-                    });
+                    catGrid.appendChild(btn);
+                });
+            }
 
-                    habitTypeRadios.forEach(r => {
-                        r.addEventListener('change', (e) => {
-                            if (e.target.value === 'specific_days') {
-                                daysSelector.style.display = 'flex';
-                            } else {
-                                daysSelector.style.display = 'none';
-                            }
-                        });
-                    });
+            if (catPickerBtn) {
+                catPickerBtn.addEventListener('click', () => catModalOverlay.classList.add('show'));
+            }
+            if (catModalClose) {
+                catModalClose.addEventListener('click', () => catModalOverlay.classList.remove('show'));
+            }
 
-                    // ---------- Emoji Picker Logic ----------
-                    const emojis = ['⭐', '💧', '📖', '🏃', '🧘', '🍎', '📝', '💻', '💡', '📿', '🕌', '🏋️', '🎯', '🎨', '💊', '💰', '🧹', '🪴', '🥦', '🎮'];
-                    const emojiPickerBtn = document.getElementById('emoji-picker-btn');
-                    const emojiIconVal = document.getElementById('new-habit-icon-val');
-                    const emojiModalOverlay = document.getElementById('emoji-modal-overlay');
-                    const emojiModalClose = document.getElementById('emoji-modal-close');
-                    const emojiGrid = document.getElementById('emoji-grid');
+            habitListEl.addEventListener('click', (e) => {
+                const checkBtn = e.target.closest('.habit-check');
+                const delBtn = e.target.closest('.habit-del');
+                const key = fmt(activeDate);
+                if (checkBtn) {
+                    const id = checkBtn.dataset.id;
+                    records[key] = records[key] || {};
+                    const wasChecked = !!records[key][id];
+                    records[key][id] = !wasChecked;
+                    if (!records[key][id]) delete records[key][id];
+                    saveRecords(records);
 
-                    if (emojiGrid) {
-                        emojis.forEach(em => {
-                            const btn = document.createElement('button');
-                            btn.className = 'emoji-btn';
-                            btn.textContent = em;
-                            btn.addEventListener('click', () => {
-                                if (emojiIconVal) emojiIconVal.value = em;
-                                if (emojiPickerBtn) emojiPickerBtn.textContent = em;
-                                emojiModalOverlay.classList.remove('show');
-                            });
-                            emojiGrid.appendChild(btn);
-                        });
+                    const row = checkBtn.closest('.habit-row');
+                    const nowChecked = !wasChecked;
+                    if (nowChecked) {
+                        row.classList.add('done');
+                        checkBtn.textContent = '✓';
+                    } else {
+                        row.classList.remove('done');
+                        checkBtn.textContent = '';
                     }
 
-                    if (emojiPickerBtn) {
-                        emojiPickerBtn.addEventListener('click', () => emojiModalOverlay.classList.add('show'));
-                    }
-                    if (emojiModalClose) {
-                        emojiModalClose.addEventListener('click', () => emojiModalOverlay.classList.remove('show'));
-                    }
-
-                    document.getElementById('add-habit-btn').addEventListener('click', addHabit);
-                    newHabitInput.addEventListener('keydown', e => { if (e.key === 'Enter') addHabit(); });
-
-                    function addHabit() {
-                        try {
-                            const input = newHabitInput;
-                            const val = input.value.trim();
-                            if (!val) return;
-
-                            const catVal = document.getElementById('new-habit-cat-val');
-                            const cat = catVal ? catVal.value : 'intaj';
-                            const dateKey = fmt(activeDate);
-
-                            const typeRadio = document.querySelector('input[name="habit_type"]:checked');
-                            const type = typeRadio ? typeRadio.value : 'continuous';
-                            let days = null;
-
-                            if (type === 'specific_days') {
-                                const checkboxes = document.querySelectorAll('#days-selector input[type="checkbox"]:checked');
-                                days = Array.from(checkboxes).map(cb => parseInt(cb.value));
-                                if (days.length === 0) {
-                                    showToast('الرجاء اختيار يوم واحد على الأقل');
-                                    return;
-                                }
-                            }
-
-                            const iconVal = document.getElementById('new-habit-icon-val');
-                            const icon = iconVal ? iconVal.value : '⭐';
-
-                            habits.push({ id: 'h' + Date.now(), icon: icon, name: val, cat, addedDate: dateKey, type, days });
-                            saveHabits(habits);
-                            input.value = '';
-                            addHabitOptions.classList.remove('show');
-
-                            // Reset UI
-                            const continuousRadio = document.querySelector('input[name="habit_type"][value="continuous"]');
-                            if (continuousRadio) continuousRadio.checked = true;
-                            daysSelector.style.display = 'none';
-                            document.querySelectorAll('#days-selector input[type="checkbox"]').forEach(cb => cb.checked = false);
-
-                            // Re-render immediately
-                            renderHabitList();
-                            showToast('تمت إضافة العادة بنجاح');
-                        } catch (err) {
-                            alert('Error adding habit: ' + err.message);
-                        }
-                    }
-
-                    function updateRing() {
-                        const key = fmt(activeDate);
+                    const group = row.closest('.habit-group');
+                    if (group) {
+                        const catId = group.dataset.cat;
+                        const catHabits = habits.filter(h => h.cat === catId);
                         const dayRec = records[key] || {};
-                        const visibleHabits = habitsForDate(key);
-                        const total = visibleHabits.length;
-                        const done = visibleHabits.filter(h => dayRec[h.id]).length;
-                        const pct = total ? Math.round((done / total) * 100) : 0;
-                        const circle = document.getElementById('ring-fg');
-                        const circumference = 283;
-                        circle.style.strokeDashoffset = circumference - (circumference * pct / 100);
-                        document.getElementById('ring-pct').textContent = pct + '%';
-                        const title = document.getElementById('ring-title');
-                        const sub = document.getElementById('ring-sub');
-                        if (total === 0) { title.textContent = 'أضف عاداتك أولاً'; sub.textContent = 'ابدأ بإضافة عادة من القائمة أدناه.'; }
-                        else if (pct === 100) { title.textContent = 'أحسنت! يوم مكتمل 🎉'; sub.textContent = 'أنجزت كل عاداتك لهذا اليوم.'; }
-                        else if (pct === 0) { title.textContent = 'لم تبدأ بعد'; sub.textContent = 'أنجز عاداتك لهذا اليوم واحدة تلو الأخرى.'; }
-                        else { title.textContent = `${done} من ${total} مكتملة`; sub.textContent = 'استمر، أنت قريب من إتمام يومك.'; }
-                        document.getElementById('streak-count').textContent = computeStreak();
+                        const doneCount = catHabits.filter(h => dayRec[h.id]).length;
+                        const countEl = group.querySelector('.habit-group-count');
+                        if (countEl) countEl.textContent = `${doneCount}/${catHabits.length}`;
                     }
 
-                    function computeStreak() {
-                        if (habits.length === 0) return 0;
-                        let streak = 0;
-                        let d = new Date();
-                        // count consecutive days (including today only if it already has full completion, else start from yesterday)
-                        for (let i = 0; i < 400; i++) {
-                            const key = fmt(d);
-                            const dayHabits = habitsForDate(key);
-                            const rec = records[key] || {};
-                            const done = dayHabits.filter(h => rec[h.id]).length;
-                            const complete = dayHabits.length > 0 && done === dayHabits.length;
-                            if (i === 0 && !complete) { d.setDate(d.getDate() - 1); continue; }
-                            if (complete) { streak++; d.setDate(d.getDate() - 1); } else break;
+                    checkBtn.style.transform = 'scale(1.3)';
+                    setTimeout(() => checkBtn.style.transform = '', 200);
+
+                    playPopSound(nowChecked);
+
+                    updateRing();
+                                        } else if (delBtn) {
+                            const id = delBtn.dataset.id;
+                            if (defaultHabitIds.has(id)) return;
+                            const h = habits.find(x => x.id === id);
+                            if (!h) return;
+                            showDeleteOptions(h);
                         }
-                        return streak;
-                    }
+            });
 
-                    function setActiveDate(d) {
-                        activeDate = d;
-                        activeDateInput.value = fmt(d);
-                        document.getElementById('cur-date-label').textContent = `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
-                        document.getElementById('cur-day-name').textContent = dowNames[d.getDay()] + (fmt(d) === todayStr ? ' • اليوم' : '');
-                        renderHabitList();
-                    }
+            // ---------- Add Habit UI Events ----------
+            const newHabitInput = document.getElementById('new-habit-input');
+            const addHabitOptions = document.getElementById('add-habit-options');
+            const advancedToggleBtn = document.getElementById('advanced-toggle-btn');
+            const daysSelector = document.getElementById('days-selector');
+            const habitTypeRadios = document.querySelectorAll('input[name="habit_type"]');
 
-                    document.getElementById('day-prev').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() - 1); setActiveDate(d); });
-                    document.getElementById('day-next').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() + 1); setActiveDate(d); });
-                    activeDateInput.addEventListener('change', () => {
-                        if (activeDateInput.value) { const [y, m, day] = activeDateInput.value.split('-').map(Number); setActiveDate(new Date(y, m - 1, day)); }
+            advancedToggleBtn.addEventListener('click', () => {
+                addHabitOptions.classList.toggle('show');
+            });
+            newHabitInput.addEventListener('focus', () => {
+                addHabitOptions.classList.add('show');
+            });
+            newHabitInput.addEventListener('input', () => {
+                addHabitOptions.classList.add('show');
+            });
+
+            habitTypeRadios.forEach(r => {
+                r.addEventListener('change', (e) => {
+                    if (e.target.value === 'specific_days') {
+                        daysSelector.style.display = 'flex';
+                    } else {
+                        daysSelector.style.display = 'none';
+                    }
+                });
+            });
+
+            // ---------- Emoji Picker Logic ----------
+            const emojis = ['⭐', '💧', '📖', '🏃', '🧘', '🍎', '📝', '💻', '💡', '📿', '🕌', '🏋️', '🎯', '🎨', '💊', '💰', '🧹', '🪴', '🥦', '🎮'];
+            const emojiPickerBtn = document.getElementById('emoji-picker-btn');
+            const emojiIconVal = document.getElementById('new-habit-icon-val');
+            const emojiModalOverlay = document.getElementById('emoji-modal-overlay');
+            const emojiModalClose = document.getElementById('emoji-modal-close');
+            const emojiGrid = document.getElementById('emoji-grid');
+
+            if (emojiGrid) {
+                emojis.forEach(em => {
+                    const btn = document.createElement('button');
+                    btn.className = 'emoji-btn';
+                    btn.textContent = em;
+                    btn.addEventListener('click', () => {
+                        if (emojiIconVal) emojiIconVal.value = em;
+                        if (emojiPickerBtn) emojiPickerBtn.textContent = em;
+                        emojiModalOverlay.classList.remove('show');
                     });
+                    emojiGrid.appendChild(btn);
+                });
+            }
 
-                    // ---------- CALENDAR VIEW ----------
-                    const calGrid = document.getElementById('cal-grid');
-                    const calDowRow = document.getElementById('cal-dow-row');
-                    dowNames.forEach(n => {
-                        const el = document.createElement('div');
-                        el.className = 'cal-dow';
-                        el.textContent = n;
-                        calDowRow.appendChild(el);
-                    });
+            if (emojiPickerBtn) {
+                emojiPickerBtn.addEventListener('click', () => emojiModalOverlay.classList.add('show'));
+            }
+            if (emojiModalClose) {
+                emojiModalClose.addEventListener('click', () => emojiModalOverlay.classList.remove('show'));
+            }
 
-                    function renderCalendar() {
-                        const y = calMonth.getFullYear(), m = calMonth.getMonth();
-                        document.getElementById('cal-month-label').textContent = `${monthNames[m]} ${y}`;
-                        calGrid.innerHTML = '';
-                        const firstDay = new Date(y, m, 1).getDay();
-                        const daysInMonth = new Date(y, m + 1, 0).getDate();
-                        for (let i = 0; i < firstDay; i++) {
-                            const empty = document.createElement('div');
-                            empty.className = 'cal-cell empty';
-                            calGrid.appendChild(empty);
-                        }
-                        for (let d = 1; d <= daysInMonth; d++) {
-                            const dateObj = new Date(y, m, d);
-                            const key = fmt(dateObj);
-                            const rec = records[key] || {};
-                            const dayHabits = habitsForDate(key);
-                            const total = dayHabits.length;
-                            const done = dayHabits.filter(h => rec[h.id]).length;
-                            const pct = total ? done / total : 0;
-                            const cell = document.createElement('div');
-                            cell.className = 'cal-cell' + (pct > 0 ? ' has-data' : '') + (key === todayStr ? ' today' : '') + (pct > 0.5 ? ' bright' : '');
-                            cell.style.setProperty('--fill-opacity', pct > 0 ? Math.max(pct, 0.18) : 0);
-                            cell.innerHTML = `<div class="fill"></div><span class="num">${d}</span>`;
-                            cell.addEventListener('click', () => { setActiveDate(dateObj); goToView('today'); });
-                            calGrid.appendChild(cell);
+            document.getElementById('add-habit-btn').addEventListener('click', addHabit);
+            newHabitInput.addEventListener('keydown', e => { if (e.key === 'Enter') addHabit(); });
+
+            function addHabit() {
+                try {
+                    const input = newHabitInput;
+                    const val = input.value.trim();
+                    if (!val) return;
+
+                    const catVal = document.getElementById('new-habit-cat-val');
+                    const cat = catVal ? catVal.value : 'intaj';
+                    const dateKey = fmt(activeDate);
+
+                    const typeRadio = document.querySelector('input[name="habit_type"]:checked');
+                    const type = typeRadio ? typeRadio.value : 'continuous';
+                    let days = null;
+
+                    if (type === 'specific_days') {
+                        const checkboxes = document.querySelectorAll('#days-selector input[type="checkbox"]:checked');
+                        days = Array.from(checkboxes).map(cb => parseInt(cb.value));
+                        if (days.length === 0) {
+                            showToast('الرجاء اختيار يوم واحد على الأقل');
+                            return;
                         }
                     }
-                    document.getElementById('cal-prev').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() - 1); renderCalendar(); });
-                    document.getElementById('cal-next').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() + 1); renderCalendar(); });
 
-                    // ---------- LOG VIEW ----------
-                    function renderLog() {
-                        const y = logMonth.getFullYear(), m = logMonth.getMonth();
-                        document.getElementById('log-month-label').textContent = `${monthNames[m]} ${y}`;
-                        const list = document.getElementById('log-list');
-                        list.innerHTML = '';
-                        const daysInMonth = new Date(y, m + 1, 0).getDate();
-                        let any = false;
-                        for (let d = daysInMonth; d >= 1; d--) {
-                            const dateObj = new Date(y, m, d);
-                            const key = fmt(dateObj);
-                            const rec = records[key];
-                            if (!rec || Object.keys(rec).length === 0) continue;
-                            any = true;
-                            const dayHabits = habitsForDate(key);
-                            const total = dayHabits.length;
-                            const done = dayHabits.filter(h => rec[h.id]).length;
-                            const pct = total ? Math.round((done / total) * 100) : 0;
-                            const card = document.createElement('div');
-                            card.className = 'log-day';
-                            const tags = dayHabits.map(h => {
-                                const ok = !!rec[h.id];
-                                return `<span class="log-habit-tag ${ok ? '' : 'miss'}">${h.icon} ${h.name}</span>`;
-                            }).join('');
-                            card.innerHTML = `
+                    const iconVal = document.getElementById('new-habit-icon-val');
+                    const icon = iconVal ? iconVal.value : '⭐';
+
+                    habits.push({ id: 'h' + Date.now(), icon: icon, name: val, cat, addedDate: dateKey, type, days });
+                    saveHabits(habits);
+                    input.value = '';
+                    addHabitOptions.classList.remove('show');
+
+                    // Reset UI
+                    const continuousRadio = document.querySelector('input[name="habit_type"][value="continuous"]');
+                    if (continuousRadio) continuousRadio.checked = true;
+                    daysSelector.style.display = 'none';
+                    document.querySelectorAll('#days-selector input[type="checkbox"]').forEach(cb => cb.checked = false);
+
+                    // Re-render immediately
+                    renderHabitList();
+                    showToast('تمت إضافة العادة بنجاح');
+                } catch (err) {
+                    alert('Error adding habit: ' + err.message);
+                }
+            }
+
+            function updateRing() {
+                const key = fmt(activeDate);
+                const dayRec = records[key] || {};
+                const visibleHabits = habitsForDate(key);
+                const total = visibleHabits.length;
+                const done = visibleHabits.filter(h => dayRec[h.id]).length;
+                const pct = total ? Math.round((done / total) * 100) : 0;
+                const circle = document.getElementById('ring-fg');
+                const circumference = 283;
+                circle.style.strokeDashoffset = circumference - (circumference * pct / 100);
+                document.getElementById('ring-pct').textContent = pct + '%';
+                const title = document.getElementById('ring-title');
+                const sub = document.getElementById('ring-sub');
+                if (total === 0) { title.textContent = 'أضف عاداتك أولاً'; sub.textContent = 'ابدأ بإضافة عادة من القائمة أدناه.'; }
+                else if (pct === 100) { title.textContent = 'أحسنت! يوم مكتمل 🎉'; sub.textContent = 'أنجزت كل عاداتك لهذا اليوم.'; }
+                else if (pct === 0) { title.textContent = 'لم تبدأ بعد'; sub.textContent = 'أنجز عاداتك لهذا اليوم واحدة تلو الأخرى.'; }
+                else { title.textContent = `${done} من ${total} مكتملة`; sub.textContent = 'استمر، أنت قريب من إتمام يومك.'; }
+                document.getElementById('streak-count').textContent = computeStreak();
+            }
+
+            function computeStreak() {
+                if (habits.length === 0) return 0;
+                let streak = 0;
+                let d = new Date();
+                // count consecutive days (including today only if it already has full completion, else start from yesterday)
+                for (let i = 0; i < 400; i++) {
+                    const key = fmt(d);
+                    const dayHabits = habitsForDate(key);
+                    const rec = records[key] || {};
+                    const done = dayHabits.filter(h => rec[h.id]).length;
+                    const complete = dayHabits.length > 0 && done === dayHabits.length;
+                    if (i === 0 && !complete) { d.setDate(d.getDate() - 1); continue; }
+                    if (complete) { streak++; d.setDate(d.getDate() - 1); } else break;
+                }
+                return streak;
+            }
+
+            function setActiveDate(d) {
+                activeDate = d;
+                activeDateInput.value = fmt(d);
+                document.getElementById('cur-date-label').textContent = `${d.getDate()} ${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+                document.getElementById('cur-day-name').textContent = dowNames[d.getDay()] + (fmt(d) === todayStr ? ' • اليوم' : '');
+                renderHabitList();
+            }
+
+            document.getElementById('day-prev').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() - 1); setActiveDate(d); });
+            document.getElementById('day-next').addEventListener('click', () => { const d = new Date(activeDate); d.setDate(d.getDate() + 1); setActiveDate(d); });
+            activeDateInput.addEventListener('change', () => {
+                if (activeDateInput.value) { const [y, m, day] = activeDateInput.value.split('-').map(Number); setActiveDate(new Date(y, m - 1, day)); }
+            });
+
+            // ---------- CALENDAR VIEW ----------
+            const calGrid = document.getElementById('cal-grid');
+            const calDowRow = document.getElementById('cal-dow-row');
+            dowNames.forEach(n => {
+                const el = document.createElement('div');
+                el.className = 'cal-dow';
+                el.textContent = n;
+                calDowRow.appendChild(el);
+            });
+
+            function renderCalendar() {
+                const y = calMonth.getFullYear(), m = calMonth.getMonth();
+                document.getElementById('cal-month-label').textContent = `${monthNames[m]} ${y}`;
+                calGrid.innerHTML = '';
+                const firstDay = new Date(y, m, 1).getDay();
+                const daysInMonth = new Date(y, m + 1, 0).getDate();
+                for (let i = 0; i < firstDay; i++) {
+                    const empty = document.createElement('div');
+                    empty.className = 'cal-cell empty';
+                    calGrid.appendChild(empty);
+                }
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dateObj = new Date(y, m, d);
+                    const key = fmt(dateObj);
+                    const rec = records[key] || {};
+                    const dayHabits = habitsForDate(key);
+                    const total = dayHabits.length;
+                    const done = dayHabits.filter(h => rec[h.id]).length;
+                    const pct = total ? done / total : 0;
+                    const cell = document.createElement('div');
+                    cell.className = 'cal-cell' + (pct > 0 ? ' has-data' : '') + (key === todayStr ? ' today' : '') + (pct > 0.5 ? ' bright' : '');
+                    cell.style.setProperty('--fill-opacity', pct > 0 ? Math.max(pct, 0.18) : 0);
+                    cell.innerHTML = `<div class="fill"></div><span class="num">${d}</span>`;
+                    cell.addEventListener('click', () => { setActiveDate(dateObj); goToView('today'); });
+                    calGrid.appendChild(cell);
+                }
+            }
+            document.getElementById('cal-prev').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() - 1); renderCalendar(); });
+            document.getElementById('cal-next').addEventListener('click', () => { calMonth.setMonth(calMonth.getMonth() + 1); renderCalendar(); });
+
+            // ---------- LOG VIEW ----------
+            function renderLog() {
+                const y = logMonth.getFullYear(), m = logMonth.getMonth();
+                document.getElementById('log-month-label').textContent = `${monthNames[m]} ${y}`;
+                const list = document.getElementById('log-list');
+                list.innerHTML = '';
+                const daysInMonth = new Date(y, m + 1, 0).getDate();
+                let any = false;
+                for (let d = daysInMonth; d >= 1; d--) {
+                    const dateObj = new Date(y, m, d);
+                    const key = fmt(dateObj);
+                    const rec = records[key];
+                    if (!rec || Object.keys(rec).length === 0) continue;
+                    any = true;
+                    const dayHabits = habitsForDate(key);
+                    const total = dayHabits.length;
+                    const done = dayHabits.filter(h => rec[h.id]).length;
+                    const pct = total ? Math.round((done / total) * 100) : 0;
+                    const card = document.createElement('div');
+                    card.className = 'log-day';
+                    const tags = dayHabits.map(h => {
+                        const ok = !!rec[h.id];
+                        return `<span class="log-habit-tag ${ok ? '' : 'miss'}">${h.icon} ${h.name}</span>`;
+                    }).join('');
+                    card.innerHTML = `
         <div class="log-day-head">
           <div>
             <div class="log-day-title">${dowNames[dateObj.getDay()]}، ${d} ${monthNames[m]}</div>
@@ -2255,249 +2503,311 @@
         </div>
         <div class="log-habits">${tags}</div>
       `;
-                            card.querySelector('.log-day-head').addEventListener('click', () => card.classList.toggle('open'));
-                            list.appendChild(card);
-                        }
-                        if (!any) {
-                            list.innerHTML = `<div class="empty-state"><div class="em-icon">📭</div>لا يوجد سجل إنجاز في هذا الشهر</div>`;
-                        }
-                    }
-                    document.getElementById('log-prev').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() - 1); renderLog(); });
-                    document.getElementById('log-next').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() + 1); renderLog(); });
+                    card.querySelector('.log-day-head').addEventListener('click', () => card.classList.toggle('open'));
+                    list.appendChild(card);
+                }
+                if (!any) {
+                    list.innerHTML = `<div class="empty-state"><div class="em-icon">📭</div>لا يوجد سجل إنجاز في هذا الشهر</div>`;
+                }
+            }
+            document.getElementById('log-prev').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() - 1); renderLog(); });
+            document.getElementById('log-next').addEventListener('click', () => { logMonth.setMonth(logMonth.getMonth() + 1); renderLog(); });
 
-                    // ---------- POMODORO TIMER SYSTEM ----------
-                    const POMO_DURATION = 10 * 60; // 10 minutes in seconds
-                    const pomoTimers = {}; // { habitId: { interval, remaining, running } }
+                                                    // ---------- FOCUS SESSION TIMER ----------
+                    const FOCUS_STORAGE = 'rtn-focus-sessions';
+                    const focusQuotes = [
+                        'ابدأ الآن.. كل جلسة تركيز تقرّبك لهدفك 🚀',
+                        'أتحدّاك يا بطل تنجز! 💪',
+                        'ابدأ الآن السبرنت 🏃🏻',
+                        'ركّز لدقائق.. والباقي سهل ⚡',
+                        'التركيز هو سرّ الإنجاز 🎯',
+                        'أنت أقوى من التشتّت! 🔥',
+                        'عقلك يستحق وقتًا بلا مشتّتات 🧠',
+                        'كل دقيقة تركيز تصنع فرقًا ✨',
+                        'خطوة واحدة تكفي لبداية عظيمة 🌟',
+                        'الآن هو أفضل وقت للبدء ⏰',
+                        'ابدأ.. الكمال عدوّ الإنجاز 🏆',
+                        'لا تنتظر الحافز، ابدأ والحافز سيأتي 💡',
+                    ];
+                    let focusQuoteIndex = Math.floor(Math.random() * focusQuotes.length);
 
-                    function pomoFormatTime(seconds) {
+                    const focusCard = document.getElementById('focus-card');
+                    const focusTimeEl = document.getElementById('focus-time');
+                    const focusBarEl = document.getElementById('focus-bar');
+                    const focusQuoteEl = document.getElementById('focus-quote');
+                    const focusStartBtn = document.getElementById('focus-start-btn');
+                    const focusPauseBtn = document.getElementById('focus-pause-btn');
+                    const focusResetBtn = document.getElementById('focus-reset-btn');
+                    const focusSessionsNum = document.getElementById('focus-sessions-num');
+                    const focusTimeRadios = document.querySelectorAll('input[name="focus_time"]');
+
+                    let currentFocusDuration = 10 * 60; // default 10 minutes
+                    let focusTimer = { interval: null, remaining: currentFocusDuration, running: false };
+
+                    focusTimeRadios.forEach(radio => {
+                        radio.addEventListener('change', (e) => {
+                            if (!focusTimer.running) {
+                                currentFocusDuration = parseInt(e.target.value, 10);
+                                focusTimer.remaining = currentFocusDuration;
+                                focusTimeEl.textContent = focusFormatTime(focusTimer.remaining);
+                                focusBarEl.style.width = '0%';
+                            }
+                        });
+                    });
+
+                    function focusFormatTime(seconds) {
                         const m = Math.floor(seconds / 60);
                         const s = seconds % 60;
                         return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
                     }
 
-                    function pomoUpdateDisplay(habitId) {
-                        const timer = pomoTimers[habitId];
-                        if (!timer) return;
-                        const timeEl = document.getElementById(`pomo-time-${habitId}`);
-                        const barEl = document.getElementById(`pomo-bar-${habitId}`);
-                        if (timeEl) {
-                            timeEl.textContent = pomoFormatTime(timer.remaining);
-                            // micro-animation tick
-                            timeEl.classList.add('tick');
-                            setTimeout(() => timeEl.classList.remove('tick'), 150);
-                        }
-                        if (barEl) {
-                            const pct = ((POMO_DURATION - timer.remaining) / POMO_DURATION) * 100;
-                            barEl.style.width = pct + '%';
-                        }
+                    function focusLoadSessions() {
+                        try {
+                            const data = JSON.parse(localStorage.getItem(FOCUS_STORAGE) || '{}');
+                            return data[todayStr] || 0;
+                        } catch(e) { return 0; }
                     }
 
-                    function pomoPlayAlarm() {
-                        if (audioCtx.state === 'suspended') audioCtx.resume();
-                        const t = audioCtx.currentTime;
-                        // Triple chime melody
-                        const notes = [
-                            { freq: 880, start: 0, dur: 0.2 },
-                            { freq: 1100, start: 0.25, dur: 0.2 },
-                            { freq: 1320, start: 0.5, dur: 0.35 },
-                        ];
-                        notes.forEach(n => {
-                            const osc = audioCtx.createOscillator();
-                            const gain = audioCtx.createGain();
-                            osc.type = 'sine';
-                            osc.frequency.setValueAtTime(n.freq, t + n.start);
-                            gain.gain.setValueAtTime(0, t + n.start);
-                            gain.gain.linearRampToValueAtTime(0.18, t + n.start + 0.03);
-                            gain.gain.exponentialRampToValueAtTime(0.001, t + n.start + n.dur);
-                            osc.connect(gain);
-                            gain.connect(audioCtx.destination);
-                            osc.start(t + n.start);
-                            osc.stop(t + n.start + n.dur);
-                        });
-                        // celebratory shimmer
-                        const shimmer = audioCtx.createOscillator();
-                        const sGain = audioCtx.createGain();
-                        shimmer.type = 'triangle';
-                        shimmer.frequency.setValueAtTime(1760, t + 0.85);
-                        shimmer.frequency.exponentialRampToValueAtTime(880, t + 1.3);
-                        sGain.gain.setValueAtTime(0.08, t + 0.85);
-                        sGain.gain.exponentialRampToValueAtTime(0.001, t + 1.3);
-                        shimmer.connect(sGain);
-                        sGain.connect(audioCtx.destination);
-                        shimmer.start(t + 0.85);
-                        shimmer.stop(t + 1.3);
+                    function focusSaveSession() {
+                        try {
+                            const data = JSON.parse(localStorage.getItem(FOCUS_STORAGE) || '{}');
+                            data[todayStr] = (data[todayStr] || 0) + 1;
+                            localStorage.setItem(FOCUS_STORAGE, JSON.stringify(data));
+                            return data[todayStr];
+                        } catch(e) { return 1; }
                     }
 
-                    function pomoComplete(habitId) {
-                        const timer = pomoTimers[habitId];
-                        if (timer && timer.interval) {
-                            clearInterval(timer.interval);
-                            timer.interval = null;
-                            timer.running = false;
-                        }
+                    focusSessionsNum.textContent = focusLoadSessions();
 
-                        // 1. Play alarm sound
-                        pomoPlayAlarm();
-
-                        // 2. Mark habit as done
-                        const key = fmt(activeDate);
-                        records[key] = records[key] || {};
-                        records[key][habitId] = true;
-                        saveRecords(records);
-
-                        // 3. Update the habit row visually
-                        const row = document.querySelector(`.habit-row[data-habit-id="${habitId}"]`);
-                        if (row) {
-                            row.classList.add('done', 'pomo-completed', 'pomo-celebrate');
-                            const checkBtn = row.querySelector('.habit-check');
-                            if (checkBtn) checkBtn.textContent = '✓';
-                            setTimeout(() => row.classList.remove('pomo-celebrate'), 600);
-                        }
-
-                        // 4. Update the pomodoro button
-                        const pomoBtn = document.querySelector(`.pomodoro-btn[data-pomo-id="${habitId}"]`);
-                        if (pomoBtn) pomoBtn.classList.remove('timer-active');
-
-                        // 5. Update the group count
-                        const group = row?.closest('.habit-group');
-                        if (group) {
-                            const catId = group.dataset.cat;
-                            const catHabits = habits.filter(h => h.cat === catId);
-                            const dayRec = records[key] || {};
-                            const doneCount = catHabits.filter(h => dayRec[h.id]).length;
-                            const countEl = group.querySelector('.habit-group-count');
-                            if (countEl) countEl.textContent = `${doneCount}/${catHabits.length}`;
-                        }
-
-                        // 6. Update ring & show toast
-                        updateRing();
-                        showToast('🍅 انتهت جلسة التركيز — أحسنت!');
-
-                        // 7. Reset timer display
-                        const timeEl = document.getElementById(`pomo-time-${habitId}`);
-                        const barEl = document.getElementById(`pomo-bar-${habitId}`);
-                        if (timeEl) timeEl.textContent = pomoFormatTime(POMO_DURATION);
-                        if (barEl) barEl.style.width = '100%';
-
-                        // 8. Reset button states
-                        const startBtn = document.querySelector(`.pomo-start[data-pomo-id="${habitId}"]`);
-                        const pauseBtn = document.querySelector(`.pomo-pause[data-pomo-id="${habitId}"]`);
-                        if (startBtn) startBtn.style.display = '';
-                        if (pauseBtn) pauseBtn.style.display = 'none';
-
-                        // 9. Close panel after delay
+                    function focusShowQuote() {
+                        focusQuoteEl.classList.add('fade');
                         setTimeout(() => {
-                            const panel = document.getElementById(`pomo-panel-${habitId}`);
-                            if (panel) panel.classList.remove('open');
-                        }, 2000);
-
-                        // Clean up timer state
-                        delete pomoTimers[habitId];
+                            focusQuoteIndex = (focusQuoteIndex + 1) % focusQuotes.length;
+                            focusQuoteEl.textContent = focusQuotes[focusQuoteIndex];
+                            focusQuoteEl.classList.remove('fade');
+                        }, 300);
                     }
 
-                    function pomoStart(habitId) {
-                        if (!pomoTimers[habitId]) {
-                            pomoTimers[habitId] = { interval: null, remaining: POMO_DURATION, running: false };
-                        }
-                        const timer = pomoTimers[habitId];
-                        if (timer.running) return;
-                        timer.running = true;
+                    function focusUpdateDisplay() {
+                        focusTimeEl.textContent = focusFormatTime(focusTimer.remaining);
+                        focusTimeEl.classList.add('tick');
+                        setTimeout(() => focusTimeEl.classList.remove('tick'), 150);
+                        const pct = ((currentFocusDuration - focusTimer.remaining) / currentFocusDuration) * 100;
+                        focusBarEl.style.width = pct + '%';
+                    }
+
+                    function focusPlayAlarm() {
+                        if (audioCtx.state === 'suspended') audioCtx.resume();
+                        const t = audioCtx.currentTime;
+                        const notes = [
+                            { freq: 880, start: 0, dur: 0.2 },
+                            { freq: 1100, start: 0.25, dur: 0.2 },
+                            { freq: 1320, start: 0.5, dur: 0.35 },
+                        ];
+                        notes.forEach(n => {
+                            const osc = audioCtx.createOscillator();
+                            const gain = audioCtx.createGain();
+                            osc.type = 'sine';
+                            osc.frequency.setValueAtTime(n.freq, t + n.start);
+                            gain.gain.setValueAtTime(0, t + n.start);
+                            gain.gain.linearRampToValueAtTime(0.18, t + n.start + 0.03);
+                            gain.gain.exponentialRampToValueAtTime(0.001, t + n.start + n.dur);
+                            osc.connect(gain);
+                            gain.connect(audioCtx.destination);
+                            osc.start(t + n.start);
+                            osc.stop(t + n.start + n.dur);
+                        });
+                        const shimmer = audioCtx.createOscillator();
+                        const sGain = audioCtx.createGain();
+                        shimmer.type = 'triangle';
+                        shimmer.frequency.setValueAtTime(1760, t + 0.85);
+                        shimmer.frequency.exponentialRampToValueAtTime(880, t + 1.3);
+                        sGain.gain.setValueAtTime(0.08, t + 0.85);
+                        sGain.gain.exponentialRampToValueAtTime(0.001, t + 1.3);
+                        shimmer.connect(sGain);
+                        sGain.connect(audioCtx.destination);
+                        shimmer.start(t + 0.85);
+                        shimmer.stop(t + 1.3);
+                    }
+
+                                        function focusComplete() {
+                        clearInterval(focusTimer.interval);
+                        focusTimer.interval = null;
+                        focusTimer.running = false;
 
-                        // Toggle button visibility
-                        const startBtn = document.querySelector(`.pomo-start[data-pomo-id="${habitId}"]`);
-                        const pauseBtn = document.querySelector(`.pomo-pause[data-pomo-id="${habitId}"]`);
-                        if (startBtn) startBtn.style.display = 'none';
-                        if (pauseBtn) pauseBtn.style.display = '';
+                        focusPlayAlarm();
 
-                        // Activate the pomodoro button glow
-                        const pomoBtn = document.querySelector(`.pomodoro-btn[data-pomo-id="${habitId}"]`);
-                        if (pomoBtn) pomoBtn.classList.add('timer-active');
+                        const count = focusSaveSession();
+                        focusSessionsNum.textContent = count;
 
-                        timer.interval = setInterval(() => {
-                            timer.remaining--;
-                            pomoUpdateDisplay(habitId);
-                            if (timer.remaining <= 0) {
-                                pomoComplete(habitId);
-                            }
-                        }, 1000);
-                    }
+                        focusCard.classList.remove('running');
+                        focusCard.classList.add('celebrate');
+                        setTimeout(() => focusCard.classList.remove('celebrate'), 600);
 
-                    function pomoPause(habitId) {
-                        const timer = pomoTimers[habitId];
-                        if (!timer || !timer.running) return;
-                        clearInterval(timer.interval);
-                        timer.interval = null;
-                        timer.running = false;
+                        focusBarEl.style.width = '100%';
+                        showToast('🎉 أحسنت! أنهيت جلسة تركيز كاملة');
 
-                        // Toggle button visibility
-                        const startBtn = document.querySelector(`.pomo-start[data-pomo-id="${habitId}"]`);
-                        const pauseBtn = document.querySelector(`.pomo-pause[data-pomo-id="${habitId}"]`);
-                        if (startBtn) startBtn.style.display = '';
-                        if (pauseBtn) pauseBtn.style.display = 'none';
-                    }
-
-                    function pomoReset(habitId) {
-                        const timer = pomoTimers[habitId];
-                        if (timer) {
-                            if (timer.interval) clearInterval(timer.interval);
-                            delete pomoTimers[habitId];
-                        }
-
-                        // Reset display
-                        const timeEl = document.getElementById(`pomo-time-${habitId}`);
-                        const barEl = document.getElementById(`pomo-bar-${habitId}`);
-                        if (timeEl) timeEl.textContent = pomoFormatTime(POMO_DURATION);
-                        if (barEl) barEl.style.width = '0%';
-
-                        // Reset buttons
-                        const startBtn = document.querySelector(`.pomo-start[data-pomo-id="${habitId}"]`);
-                        const pauseBtn = document.querySelector(`.pomo-pause[data-pomo-id="${habitId}"]`);
-                        if (startBtn) startBtn.style.display = '';
-                        if (pauseBtn) pauseBtn.style.display = 'none';
-
-                        // Remove active glow
-                        const pomoBtn = document.querySelector(`.pomodoro-btn[data-pomo-id="${habitId}"]`);
-                        if (pomoBtn) pomoBtn.classList.remove('timer-active');
-
-                        // Close panel
-                        const panel = document.getElementById(`pomo-panel-${habitId}`);
-                        if (panel) panel.classList.remove('open');
-                    }
-
-                    // Event delegation for pomodoro controls
-                    habitListEl.addEventListener('click', (e) => {
-                        // Toggle panel button
-                        const pomoToggle = e.target.closest('.pomodoro-btn');
-                        if (pomoToggle) {
-                            const hid = pomoToggle.dataset.pomoId;
-                            const panel = document.getElementById(`pomo-panel-${hid}`);
-                            if (panel) panel.classList.toggle('open');
-                            return;
-                        }
-
-                        // Control buttons
-                        const ctrlBtn = e.target.closest('.pomo-ctrl-btn');
-                        if (ctrlBtn) {
-                            const hid = ctrlBtn.dataset.pomoId;
-                            const action = ctrlBtn.dataset.pomoAction;
-                            if (action === 'start') pomoStart(hid);
-                            else if (action === 'pause') pomoPause(hid);
-                            else if (action === 'reset') pomoReset(hid);
-                        }
+                        // Reset after short delay
+                        setTimeout(() => {
+                            focusTimer.remaining = currentFocusDuration;
+                            focusTimeEl.textContent = focusFormatTime(currentFocusDuration);
+                            focusTimeEl.classList.remove('paused');
+                            focusBarEl.style.width = '0%';
+                            focusStartBtn.style.display = '';
+                            focusPauseBtn.style.display = 'none';
+                            focusResetBtn.style.display = 'none';
+                            focusShowQuote();
+                        }, 2500);
+                    }
+
+                    focusStartBtn.addEventListener('click', () => {
+                        if (focusTimer.running) return;
+                        focusTimer.running = true;
+                        focusShowQuote();
+                        focusCard.classList.add('running');
+                        focusStartBtn.style.display = 'none';
+                        focusPauseBtn.style.display = '';
+                        focusResetBtn.style.display = '';
+                        focusTimeEl.classList.remove('paused');
+
+                        focusTimer.interval = setInterval(() => {
+                            focusTimer.remaining--;
+                            focusUpdateDisplay();
+                            if (focusTimer.remaining <= 0) {
+                                focusComplete();
+                            }
+                        }, 1000);
+                    });
+
+                    focusPauseBtn.addEventListener('click', () => {
+                        if (!focusTimer.running) return;
+                        clearInterval(focusTimer.interval);
+                        focusTimer.interval = null;
+                        focusTimer.running = false;
+                        focusTimeEl.classList.add('paused');
+                        focusPauseBtn.style.display = 'none';
+                        focusStartBtn.textContent = 'استمرار ▶️';
+                        focusStartBtn.style.display = '';
+                    });
+
+                                        focusResetBtn.addEventListener('click', () => {
+                        if (focusTimer.interval) clearInterval(focusTimer.interval);
+                        focusTimer = { interval: null, remaining: currentFocusDuration, running: false };
+                        focusCard.classList.remove('running');
+                        focusTimeEl.textContent = focusFormatTime(currentFocusDuration);
+                        focusTimeEl.classList.remove('paused');
+                        focusBarEl.style.width = '0%';
+                        focusStartBtn.textContent = 'ابدأ الجلسة ▶️';
+                        focusStartBtn.style.display = '';
+                        focusPauseBtn.style.display = 'none';
+                        focusResetBtn.style.display = 'none';
+                        focusShowQuote();
                     });
 
-                    // ---------- INIT ----------
-                    setActiveDate(new Date());
+                                // ---------- DELETE OPTIONS MODAL ----------
+                    const delOptsOverlay = document.getElementById('del-opts-overlay');
+                    const delOptsName = document.getElementById('del-opts-name');
+                    const delOptToday = document.getElementById('del-opt-today');
+                    const delOptFuture = document.getElementById('del-opt-future');
+                    const delOptAll = document.getElementById('del-opt-all');
+                    const delOptsCancel = document.getElementById('del-opts-cancel');
+                    let pendingDeleteHabit = null;
+
+                    function showDeleteOptions(habit) {
+                        pendingDeleteHabit = habit;
+                        delOptsName.textContent = `"${habit.name}"`;
+                        delOptsOverlay.classList.add('show');
+                    }
+
+                    function closeDeleteOptions() {
+                        delOptsOverlay.classList.remove('show');
+                        pendingDeleteHabit = null;
+                    }
+
+                    // Option 1: Delete for today only – hide the habit on this specific day
+                    delOptToday.addEventListener('click', () => {
+                        if (!pendingDeleteHabit) return;
+                        const h = pendingDeleteHabit;
+                        const key = fmt(activeDate);
+
+                        // Store hidden days list on the habit
+                        if (!h.hiddenDays) h.hiddenDays = [];
+                        if (!h.hiddenDays.includes(key)) h.hiddenDays.push(key);
+                        saveHabits(habits);
+
+                        // Also remove any record for this day
+                        if (records[key] && records[key][h.id]) {
+                            delete records[key][h.id];
+                            saveRecords(records);
+                        }
+
+                        closeDeleteOptions();
+                        renderHabitList();
+                        showToast('تم إخفاء العادة لهذا اليوم');
+                    });
+
+                    // Option 2: Delete from today onwards – set an endDate on the habit
+                    delOptFuture.addEventListener('click', () => {
+                        if (!pendingDeleteHabit) return;
+                        const h = pendingDeleteHabit;
+                        const key = fmt(activeDate);
+
+                        // Set endDate so the habit won't appear from this date onwards
+                        h.endDate = key;
+                        saveHabits(habits);
+
+                        // Remove records from this date onwards
+                        Object.keys(records).forEach(recKey => {
+                            if (recKey >= key && records[recKey] && records[recKey][h.id]) {
+                                delete records[recKey][h.id];
+                            }
+                        });
+                        saveRecords(records);
+
+                        closeDeleteOptions();
+                        renderHabitList();
+                        showToast('تم حذف العادة من اليوم فصاعدًا');
+                    });
+
+                    // Option 3: Delete permanently – remove the habit entirely
+                    delOptAll.addEventListener('click', () => {
+                        if (!pendingDeleteHabit) return;
+                        const h = pendingDeleteHabit;
+
+                        // Remove the habit from the list
+                        habits = habits.filter(x => x.id !== h.id);
+                        saveHabits(habits);
+
+                        // Remove all records for this habit
+                        Object.keys(records).forEach(recKey => {
+                            if (records[recKey] && records[recKey][h.id]) {
+                                delete records[recKey][h.id];
+                            }
+                        });
+                        saveRecords(records);
+
+                        closeDeleteOptions();
+                        renderHabitList();
+                        showToast('تم حذف العادة نهائيًا');
+                    });
+
+                    delOptsCancel.addEventListener('click', closeDeleteOptions);
+                    delOptsOverlay.addEventListener('click', (e) => {
+                        if (e.target === delOptsOverlay) closeDeleteOptions();
+                    });
+
+                    // ---------- INIT ----------
+                    setActiveDate(new Date());
                     renderCalendar();
 
-                    // ---------- SPLASH & ENTRANCE ANIMATIONS ----------
-                    setTimeout(() => {
-                        const splash = document.getElementById('splash');
-                        splash.classList.add('hide');
-                        document.querySelector('.wrap').classList.add('anim-ready');
-                        splash.addEventListener('transitionend', () => splash.remove());
-                    }, 1200);
-                })();
+            // ---------- SPLASH & ENTRANCE ANIMATIONS ----------
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                splash.classList.add('hide');
+                document.querySelector('.wrap').classList.add('anim-ready');
+                splash.addEventListener('transitionend', () => splash.remove());
+            }, 1200);
+        })();
     </script>
 </body>
 
