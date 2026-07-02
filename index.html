@@ -2645,6 +2645,16 @@
                             }
                         });
 
+                        // Re-sort to ensure default habits appear in the exact predefined order
+                        list.sort((a, b) => {
+                            const idxA = defaultHabits.findIndex(dh => dh.id === a.id);
+                            const idxB = defaultHabits.findIndex(dh => dh.id === b.id);
+                            if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                            if (idxA !== -1) return -1;
+                            if (idxB !== -1) return 1;
+                            return 0;
+                        });
+
                         saveHabits(list);
                         return list;
                     }
